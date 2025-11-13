@@ -27,10 +27,12 @@ Architect-reviewed and approved intelligent chatbot with dual-purpose functional
   - **Personality & tone**: Warm, encouraging, conversational with comfort language ("Great question!", "Totally understandable", "Let's walk through it together")
   - **Plain language**: No jargon without explanation, relatable analogies, normalizes "beginner" questions
   - **Mandatory response structure**: Warm acknowledgment → reassurance → 2-3 tailored benefits → enthusiastic Ben/Brian closing
-  - **Enthusiastic closings**: Every response celebrates their challenge as "exactly the kind Local Edge loves to solve!" and emphasizes Ben and Brian's support from discovery to delivery
+  - **Enthusiastic closings**: Every response celebrates their challenge and emphasizes Ben and Brian's support from discovery to delivery
+  - **CLOSING VARIATION**: 4 style examples with CRITICAL instruction to vary language naturally - rotates celebration phrases ("we love to tackle", "we'd be honored", "right in our wheelhouse"), invitation phrasing, and warm endings to avoid repetition
+  - **Pricing messaging**: When asked about costs, includes: "Thanks to our advanced modern development tools, we deliver high-quality solutions in a fraction of the time traditional methods require - which means significant cost savings passed directly to you."
   - Company info (services, vision, process, team led by Ben and Brian)
   - AI education topics (benefits, risks, skills, investment priorities)
-  - Guardrails (no pricing, no code sharing, no legal/medical claims, no intimidating jargon)
+  - Guardrails (no specific pricing numbers, no code sharing, no legal/medical claims, no intimidating jargon)
 - Temperature: 0.7, Max tokens: 500
 - Validates input, returns JSON response
 - Error handling with 500 status on failures

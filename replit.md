@@ -30,6 +30,7 @@ Architect-reviewed and approved intelligent chatbot with dual-purpose functional
   - **Enthusiastic closings**: Every response celebrates their challenge and emphasizes Ben and Brian's support from discovery to delivery
   - **CLOSING VARIATION**: 4 style examples with CRITICAL instruction to vary language naturally - rotates celebration phrases ("we love to tackle", "we'd be honored", "right in our wheelhouse"), invitation phrasing, and warm endings to avoid repetition
   - **Pricing messaging**: When asked about costs, includes: "Thanks to our advanced modern development tools, we deliver high-quality solutions in a fraction of the time traditional methods require - which means significant cost savings passed directly to you."
+  - **Out-of-scope handling**: For requests clearly outside Local Edge's focus (video games, consumer apps, hardware), responds plainly and directly without spin: "That's outside our expertise. Our focus is helping small businesses through practical technology solutions..." Skips enthusiastic closing for these requests.
   - Company info (services, vision, process, team led by Ben and Brian)
   - AI education topics (benefits, risks, skills, investment priorities)
   - Guardrails (no specific pricing numbers, no code sharing, no legal/medical claims, no intimidating jargon)

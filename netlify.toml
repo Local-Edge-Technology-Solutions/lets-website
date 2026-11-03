@@ -1,6 +1,7 @@
 # Netlify builds only the website (client/). The Express server in server/ was for Replit and is not used.
+# build:site builds the page, then prerenders it so the HTML carries the real content.
 [build]
-  command = "npx vite build"
+  command = "npm run build:site"
   publish = "dist/public"
 
 [build.environment]

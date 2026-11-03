@@ -23,9 +23,6 @@ export default function FounderBios() {
           <h2 className="text-4xl md:text-5xl font-black mb-4">
             Meet the <span className="text-gradient">Founders</span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            The people you'll work with
-          </p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">

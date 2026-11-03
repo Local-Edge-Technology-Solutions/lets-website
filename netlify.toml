@@ -1,0 +1,7 @@
+# Netlify builds only the website (client/). The Express server in server/ was for Replit and is not used.
+[build]
+  command = "npx vite build"
+  publish = "dist/public"
+
+[build.environment]
+  NODE_VERSION = "20"

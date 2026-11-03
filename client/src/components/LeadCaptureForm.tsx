@@ -33,15 +33,30 @@ export default function LeadCaptureForm() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // TODO: Remove mock functionality - Replace with actual API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    console.log('Form submitted:', formData);
+    // Netlify Forms captures this POST; the hidden "lead" form in index.html registers the fields.
+    try {
+      const response = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ 'form-name': 'lead', ...formData }).toString(),
+      });
+      if (!response.ok) throw new Error(`Form submission failed: ${response.status}`);
+    } catch (error) {
+      console.error(error);
+      setIsSubmitting(false);
+      toast({
+        title: "Something went wrong",
+        description: 'Please email us at hello@localedgesolutions.ai instead.',
+        variant: 'destructive',
+      });
+      return;
+    }
 
     setIsSubmitting(false);
     setIsSuccess(true);
     toast({
-      title: "You are in! Check your email",
-      description: 'Your custom AI roadmap is on its way.',
+      title: "You're in!",
+      description: "We'll be in touch within 24 hours.",
     });
 
     setTimeout(() => {
@@ -57,9 +72,9 @@ export default function LeadCaptureForm() {
           <CheckCircle2 className="w-12 h-12 text-primary" />
         </div>
         <div>
-          <h3 className="text-3xl font-bold mb-2">Check Your Inbox!</h3>
+          <h3 className="text-3xl font-bold mb-2">Thanks, We Got It!</h3>
           <p className="text-lg text-muted-foreground">
-            We've sent your custom AI roadmap to <span className="text-foreground font-semibold">{formData.email}</span>
+            We'll send your custom AI roadmap to <span className="text-foreground font-semibold">{formData.email}</span>
           </p>
         </div>
         <div className="space-y-3 pt-4">
@@ -138,7 +153,7 @@ export default function LeadCaptureForm() {
         {isSubmitting ? (
           <>
             <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-            Generating Your Roadmap...
+            Sending...
           </>
         ) : (
           <>

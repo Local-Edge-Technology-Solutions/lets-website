@@ -14,7 +14,6 @@ import ZeroRiskGuarantee from '@/components/ZeroRiskGuarantee';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
 import StickyCtaButton from '@/components/StickyCtaButton';
-import ChatWidget from '@/components/ChatWidget';
 
 export default function HomePage() {
   return (
@@ -39,7 +38,8 @@ export default function HomePage() {
 
       <Footer />
       <StickyCtaButton />
-      <ChatWidget />
+      {/* Chat needs an AI key and a Netlify function before it can come back. */}
+      {/* <ChatWidget /> */}
     </div>
   );
 }

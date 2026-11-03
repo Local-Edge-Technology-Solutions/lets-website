@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { CheckCircle2, Loader2, Gift, Clock, Shield } from 'lucide-react';
+import { CheckCircle2, Loader2, Shield } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 const challenges = [
@@ -46,7 +46,7 @@ export default function LeadCaptureForm() {
       setIsSubmitting(false);
       toast({
         title: "Something went wrong",
-        description: 'Please email us at hello@localedgesolutions.ai instead.',
+        description: 'Please email us at ben@localedgesolutions.ai instead.',
         variant: 'destructive',
       });
       return;
@@ -55,8 +55,8 @@ export default function LeadCaptureForm() {
     setIsSubmitting(false);
     setIsSuccess(true);
     toast({
-      title: "You're in!",
-      description: "We'll be in touch within 24 hours.",
+      title: 'Thanks, we got it.',
+      description: "We'll reply by email.",
     });
 
     setTimeout(() => {
@@ -72,16 +72,10 @@ export default function LeadCaptureForm() {
           <CheckCircle2 className="w-12 h-12 text-primary" />
         </div>
         <div>
-          <h3 className="text-3xl font-bold mb-2">Thanks, We Got It!</h3>
+          <h3 className="text-3xl font-bold mb-2">Thanks, we got it.</h3>
           <p className="text-lg text-muted-foreground">
-            We'll send your custom AI roadmap to <span className="text-foreground font-semibold">{formData.email}</span>
+            We'll reply to <span className="text-foreground font-semibold">{formData.email}</span>
           </p>
-        </div>
-        <div className="space-y-3 pt-4">
-          <div className="flex items-center justify-center gap-3 text-sm">
-            <Clock className="w-5 h-5 text-primary" />
-            <span>We'll follow up within 24 hours to schedule your free consultation</span>
-          </div>
         </div>
       </div>
     );
@@ -89,19 +83,6 @@ export default function LeadCaptureForm() {
 
   return (
     <form onSubmit={handleSubmit} className="glass-card p-8 space-y-6" data-testid="form-lead-capture">
-      {/* Value Preview */}
-      <div className="bg-primary/10 border border-primary/30 rounded-lg p-4 space-y-2">
-        <div className="flex items-start gap-3">
-          <Gift className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-          <div>
-            <p className="font-semibold text-foreground mb-1">Get Your Free AI Roadmap</p>
-            <p className="text-sm text-muted-foreground">
-              Customized automation opportunities + ROI estimates for your specific business
-            </p>
-          </div>
-        </div>
-      </div>
-
       <div className="space-y-2">
         <label htmlFor="email" className="text-sm font-semibold">
           Work Email <span className="text-destructive">*</span>
@@ -156,10 +137,7 @@ export default function LeadCaptureForm() {
             Sending...
           </>
         ) : (
-          <>
-            <Gift className="mr-2 h-5 w-5" />
-            Get My Free AI Roadmap
-          </>
+          'Send'
         )}
       </Button>
 
@@ -167,10 +145,6 @@ export default function LeadCaptureForm() {
         <span className="flex items-center gap-1">
           <Shield className="w-3 h-3" />
           No spam, ever
-        </span>
-        <span className="flex items-center gap-1">
-          <Clock className="w-3 h-3" />
-          Response in 24hrs
         </span>
       </div>
     </form>

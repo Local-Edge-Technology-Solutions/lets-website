@@ -1,22 +1,17 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Linkedin } from 'lucide-react';
 import benHeadshotImg from '@assets/ben-headshot_1762803470298.jpg';
 import brianHeadshotImg from '@assets/brian-headshot_1762803470298.png';
 
 const founders = [
   {
     name: 'Ben',
-    title: 'Co-Founder & AI Strategist',
+    title: 'Co-founder',
     image: benHeadshotImg,
-    bio: "With over a decade in technology consulting, Ben specializes in helping small businesses identify and implement AI solutions that drive real ROI. He's passionate about making enterprise-level technology accessible to growing companies.",
-    linkedin: '#',
   },
   {
     name: 'Brian',
-    title: 'Co-Founder & Technical Lead',
+    title: 'Co-founder',
     image: brianHeadshotImg,
-    bio: 'Brian brings 15 years of software engineering experience, with deep expertise in machine learning and automation. He leads our technical implementations, ensuring every solution is robust, scalable, and tailored to client needs.',
-    linkedin: '#',
   },
 ];
 
@@ -29,7 +24,7 @@ export default function FounderBios() {
             Meet the <span className="text-gradient">Founders</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-            Experienced technologists dedicated to your success
+            The people you'll work with
           </p>
         </div>
 
@@ -52,21 +47,7 @@ export default function FounderBios() {
                 </Avatar>
 
                 <h3 className="text-2xl font-bold mb-1" data-testid={`founder-name-${index}`}>{founder.name}</h3>
-                <p className="text-primary font-semibold mb-4" data-testid={`founder-title-${index}`}>{founder.title}</p>
-                <p className="text-muted-foreground leading-relaxed mb-6" data-testid={`founder-bio-${index}`}>
-                  {founder.bio}
-                </p>
-
-                <a
-                  href={founder.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors"
-                  data-testid={`link-linkedin-${index}`}
-                >
-                  <Linkedin className="w-5 h-5" />
-                  <span className="text-sm font-medium">Connect on LinkedIn</span>
-                </a>
+                <p className="text-primary font-semibold" data-testid={`founder-title-${index}`}>{founder.title}</p>
               </div>
             </div>
           ))}

@@ -5,17 +5,17 @@ const solutions = [
   {
     icon: Bot,
     title: 'AI Automation',
-    description: 'Streamline repetitive tasks with intelligent automation. From customer service chatbots to data processing, we build AI systems that work 24/7 for your business.',
+    description: 'We set up tools that handle repetitive tasks, like answering common questions or moving information between the apps you already use.',
   },
   {
     icon: Workflow,
-    title: 'Process Optimization',
-    description: 'Transform manual workflows into efficient, AI-powered processes. We analyze your operations and implement smart solutions that save time and reduce costs.',
+    title: 'Process Improvement',
+    description: 'We look at how a task gets done today and work out which steps a computer can take over.',
   },
   {
     icon: LineChart,
-    title: 'Predictive Analytics',
-    description: 'Make data-driven decisions with AI-powered insights. Our custom analytics solutions help you forecast trends, optimize inventory, and stay ahead of the competition.',
+    title: 'Reporting',
+    description: 'We turn the information you already have into simple reports that help you plan.',
   },
 ];
 

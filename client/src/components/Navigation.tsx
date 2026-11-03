@@ -46,15 +46,6 @@ export default function Navigation() {
               </button>
             </li>
             <li>
-              <button
-                onClick={() => scrollToSection('faq')}
-                className="text-muted-foreground hover:text-foreground transition-colors relative after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-0.5 after:bg-primary after:transition-all hover:after:w-full"
-                data-testid="link-faq"
-              >
-                FAQ
-              </button>
-            </li>
-            <li>
               <Button 
                 onClick={() => scrollToSection('contact')}
                 className="glow-primary"
@@ -98,13 +89,6 @@ export default function Navigation() {
           data-testid="link-mobile-about"
         >
           About
-        </button>
-        <button
-          onClick={() => scrollToSection('faq')}
-          className="text-4xl font-bold text-foreground"
-          data-testid="link-mobile-faq"
-        >
-          FAQ
         </button>
         <Button
           onClick={() => scrollToSection('contact')}

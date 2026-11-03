@@ -6,29 +6,25 @@ const steps = [
     icon: Search,
     number: '01',
     title: 'Discovery',
-    description: 'We analyze your operations to identify high-impact automation opportunities',
-    duration: '1-2 weeks',
+    description: 'We learn how the work happens today',
   },
   {
     icon: Lightbulb,
     number: '02',
-    title: 'Strategy',
-    description: 'Custom AI roadmap with clear ROI projections and implementation timeline',
-    duration: '1 week',
+    title: 'Plan',
+    description: 'We agree what to build',
   },
   {
     icon: Rocket,
     number: '03',
-    title: 'Implementation',
-    description: 'Rapid deployment with training - start seeing results before full rollout',
-    duration: '4-8 weeks',
+    title: 'Build',
+    description: 'We build it and check it with you',
   },
   {
     icon: TrendingUp,
     number: '04',
-    title: 'Results',
-    description: 'Ongoing optimization and scaling as you see measurable business impact',
-    duration: 'Continuous',
+    title: 'Support',
+    description: 'We keep it running',
   },
 ];
 
@@ -69,10 +65,10 @@ export default function ProcessMethodology() {
       <div className="max-w-7xl mx-auto px-8">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-black mb-4">
-            Our Proven <span className="text-gradient">4-Step Process</span>
+            How We <span className="text-gradient">Work</span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            From initial consultation to measurable results - we make AI adoption simple, fast, and risk-free
+            From the first conversation to something running in your business
           </p>
         </div>
 
@@ -121,21 +117,9 @@ export default function ProcessMethodology() {
                 <div className="text-center">
                   <h3 className="text-2xl font-bold mb-2">{step.title}</h3>
                   <p className="text-muted-foreground mb-3 leading-relaxed">{step.description}</p>
-                  <div className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium">
-                    {step.duration}
-                  </div>
                 </div>
               </div>
             ))}
-          </div>
-        </div>
-
-        <div className="mt-16 text-center">
-          <div className="inline-flex items-center gap-3 glass-card px-6 py-4 glow-primary">
-            <TrendingUp className="w-6 h-6 text-primary" />
-            <p className="text-lg font-semibold">
-              Average time to first measurable result: <span className="text-primary">30 days</span>
-            </p>
           </div>
         </div>
       </div>

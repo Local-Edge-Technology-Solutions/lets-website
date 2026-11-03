@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import heroPortalImg from '@assets/hero-portal_1762803470298.png';
 
 export default function Hero() {
@@ -41,13 +41,13 @@ export default function Hero() {
       <div className="relative z-[2] max-w-7xl mx-auto px-8 py-24 md:py-32 text-center">
         <div className="space-y-8">
           <h1 className="text-4xl md:text-7xl font-black leading-tight">
-            AI That Pays
+            Tell us what you need.
             <br />
-            <span className="text-gradient">For Itself</span>
+            <span className="text-gradient">We'll build it.</span>
           </h1>
 
           <p className="text-lg md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Custom AI automation for small businesses. Stop losing to competitors who already adopted AI. Get enterprise capabilities without enterprise costs.
+            Custom automations and AI tools for small businesses.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -57,7 +57,7 @@ export default function Hero() {
               className="glow-primary group"
               data-testid="button-hero-primary"
             >
-              Start Your Transformation
+              Tell us what you need
               <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
             </Button>
             <Button
@@ -69,22 +69,6 @@ export default function Hero() {
             >
               Learn More
             </Button>
-          </div>
-
-          {/* Trust Badges */}
-          <div className="flex flex-wrap gap-6 justify-center items-center pt-8 text-sm text-muted-foreground">
-            <div className="flex items-center gap-2" data-testid="badge-satisfaction">
-              <CheckCircle2 className="w-5 h-5 text-primary" />
-              <span>100% Satisfaction Guaranteed</span>
-            </div>
-            <div className="flex items-center gap-2" data-testid="badge-contracts">
-              <CheckCircle2 className="w-5 h-5 text-primary" />
-              <span>No Long-Term Contracts</span>
-            </div>
-            <div className="flex items-center gap-2" data-testid="badge-consultation">
-              <CheckCircle2 className="w-5 h-5 text-primary" />
-              <span>Free Consultation</span>
-            </div>
           </div>
         </div>
       </div>

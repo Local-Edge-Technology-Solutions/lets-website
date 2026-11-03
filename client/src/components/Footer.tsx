@@ -1,4 +1,4 @@
-import { Mail, Linkedin } from 'lucide-react';
+import { Mail } from 'lucide-react';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -13,7 +13,7 @@ export default function Footer() {
               <span className="text-primary">Solutions</span>
             </h3>
             <p className="text-muted-foreground leading-relaxed">
-              AI-powered business transformation for small businesses. Enterprise technology, small business affordability.
+              Custom automations and AI tools for small businesses.
             </p>
           </div>
 
@@ -40,15 +40,6 @@ export default function Footer() {
               </li>
               <li>
                 <button
-                  onClick={() => document.getElementById('faq')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="hover:text-primary transition-colors"
-                  data-testid="link-footer-faq"
-                >
-                  FAQ
-                </button>
-              </li>
-              <li>
-                <button
                   onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
                   className="hover:text-primary transition-colors"
                   data-testid="link-footer-contact"
@@ -63,22 +54,12 @@ export default function Footer() {
             <h4 className="font-bold mb-4">Get in Touch</h4>
             <div className="space-y-3">
               <a
-                href="mailto:hello@localedgesolutions.ai"
+                href="mailto:ben@localedgesolutions.ai"
                 className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
                 data-testid="link-email"
               >
                 <Mail className="w-5 h-5" />
-                <span>hello@localedgesolutions.ai</span>
-              </a>
-              <a
-                href="#"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
-                data-testid="link-linkedin"
-              >
-                <Linkedin className="w-5 h-5" />
-                <span>Follow us on LinkedIn</span>
+                <span>ben@localedgesolutions.ai</span>
               </a>
             </div>
           </div>

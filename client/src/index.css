@@ -179,17 +179,17 @@
 .hero__grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: clamp(2rem, 4vw, 3.5rem);
-  align-items: center;
+  gap: clamp(2rem, 4vw, 3rem);
 }
 @media (min-width: 64rem) {
-  .hero__grid { grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); }
+  .hero__grid { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); align-items: start; }
+  .hero__copy { padding-top: 3.5rem; }
 }
 .hero__title {
   font-family: var(--font-display);
   font-stretch: 112%;
   font-weight: 760;
-  font-size: clamp(2.5rem, 1.4rem + 4.6vw, 5.25rem);
+  font-size: clamp(2.5rem, 1.4rem + 4.6vw, 5rem);
   line-height: 0.98;
   letter-spacing: -0.025em;
   margin: 0;
@@ -311,7 +311,7 @@
 .handoff__result dl { margin: 0; }
 .handoff__result dl div {
   display: grid;
-  grid-template-columns: 7.5rem minmax(0, 1fr);
+  grid-template-columns: 6.25rem minmax(0, 1fr);
   gap: 0.75rem;
   padding: 0.55rem 0;
   border-top: 1px solid var(--line);

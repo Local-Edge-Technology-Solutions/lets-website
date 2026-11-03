@@ -24,7 +24,7 @@ export default function Hero() {
   return (
     <section className="hero" aria-labelledby="hero-title">
       <div className="wrap hero__grid">
-        <div>
+        <div className="hero__copy">
           <h1 id="hero-title" className="hero__title">
             <span>Tell us what you need.</span> <span>We'll build it.</span>
           </h1>

@@ -39,7 +39,7 @@ export default function Hero() {
 
         <figure className="handoff" aria-labelledby="handoff-caption">
           <figcaption id="handoff-caption" className="handoff__caption">
-            An example of what we could build, with made-up details.
+            Example with made-up details.
           </figcaption>
 
           {handoffs.map((h, i) => (
@@ -52,7 +52,6 @@ export default function Hero() {
               hidden={i !== selected}
             >
               <blockquote className="handoff__ask">
-                <span className="handoff__who">A business owner tells us</span>
                 <q>{h.ask}</q>
               </blockquote>
 

@@ -1,86 +1,109 @@
-import { Button } from '@/components/ui/button';
-import { ArrowRight } from 'lucide-react';
-import heroPortalImg from '@assets/hero-portal_1762803470298.png';
+import { useRef, useState } from 'react';
+import benHeadshotImg from '@assets/ben-headshot_1762803470298.jpg';
+import { handoffs } from '@/content';
 
 export default function Hero() {
-  const scrollToContact = () => {
-    const element = document.getElementById('contact');
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
+  const [selected, setSelected] = useState(0);
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  // W3C tabs pattern: arrows move between tabs, Home/End jump to the ends.
+  const onTabKeyDown = (e: React.KeyboardEvent, index: number) => {
+    const last = handoffs.length - 1;
+    const next =
+      e.key === 'ArrowRight' ? (index === last ? 0 : index + 1)
+      : e.key === 'ArrowLeft' ? (index === 0 ? last : index - 1)
+      : e.key === 'Home' ? 0
+      : e.key === 'End' ? last
+      : null;
+    if (next === null) return;
+    e.preventDefault();
+    setSelected(next);
+    tabRefs.current[next]?.focus();
   };
 
   return (
-    <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Parallax Background */}
-      <div className="absolute inset-[-10%] z-0">
-        <img
-          src={heroPortalImg}
-          alt=""
-          className="w-full h-full object-cover opacity-70 animate-pulse"
-          style={{ animationDuration: '8s' }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-br from-background/75 via-background/40 to-background/75" />
-      </div>
-
-      {/* Simplified Particles - Only 3 for subtle effect */}
-      <div className="absolute inset-0 overflow-hidden z-[1] hidden md:block">
-        {[0, 1, 2].map((i) => (
-          <div
-            key={i}
-            className="absolute w-1 h-1 bg-primary/60 rounded-full"
-            style={{
-              left: `${20 + i * 30}%`,
-              animation: `float ${20 + i * 5}s infinite`,
-              animationDelay: `${i * 2}s`,
-            }}
-          />
-        ))}
-      </div>
-
-      <div className="relative z-[2] max-w-7xl mx-auto px-8 py-24 md:py-32 text-center">
-        <div className="space-y-8">
-          <h1 className="text-4xl md:text-7xl font-black leading-tight">
-            Tell us what you need.
-            <br />
-            <span className="text-gradient">We'll build it.</span>
+    <section className="hero" aria-labelledby="hero-title">
+      <div className="wrap hero__grid">
+        <div>
+          <h1 id="hero-title" className="hero__title">
+            <span>Tell us what you need.</span> <span>We'll build it.</span>
           </h1>
-
-          <p className="text-lg md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Custom automations and AI tools for small businesses.
+          <p className="hero__lede">We build custom automations and AI tools for small businesses.</p>
+          <p className="hero__people">
+            We're Ben and Zeke, near Nashville. Work with us anywhere by phone or video.
           </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button
-              size="lg"
-              onClick={scrollToContact}
-              className="glow-primary group"
-              data-testid="button-hero-primary"
-            >
-              Tell us what you need
-              <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" />
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              onClick={() => document.getElementById('solutions')?.scrollIntoView({ behavior: 'smooth' })}
-              className="bg-background/50 backdrop-blur-lg border-primary/30"
-              data-testid="button-hero-secondary"
-            >
-              Learn More
-            </Button>
+          <div className="hero__actions">
+            <a className="button" href="#contact">Tell us what you need</a>
           </div>
         </div>
-      </div>
 
-      <style>{`
-        @keyframes float {
-          0% { transform: translateY(100vh) translateX(0); opacity: 0; }
-          10% { opacity: 1; }
-          90% { opacity: 1; }
-          100% { transform: translateY(-100px) translateX(100px); opacity: 0; }
-        }
-      `}</style>
+        <figure className="handoff" aria-labelledby="handoff-caption">
+          <figcaption id="handoff-caption" className="handoff__caption">
+            An example of what we could build, with made-up details.
+          </figcaption>
+
+          {handoffs.map((h, i) => (
+            <div
+              key={h.id}
+              id={`handoff-panel-${h.id}`}
+              className="handoff__panel"
+              role="tabpanel"
+              aria-labelledby={`handoff-tab-${h.id}`}
+              hidden={i !== selected}
+            >
+              <blockquote className="handoff__ask">
+                <span className="handoff__who">A business owner tells us</span>
+                <q>{h.ask}</q>
+              </blockquote>
+
+              <div className="handoff__route">
+                <div className="handoff__team">
+                  <span className="handoff__faces" aria-hidden="true">
+                    <img className="face" src={benHeadshotImg} alt="" width={52} height={52} />
+                    <span className="face face--missing">Z</span>
+                  </span>
+                  <p className="handoff__team-text">
+                    Ben and Zeke build it
+                    <span>and check it with you before it goes live</span>
+                  </p>
+                </div>
+              </div>
+
+              <div className="handoff__result">
+                <h3>{h.resultTitle}</h3>
+                <dl>
+                  {h.rows.map((row) => (
+                    <div key={row.label}>
+                      <dt>{row.label}</dt>
+                      <dd>{row.value}</dd>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            </div>
+          ))}
+
+          <div className="handoff__tabs js-only" role="tablist" aria-label="Examples">
+            {handoffs.map((h, i) => (
+              <button
+                key={h.id}
+                ref={(el) => (tabRefs.current[i] = el)}
+                id={`handoff-tab-${h.id}`}
+                type="button"
+                role="tab"
+                className="handoff__tab"
+                aria-selected={i === selected}
+                aria-controls={`handoff-panel-${h.id}`}
+                tabIndex={i === selected ? 0 : -1}
+                onClick={() => setSelected(i)}
+                onKeyDown={(e) => onTabKeyDown(e, i)}
+              >
+                {h.tab}
+              </button>
+            ))}
+          </div>
+        </figure>
+      </div>
     </section>
   );
 }

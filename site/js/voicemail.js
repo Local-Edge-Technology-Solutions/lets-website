@@ -5,22 +5,22 @@ import { gsap, SplitText, calm, $, $$ } from "./env.js";
 
 const SAMPLES = [
   {
-    when: "Tue 7:12 a.m.", length: "0:21",
-    html: "“Hi, this is <mark data-field=\"name\">Dana Reyes</mark> over in <mark data-field=\"town\">Smyrna</mark>. Our <mark data-field=\"problem\">heat went out</mark> last night and it’s about fifty degrees in here, so <mark data-field=\"urgency\">as soon as you can</mark>, please. Call me back at <mark data-field=\"phone\">615-555-0142</mark>. Thanks.”",
-    row: { name: "Dana Reyes", phone: "(615) 555-0142", problem: "No heat", urgency: "Today", town: "Smyrna" },
+    when: "Tue 8:12 a.m.", length: "0:20",
+    html: "“Hi, this is <mark data-field=\"name\">Dana Reyes</mark> in <mark data-field=\"town\">Smyrna</mark>. Your cupcakes were a hit at our office party, so could you <mark data-field=\"need\">make Friday’s order three dozen instead of one</mark>? If you can call me <mark data-field=\"urgency\">today</mark>, that’d be great. I’m at <mark data-field=\"phone\">615-555-0142</mark>. Thanks!”",
+    row: { name: "Dana Reyes", phone: "(615) 555-0142", need: "Order up to 3 dozen", urgency: "Today", town: "Smyrna" },
   },
   {
-    when: "Tue 7:40 a.m.", length: "0:17",
-    html: "“Hey, it’s <mark data-field=\"name\">Keisha Moore</mark>. I need to <mark data-field=\"problem\">move my Thursday color appointment</mark>, any day <mark data-field=\"urgency\">next week</mark> works. I’m in <mark data-field=\"town\">Franklin</mark>. My number’s <mark data-field=\"phone\">629-555-0187</mark>. No rush.”",
-    row: { name: "Keisha Moore", phone: "(629) 555-0187", problem: "Move Thursday appointment", urgency: "Next week", town: "Franklin" },
+    when: "Tue 8:40 a.m.", length: "0:17",
+    html: "“Hey, it’s <mark data-field=\"name\">Keisha Moore</mark>. I loved my color last time and I’m ready to <mark data-field=\"need\">book another cut and color</mark>, any day <mark data-field=\"urgency\">next week</mark>. I’m in <mark data-field=\"town\">Franklin</mark>, and my number’s <mark data-field=\"phone\">629-555-0187</mark>.”",
+    row: { name: "Keisha Moore", phone: "(629) 555-0187", need: "Book cut and color", urgency: "Next week", town: "Franklin" },
   },
   {
-    when: "Tue 8:05 a.m.", length: "0:19",
-    html: "“Good morning, <mark data-field=\"name\">Walt Pruitt</mark> from <mark data-field=\"town\">Lebanon</mark>. I got a <mark data-field=\"problem\">letter from the state about my sales tax</mark> and I don’t understand it. It’s <mark data-field=\"urgency\">due Friday</mark>. You can reach me at <mark data-field=\"phone\">615-555-0119</mark>.”",
-    row: { name: "Walt Pruitt", phone: "(615) 555-0119", problem: "Sales tax letter", urgency: "By Friday", town: "Lebanon" },
+    when: "Tue 9:05 a.m.", length: "0:19",
+    html: "“Good morning, <mark data-field=\"name\">Walt Pruitt</mark> from <mark data-field=\"town\">Lebanon</mark>. Jo at the hardware store recommended you. I’d like <mark data-field=\"need\">someone to do the monthly books for my shop</mark>. Could we talk <mark data-field=\"urgency\">this week</mark>? I’m at <mark data-field=\"phone\">615-555-0119</mark>.”",
+    row: { name: "Walt Pruitt", phone: "(615) 555-0119", need: "Monthly books, referral", urgency: "This week", town: "Lebanon" },
   },
 ];
-const FIELDS = ["name", "phone", "problem", "urgency", "town"];
+const FIELDS = ["name", "phone", "need", "urgency", "town"];
 const BARS = 48;
 
 export function initVoicemail() {
@@ -87,7 +87,7 @@ export function initVoicemail() {
     if (hadFocus) next.focus();
   };
   const announce = (sample, i) => {
-    status.textContent = `Sample ${i + 1} of ${SAMPLES.length} finished: ${sample.row.name}, ${sample.row.problem}, ${sample.row.urgency}, added to the call-back list.`;
+    status.textContent = `Sample ${i + 1} of ${SAMPLES.length} finished: ${sample.row.name}, ${sample.row.need}, ${sample.row.urgency}, added to the call-back list.`;
   };
   const prepare = (sample) => {
     when.textContent = sample.when;

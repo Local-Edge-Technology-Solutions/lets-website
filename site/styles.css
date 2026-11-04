@@ -154,7 +154,7 @@ p { text-wrap: pretty; }
 .chip { margin: 0; }
 .chip picture, .chip img { width: 100%; }
 .chip--press { grid-column: 8 / span 5; grid-row: 1 / 3; align-self: center; transform: rotate(3deg); }
-.chip--press img { aspect-ratio: 4 / 5; object-fit: cover; background: var(--photo-ground); }
+.chip--press img { aspect-ratio: 4 / 5; object-fit: cover; object-position: 72% 30%; background: var(--photo-ground); }
 .chip figcaption { margin-top: 0.75rem; font-size: var(--step-small); font-weight: 700; }
 
 /* the to-do list: an interface fragment, so it keeps its own small rules */
@@ -194,10 +194,10 @@ p { text-wrap: pretty; }
 [data-ui].vm-list .vm-list__top b { font-weight: 900; font-size: var(--step-body); line-height: 1.15; }
 [data-ui].vm-list .vm-list__rows { display: grid; gap: 8px; min-height: 6.5rem; }
 [data-ui].vm-list .vm-list__rows:empty::before { content: "Waiting for the first call."; color: var(--muted); font-weight: 700; padding: 0.8rem 0; }
-[data-ui] .cb { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "name urgency" "problem phone" "town phone"; gap: 0.1rem 1rem; background: var(--surface); padding: 0.75rem 0.85rem; line-height: 1.3; }
+[data-ui] .cb { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "name urgency" "need phone" "town phone"; gap: 0.1rem 1rem; background: var(--surface); padding: 0.75rem 0.85rem; line-height: 1.3; }
 [data-ui] .cb__name { grid-area: name; font-weight: 900; font-size: 1.0625rem; }
 [data-ui] .cb__urgency { grid-area: urgency; justify-self: end; align-self: start; font-weight: 900; font-size: 0.875rem; background: var(--teal); padding: 0.1rem 0.45rem; }
-[data-ui] .cb__problem { grid-area: problem; font-weight: 700; }
+[data-ui] .cb__need { grid-area: need; font-weight: 700; }
 [data-ui] .cb__town { grid-area: town; color: var(--muted); font-weight: 700; font-size: 0.9375rem; }
 [data-ui] .cb__phone { grid-area: phone; justify-self: end; align-self: end; font-variant-numeric: tabular-nums; font-weight: 700; }
 [data-ui].vm-list .vm-list__foot { margin-top: 0.9rem; font-weight: 700; font-size: 0.9375rem; }
@@ -224,6 +224,8 @@ p { text-wrap: pretty; }
 .slip:nth-child(5) { transform: rotate(1.2deg); transform-origin: 50% 100%; }
 [data-ui].slip .slip__top { display: flex; justify-content: space-between; gap: 0.5rem; align-items: baseline; }
 [data-ui].slip .slip__top b { font-weight: 900; font-size: 1rem; line-height: 1.15; }
+/* In the narrow slips the label sits above the title, so the title keeps the full width. */
+.slips [data-ui].slip .slip__top { flex-direction: column-reverse; align-items: flex-start; gap: 0.4rem; }
 [data-ui].slip .slip__rule { color: var(--muted); overflow: clip; white-space: nowrap; margin: 0.35rem 0; letter-spacing: 0.05em; }
 [data-ui].slip dl div { display: flex; justify-content: space-between; gap: 0.75rem; padding: 0.18rem 0; }
 [data-ui].slip dd { font-variant-numeric: tabular-nums; font-weight: 700; text-align: right; flex: none; }
@@ -358,8 +360,6 @@ p { text-wrap: pretty; }
 .footer__grid { margin-top: 3.5rem; row-gap: 2rem; }
 .footer__links { grid-column: 1 / span 7; display: grid; grid-template-columns: repeat(4, max-content); gap: 0.75rem 3rem; font-weight: 700; }
 .footer__contact { grid-column: 8 / span 5; display: grid; gap: 0.6rem; }
-.credits { margin-top: 3rem; font-size: var(--step-small); line-height: 1.55; max-width: 60ch; color: var(--soft-on-dark); }
-.credits a { color: var(--white); }
 .footer__last { margin-top: 2.5rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; font-weight: 700; }
 
 /* ---------- the shatter overlay: decorative letters, outside every clipped box ---------- */

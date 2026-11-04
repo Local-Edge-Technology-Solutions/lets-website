@@ -15,12 +15,13 @@
 # Security headers on every page. The site loads only its own files: one script bundle, one stylesheet,
 # fonts and images, plus the one-line inline script in index.html that marks JavaScript as on (allowed by
 # its hash below; if that line changes, recompute the hash or the page falls back to its no-JS layout).
-# style-src keeps 'unsafe-inline' because the HTML sets CSS variables in style attributes. The lead form
-# posts to this same site (Netlify Forms), so form-action and connect-src stay 'self'.
+# Inline style attributes are allowed (the HTML sets CSS variables in them) but inline <style> blocks are
+# not. Everything not listed is blocked. The lead form posts to this same site (Netlify Forms), so
+# form-action and connect-src stay 'self'.
 [[headers]]
   for = "/*"
   [headers.values]
-    Content-Security-Policy = "default-src 'self'; script-src 'self' 'sha256-Du+OJKJSbdUgz5nrHeWWINvez6XKDDU/tyj/5c2uvwo='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'self'; object-src 'none'"
+    Content-Security-Policy = "default-src 'none'; script-src 'self' 'sha256-Du+OJKJSbdUgz5nrHeWWINvez6XKDDU/tyj/5c2uvwo='; style-src 'self'; style-src-attr 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'; object-src 'none'; worker-src 'none'"
     X-Content-Type-Options = "nosniff"
     X-Frame-Options = "DENY"
     Referrer-Policy = "strict-origin-when-cross-origin"

@@ -7,7 +7,7 @@ const SAMPLES = [
   {
     when: "Tue 8:12 a.m.", length: "0:20",
     html: "“Hi, this is <mark data-field=\"name\">Dana Reyes</mark> in <mark data-field=\"town\">Smyrna</mark>. Your cupcakes were a hit at our office party, so could you <mark data-field=\"need\">make Friday’s order three dozen instead of one</mark>? If you can call me <mark data-field=\"urgency\">today</mark>, that’d be great. I’m at <mark data-field=\"phone\">615-555-0142</mark>. Thanks!”",
-    row: { name: "Dana Reyes", phone: "(615) 555-0142", need: "Order up to 3 dozen", urgency: "Today", town: "Smyrna" },
+    row: { name: "Dana Reyes", phone: "(615) 555-0142", need: "Change Friday’s order to 3 dozen", urgency: "Today", town: "Smyrna" },
   },
   {
     when: "Tue 8:40 a.m.", length: "0:17",

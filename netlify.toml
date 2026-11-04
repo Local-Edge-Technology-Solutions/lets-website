@@ -1,7 +1,14 @@
-# Netlify builds only the website (client/). The Express server in server/ was for Replit and is not used.
+# Netlify builds only the website: the static site in site/, built by Vite into dist/site.
+# The React app in client/ and the Express server in server/ are no longer built or used.
 [build]
-  command = "npx vite build"
-  publish = "dist/public"
+  command = "npm run build:site"
+  publish = "dist/site"
 
 [build.environment]
   NODE_VERSION = "20"
+
+# The thank-you page after the lead form is not for search results.
+[[headers]]
+  for = "/thanks/*"
+  [headers.values]
+    X-Robots-Tag = "noindex"

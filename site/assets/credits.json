@@ -1,0 +1,65 @@
+[
+ {
+  "file": "src-images/owner-desk.jpg",
+  "used_as": "hero",
+  "page": "https://unsplash.com/photos/woman-in-yellow-long-sleeve-shirt-wearing-white-cowboy-hat-yhpw4-3xX7I",
+  "license": "Unsplash License",
+  "licenseUrl": "https://unsplash.com/license",
+  "creditRequired": false,
+  "licenseCheckedOnPage": "2026-11-04"
+ },
+ {
+  "file": "src-images/tablet-till.jpg",
+  "used_as": "intro",
+  "page": "https://unsplash.com/photos/person-in-black-blazer-holding-black-ipad-w0H4K148PGw",
+  "license": "Unsplash License",
+  "licenseUrl": "https://unsplash.com/license",
+  "creditRequired": false,
+  "licenseCheckedOnPage": "2026-11-04"
+ },
+ {
+  "file": "src-images/cafe-counter.jpg",
+  "used_as": "showcase",
+  "page": "https://unsplash.com/photos/brown-wooden-framed-menu-board-gHrgeeCCkYA",
+  "license": "Unsplash License",
+  "licenseUrl": "https://unsplash.com/license",
+  "creditRequired": false,
+  "licenseCheckedOnPage": "2026-11-04"
+ },
+ {
+  "file": "src-images/printers-alley.jpg",
+  "used_as": "alley",
+  "page": "https://unsplash.com/photos/people-walking-on-sidewalk-near-store-during-night-time-aeYQSnN4dOo",
+  "license": "Unsplash License",
+  "licenseUrl": "https://unsplash.com/license",
+  "creditRequired": false,
+  "licenseCheckedOnPage": "2026-11-04"
+ },
+ {
+  "file": "src-images/boutique.jpg",
+  "used_as": "boutique",
+  "page": "https://unsplash.com/photos/assorted-colored-clothes-on-rack-near-brown-wooden-table-7KkDiSs5UdQ",
+  "license": "Unsplash License",
+  "licenseUrl": "https://unsplash.com/license",
+  "creditRequired": false,
+  "licenseCheckedOnPage": "2026-11-04"
+ },
+ {
+  "file": "src-images/salon.jpg",
+  "used_as": "salon",
+  "page": "https://unsplash.com/photos/a-hair-salon-interior-with-hair-products-and-clients-5xFEY6ZEE8g",
+  "license": "Unsplash License",
+  "licenseUrl": "https://unsplash.com/license",
+  "creditRequired": false,
+  "licenseCheckedOnPage": "2026-11-04"
+ },
+ {
+  "file": "src-images/bakery.jpg",
+  "used_as": "bakery",
+  "page": "https://unsplash.com/photos/brown-bread-on-white-ceramic-plate-dll9fcu8NLk",
+  "license": "Unsplash License",
+  "licenseUrl": "https://unsplash.com/license",
+  "creditRequired": false,
+  "licenseCheckedOnPage": "2026-11-04"
+ }
+]

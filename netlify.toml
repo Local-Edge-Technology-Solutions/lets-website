@@ -1,5 +1,4 @@
-# Netlify builds only the website: the static site in site/, built by Vite into dist/site.
-# The React app in client/ and the Express server in server/ are no longer built or used.
+# Netlify builds the website: the static site in site/, built by Vite into dist/site.
 [build]
   command = "npm run build:site"
   publish = "dist/site"
@@ -12,3 +11,17 @@
   for = "/thanks/*"
   [headers.values]
     X-Robots-Tag = "noindex"
+
+# Security headers on every page. The site loads only its own files: one script bundle, one stylesheet,
+# fonts and images, plus the one-line inline script in index.html that marks JavaScript as on (allowed by
+# its hash below; if that line changes, recompute the hash or the page falls back to its no-JS layout).
+# style-src keeps 'unsafe-inline' because the HTML sets CSS variables in style attributes. The lead form
+# posts to this same site (Netlify Forms), so form-action and connect-src stay 'self'.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'sha256-Du+OJKJSbdUgz5nrHeWWINvez6XKDDU/tyj/5c2uvwo='; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; base-uri 'self'; object-src 'none'"
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "DENY"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=(), payment=(), usb=()"

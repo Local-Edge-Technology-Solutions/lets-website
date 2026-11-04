@@ -15,7 +15,7 @@
 <meta property="og:image" content="https://localedgesolutions.ai/og-image.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="LET’S AUTOMATE THE BUSYWORK in heavy black capitals on teal, beside a photograph of an old cash register buried in paper slips.">
+<meta property="og:image:alt" content="LET’S AUTOMATE THE BUSYWORK in heavy black capitals on teal, beside a photograph of paperwork piled on an old office desk.">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-32.png" type="image/png" sizes="32x32">
@@ -78,18 +78,18 @@
 
   <div class="hero__body grid">
     <div class="hero__copy">
-      <p class="lead" data-load style="--d:420ms">We find the busywork slowing your business down, then build the automations and AI tools that take it off your plate.</p>
+      <p class="lead" data-load style="--d:420ms">Plumbers, salons, bookkeepers, shops, offices: we find the busywork slowing you down and build the automations and AI tools that take it off your plate.</p>
       <a class="button" data-load style="--d:500ms" href="#contact">Let’s talk</a>
+      <p class="hero__fact" data-load style="--d:580ms">Two people near Nashville, Tennessee. We work with you anywhere, by phone, Zoom, Teams or Meet.</p>
     </div>
     <figure class="hero__picture" data-open>
       <picture>
-        <source type="image/avif" sizes="(max-width: 640px) 64vw, (max-width: 1000px) 42vw, 33vw" srcset="./assets/img/till-480.avif 480w, ./assets/img/till-720.avif 720w, ./assets/img/till-960.avif 960w">
-        <img src="./assets/img/till-720.webp" sizes="(max-width: 640px) 64vw, (max-width: 1000px) 42vw, 33vw" srcset="./assets/img/till-480.webp 480w, ./assets/img/till-720.webp 720w, ./assets/img/till-960.webp 960w"
-             width="1400" height="1774" fetchpriority="high" decoding="async"
-             alt="An antique brass cash register on a wooden counter, with paper slips stuffed on top of it and shelves of stock behind">
+        <source type="image/avif" sizes="(max-width: 640px) 64vw, (max-width: 1000px) 42vw, 33vw" srcset="./assets/img/pile-480.avif 480w, ./assets/img/pile-720.avif 720w, ./assets/img/pile-960.avif 960w">
+        <img src="./assets/img/pile-720.webp" sizes="(max-width: 640px) 64vw, (max-width: 1000px) 42vw, 33vw" srcset="./assets/img/pile-480.webp 480w, ./assets/img/pile-720.webp 720w, ./assets/img/pile-960.webp 960w"
+             width="1320" height="1748" fetchpriority="high" decoding="async"
+             alt="Stacks of paper, catalogues and receipts piled on the shelf and desk of an old hardware store office, with a ledger lying open">
       </picture>
     </figure>
-    <p class="hero__fact">Two people near Nashville, Tennessee. We work with you anywhere, by phone, Zoom, Teams or Meet.</p>
   </div>
 </header>
 
@@ -161,10 +161,10 @@
 
 <section class="showcase" id="examples" aria-labelledby="examples-title">
   <picture>
-    <source type="image/avif" sizes="100vw" srcset="./assets/img/desk-720.avif 720w, ./assets/img/desk-1200.avif 1200w, ./assets/img/desk-1600.avif 1600w">
-    <img class="showcase__photo" src="./assets/img/desk-1200.webp" sizes="100vw" srcset="./assets/img/desk-720.webp 720w, ./assets/img/desk-1200.webp 1200w, ./assets/img/desk-1600.webp 1600w"
-         width="2400" height="2998" loading="lazy" decoding="async"
-         alt="A wooden desk in an old hardware store buried under stacks of paper, catalogues and receipts, with a wall clock above it">
+    <source type="image/avif" sizes="100vw" srcset="./assets/img/till-720.avif 720w, ./assets/img/till-1200.avif 1200w">
+    <img class="showcase__photo" src="./assets/img/till-1200.webp" sizes="100vw" srcset="./assets/img/till-720.webp 720w, ./assets/img/till-1200.webp 1200w"
+         width="1400" height="1774" loading="lazy" decoding="async"
+         alt="An antique brass cash register in an old hardware store, with paper slips stuffed on top of it and shelves of stock behind">
   </picture>
   <div class="showcase__copy">
     <h2 class="head split-target" data-split id="examples-title">What we build</h2>
@@ -209,16 +209,17 @@
       <p class="calc__how">Those three illustrative chores come to 145 minutes a week. 145 × 52 ÷ 60 is about 126 hours a year.</p>
     </div>
     <fieldset class="chores" data-calc-live hidden>
-      <legend class="chores__legend">Your chores, in minutes a week. The minutes shown are illustrative; change them to yours.</legend>
+      <legend class="chores__legend">Your chores, in minutes a week, from 0 to 2,400 each. The minutes shown are illustrative; change them to yours.</legend>
+      <p class="chores__error" id="calc-error" role="alert" data-calc-error></p>
       <ul class="chores__list">
-        <li class="chore"><label class="chore__pick"><input type="checkbox" value="Returning missed calls and voicemails" checked><span>Returning missed calls and voicemails</span></label><label class="chore__mins"><input type="number" inputmode="numeric" min="0" max="2400" step="5" value="60" aria-label="Minutes a week returning missed calls and voicemails"><span aria-hidden="true">min a week</span></label></li>
-        <li class="chore"><label class="chore__pick"><input type="checkbox" value="Chasing unpaid invoices" checked><span>Chasing unpaid invoices</span></label><label class="chore__mins"><input type="number" inputmode="numeric" min="0" max="2400" step="5" value="45" aria-label="Minutes a week chasing unpaid invoices"><span aria-hidden="true">min a week</span></label></li>
-        <li class="chore"><label class="chore__pick"><input type="checkbox" value="Sending appointment reminders" checked><span>Sending appointment reminders</span></label><label class="chore__mins"><input type="number" inputmode="numeric" min="0" max="2400" step="5" value="40" aria-label="Minutes a week sending appointment reminders"><span aria-hidden="true">min a week</span></label></li>
-        <li class="chore"><label class="chore__pick"><input type="checkbox" value="Typing the same details into two systems"><span>Typing the same details into two systems</span></label><label class="chore__mins"><input type="number" inputmode="numeric" min="0" max="2400" step="5" value="90" aria-label="Minutes a week typing the same details into two systems"><span aria-hidden="true">min a week</span></label></li>
-        <li class="chore"><label class="chore__pick"><input type="checkbox" value="Answering the same customer questions"><span>Answering the same customer questions</span></label><label class="chore__mins"><input type="number" inputmode="numeric" min="0" max="2400" step="5" value="60" aria-label="Minutes a week answering the same customer questions"><span aria-hidden="true">min a week</span></label></li>
-        <li class="chore"><label class="chore__pick"><input type="checkbox" value="Matching receipts to the bank"><span>Matching receipts to the bank</span></label><label class="chore__mins"><input type="number" inputmode="numeric" min="0" max="2400" step="5" value="45" aria-label="Minutes a week matching receipts to the bank"><span aria-hidden="true">min a week</span></label></li>
-        <li class="chore"><label class="chore__pick"><input type="checkbox" value="Building the weekly schedule"><span>Building the weekly schedule</span></label><label class="chore__mins"><input type="number" inputmode="numeric" min="0" max="2400" step="5" value="60" aria-label="Minutes a week building the weekly schedule"><span aria-hidden="true">min a week</span></label></li>
-        <li class="chore"><label class="chore__pick"><input type="checkbox" value="Pulling numbers together for a report"><span>Pulling numbers together for a report</span></label><label class="chore__mins"><input type="number" inputmode="numeric" min="0" max="2400" step="5" value="45" aria-label="Minutes a week pulling numbers together for a report"><span aria-hidden="true">min a week</span></label></li>
+        <li class="chore"><label class="chore__pick"><input type="checkbox" value="Returning missed calls and voicemails" checked><span>Returning missed calls and voicemails</span></label><label class="chore__mins"><input type="number" inputmode="numeric" min="0" max="2400" step="1" value="60" aria-label="Minutes a week returning missed calls and voicemails"><span aria-hidden="true">min a week</span></label></li>
+        <li class="chore"><label class="chore__pick"><input type="checkbox" value="Chasing unpaid invoices" checked><span>Chasing unpaid invoices</span></label><label class="chore__mins"><input type="number" inputmode="numeric" min="0" max="2400" step="1" value="45" aria-label="Minutes a week chasing unpaid invoices"><span aria-hidden="true">min a week</span></label></li>
+        <li class="chore"><label class="chore__pick"><input type="checkbox" value="Sending appointment reminders" checked><span>Sending appointment reminders</span></label><label class="chore__mins"><input type="number" inputmode="numeric" min="0" max="2400" step="1" value="40" aria-label="Minutes a week sending appointment reminders"><span aria-hidden="true">min a week</span></label></li>
+        <li class="chore"><label class="chore__pick"><input type="checkbox" value="Typing the same details into two systems"><span>Typing the same details into two systems</span></label><label class="chore__mins"><input type="number" inputmode="numeric" min="0" max="2400" step="1" value="90" aria-label="Minutes a week typing the same details into two systems"><span aria-hidden="true">min a week</span></label></li>
+        <li class="chore"><label class="chore__pick"><input type="checkbox" value="Answering the same customer questions"><span>Answering the same customer questions</span></label><label class="chore__mins"><input type="number" inputmode="numeric" min="0" max="2400" step="1" value="60" aria-label="Minutes a week answering the same customer questions"><span aria-hidden="true">min a week</span></label></li>
+        <li class="chore"><label class="chore__pick"><input type="checkbox" value="Matching receipts to the bank"><span>Matching receipts to the bank</span></label><label class="chore__mins"><input type="number" inputmode="numeric" min="0" max="2400" step="1" value="45" aria-label="Minutes a week matching receipts to the bank"><span aria-hidden="true">min a week</span></label></li>
+        <li class="chore"><label class="chore__pick"><input type="checkbox" value="Building the weekly schedule"><span>Building the weekly schedule</span></label><label class="chore__mins"><input type="number" inputmode="numeric" min="0" max="2400" step="1" value="60" aria-label="Minutes a week building the weekly schedule"><span aria-hidden="true">min a week</span></label></li>
+        <li class="chore"><label class="chore__pick"><input type="checkbox" value="Pulling numbers together for a report"><span>Pulling numbers together for a report</span></label><label class="chore__mins"><input type="number" inputmode="numeric" min="0" max="2400" step="1" value="45" aria-label="Minutes a week pulling numbers together for a report"><span aria-hidden="true">min a week</span></label></li>
       </ul>
     </fieldset>
     <div class="calc__result field-black" data-ui aria-labelledby="calc-result-label">
@@ -245,7 +246,7 @@
       </div>
       <h3 class="person__name">Ben</h3>
       <p class="person__role">Advertising, twenty years</p>
-      <p class="person__text">Leads AI work at a Nashville ad agency. Ben makes sure what we build is plain enough that your whole team actually uses it.</p>
+      <p class="person__text">Leads AI work at a Nashville ad agency. Ben focuses on making what we build clear and easy for your team to use.</p>
     </article>
     <article class="person person--zeke">
       <div class="person__card field-teal" aria-hidden="true">

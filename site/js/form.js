@@ -1,5 +1,6 @@
 // The lead form. Without script it posts to Netlify Forms and lands on /thanks/. With script it sends in the
-// background, one send at a time, and says plainly what happened. A failed send never clears what was typed.
+// background, one send at a time, and says plainly what happened. A failed or unconfirmed send never clears what
+// was typed, and a success clears only what was actually sent.
 import { $ } from "./env.js";
 
 const FALLBACK = "ben@localedgesolutions.ai";
@@ -36,16 +37,20 @@ export function initForm() {
     submit.textContent = "Sending…";
     tell("Sending your message…");
     try {
-      const body = new URLSearchParams(new FormData(form)).toString();
-      const res = await fetch("/", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body });
+      const sent = new URLSearchParams(new FormData(form)).toString();
+      const res = await fetch("/", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: sent });
       if (!res.ok) throw Object.assign(new Error(`Form send failed: ${res.status}`), { status: res.status });
-      form.reset();
-      tell("Thanks. Your message is on its way to Ben and Zeke.", { ok: true });
+      // Only clear the form if nothing was typed while it was sending; newer edits are never thrown away.
+      if (new URLSearchParams(new FormData(form)).toString() === sent) {
+        form.reset();
+        tell("Thanks. Your message is on its way to Ben and Zeke.", { ok: true });
+      } else {
+        tell("Thanks. Your message is on its way to Ben and Zeke. The changes you made while it was sending haven’t been sent; press Let’s talk again to send them.", { ok: true });
+      }
     } catch (err) {
       const status = err && err.status;
-      if (status >= 400 && status < 500) tell(`The form service turned that message down (error ${status}), so nothing was sent. Your message is still here.`, { mail: true });
-      else if (status >= 500) tell(`The form service had a problem on its side (error ${status}), so nothing was sent. Your message is still here; try again in a minute.`, { mail: true });
-      else tell("The message couldn’t reach the form service, so nothing was sent. Your message is still here; check your connection and try again.", { mail: true });
+      const code = status ? ` (error ${status})` : "";
+      tell(`We couldn’t confirm receipt. Your message is still here.${code ? ` The form service answered${code}.` : ""}`, { mail: true });
     } finally {
       sending = false;
       submit.removeAttribute("aria-disabled");

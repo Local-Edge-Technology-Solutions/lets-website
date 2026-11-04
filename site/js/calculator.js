@@ -11,6 +11,10 @@ function odometer(el) {
   let roll = null;
   const digits = (v) => [...v].filter((c) => /\d/.test(c)).map(Number);
   return {
+    /** Puts the current figure back after something else was shown in its place. */
+    show() { roll?.kill(); el.textContent = text; },
+    /** Shows a dash instead of a figure while the inputs are wrong. */
+    blank() { roll?.kill(); roll = null; el.textContent = "–"; },
     set(n) {
       const next = fmt.format(n);
       if (next === text) return;
@@ -66,13 +70,39 @@ export function initCalculator() {
   }));
   const odo = odometer(hours);
 
-  const minutes = (c) => {
-    const v = Math.round(Number(c.mins.value));
-    return Number.isFinite(v) ? Math.min(2400, Math.max(0, v)) : 0;
+  const error = $("[data-calc-error]", root);
+  const result = $(".calc__result", root);
+  // Minutes must be a number from 0 to 2400 a week. Anything else is shown as wrong, not quietly clamped,
+  // and the total and the copy into the form wait until it is fixed.
+  const MAX = 2400;
+  const valid = (c) => {
+    const raw = c.mins.value.trim();
+    if (raw === "") return false; // also what a number field reports for letters
+    const v = Number(raw);
+    return Number.isFinite(v) && v >= 0 && v <= MAX;
   };
+  const minutes = (c) => Math.round(Number(c.mins.value));
   const ticked = () => chores.filter((c) => c.box.checked);
   const total = () => ticked().reduce((t, c) => t + minutes(c), 0);
+  let blocked = false;
   const update = () => {
+    const bad = chores.filter((c) => !valid(c));
+    chores.forEach((c) => {
+      if (valid(c)) { c.mins.removeAttribute("aria-invalid"); c.mins.removeAttribute("aria-describedby"); }
+      else { c.mins.setAttribute("aria-invalid", "true"); c.mins.setAttribute("aria-describedby", error.id); }
+    });
+    blocked = bad.length > 0;
+    result.classList.toggle("is-blocked", blocked);
+    if (blocked) {
+      error.textContent = `Minutes must be from 0 to ${fmt.format(MAX)} a week. Fix ${bad.map((c) => c.name.toLowerCase()).join(", ")} to see the total.`;
+      sum.textContent = "Waiting for the minutes to be fixed";
+      odo.blank();
+      send.setAttribute("aria-disabled", "true");
+      return;
+    }
+    error.textContent = "";
+    send.removeAttribute("aria-disabled");
+    if (hours.textContent === "–") odo.show();
     const m = total();
     odo.set(Math.round((m * 52) / 60));
     sum.textContent = `${fmt.format(m)} minutes a week × 52 ÷ 60`;
@@ -83,6 +113,7 @@ export function initCalculator() {
   // Carry the ticked chores into the form's message, after anything already written there. Never replace it.
   send.addEventListener("click", () => {
     const picked = ticked();
+    if (blocked) { status.textContent = `Fix the minutes first: each one must be from 0 to ${fmt.format(MAX)} a week.`; return; }
     if (!picked.length) { status.textContent = "Tick at least one chore first."; return; }
     const box = document.querySelector('[data-lead] textarea[name="challenge"]');
     if (!box) return;

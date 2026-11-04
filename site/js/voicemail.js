@@ -51,6 +51,15 @@ export function initVoicemail() {
   let busy = false;
   let run = null;
   let split = null;
+  let current = null; // { sample, i, row } while a run is in flight
+  const children = new Set(); // row and flying-copy timelines started from the run
+  const copies = new Set();
+  const track = (t) => {
+    children.add(t);
+    const done = t.eventCallback("onComplete");
+    t.eventCallback("onComplete", () => { children.delete(t); done?.(); });
+    return t;
+  };
 
   const rowFor = (sample, hidden) => {
     const li = document.createElement("li");
@@ -128,7 +137,7 @@ export function initVoicemail() {
     beats.reduce((t, b, k) => ((at[k] = (t * 3) / total), t + b), 0);
     gsap.set(chars, { autoAlpha: 0 });
 
-    const tl = gsap.timeline({ onInterrupt: () => split?.revert() });
+    const tl = gsap.timeline();
     run = tl;
     tl.to(chars, { autoAlpha: 1, duration: 0.01, ease: "none", stagger: (k) => at[k] }, 0);
     // The voice plays: bars light up left to right and twitch while it does.
@@ -139,9 +148,10 @@ export function initVoicemail() {
 
     // Each detail is picked out, then lifts off the text and flies into a new row on the list.
     const row = rowFor(sample, true);
+    current = { sample, i, row };
     tl.call(() => {
       list.append(row);
-      gsap.fromTo(row, { y: -16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.45, ease: "expo.out", clearProps: "transform,opacity,visibility" });
+      track(gsap.fromTo(row, { y: -16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.45, ease: "expo.out", clearProps: "transform,opacity,visibility" }));
     }, null, 3.25);
     FIELDS.forEach((f, k) => {
       const t = 3.45 + k * 0.32;
@@ -153,7 +163,7 @@ export function initVoicemail() {
         fly(mark, cell);
       }, null, t);
     });
-    tl.call(() => finish(sample, i), null, 3.45 + FIELDS.length * 0.32 + 0.75);
+    tl.call(() => { current = null; finish(sample, i); }, null, 3.45 + FIELDS.length * 0.32 + 0.75);
   };
 
   // A copy of the marked words travels from the transcript to its cell, shrinking to the cell's size.
@@ -168,8 +178,9 @@ export function initVoicemail() {
     const ms = getComputedStyle(mark);
     Object.assign(copy.style, { fontSize: ms.fontSize, lineHeight: `${from.height}px`, letterSpacing: ms.letterSpacing, left: `${from.left}px`, top: `${from.top}px` });
     document.body.append(copy);
+    copies.add(copy);
     const s = Math.min(1, parseFloat(getComputedStyle(cell).fontSize) / parseFloat(ms.fontSize));
-    gsap.timeline({ onComplete: () => copy.remove() })
+    track(gsap.timeline({ onComplete: () => { copy.remove(); copies.delete(copy); } }))
       .to(copy, { y: -14, duration: 0.16, ease: "power2.out" })
       .to(copy, { x: to.left - from.left, y: to.top - from.top, scale: s, duration: 0.55, ease: "power3.inOut" })
       .to(cell, { opacity: 1, duration: 0.2, ease: "none" }, "-=0.08")
@@ -184,6 +195,24 @@ export function initVoicemail() {
   controls.hidden = false;
   root.dataset.vmReady = "";
 
-  // If the visitor's motion preference changes mid-run, land the run at its end.
-  matchMedia("(prefers-reduced-motion: reduce)").addEventListener("change", () => { if (run) run.progress(1); });
+  // If reduced motion switches on mid-run: stop the run and everything it started, clear what was in flight,
+  // show the finished sample fully visible, and only then announce it.
+  matchMedia("(prefers-reduced-motion: reduce)").addEventListener("change", (e) => {
+    if (!e.matches || !run || !current) return;
+    const { sample, i, row } = current;
+    run.kill();
+    children.forEach((t) => t.kill());
+    children.clear();
+    copies.forEach((c) => c.remove());
+    copies.clear();
+    split?.revert();
+    split = null;
+    prepare(sample);
+    gsap.set(bars, { clearProps: "transform,backgroundColor" });
+    if (!row.isConnected) list.append(row);
+    gsap.set(row, { clearProps: "transform,opacity,visibility" });
+    $$("[data-cell]", row).forEach((c) => gsap.set(c, { clearProps: "opacity" }));
+    current = null;
+    finish(sample, i);
+  });
 }

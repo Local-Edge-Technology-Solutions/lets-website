@@ -1,5 +1,4 @@
 // Builds the static site in site/ (the black-and-teal Poster) into dist/site. Netlify publishes dist/site.
-// The old React app in client/ is no longer built; vite.config.ts still describes it.
 import { defineConfig, type Plugin } from "vite";
 import path from "node:path";
 
@@ -27,7 +26,7 @@ export default defineConfig({
   base: "/",
   appType: "mpa",
   publicDir: path.resolve(root, "public"),
-  // The repo's postcss.config.js runs Tailwind for the old React app; this site uses plain CSS.
+  // Plain CSS, no PostCSS: an empty config stops Vite looking for a postcss.config file in parent folders.
   css: { postcss: {} },
   plugins: [preloadChivo()],
   build: {

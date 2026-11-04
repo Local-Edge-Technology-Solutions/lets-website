@@ -198,7 +198,15 @@ export function initVoicemail() {
   // If reduced motion switches on mid-run: stop the run and everything it started, clear what was in flight,
   // show the finished sample fully visible, and only then announce it.
   matchMedia("(prefers-reduced-motion: reduce)").addEventListener("change", (e) => {
-    if (!e.matches || !run || !current) return;
+    if (!e.matches) return;
+    // Between runs, a last flying copy can still be in the air on a slow frame: land it now, fully visible.
+    if (!run || !current) {
+      [...children].forEach((t) => t.progress(1));
+      children.clear();
+      copies.forEach((c) => c.remove());
+      copies.clear();
+      return;
+    }
     const { sample, i, row } = current;
     run.kill();
     children.forEach((t) => t.kill());

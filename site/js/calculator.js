@@ -86,9 +86,10 @@ export function initCalculator() {
   const total = () => ticked().reduce((t, c) => t + minutes(c), 0);
   let blocked = false;
   const update = () => {
-    const bad = chores.filter((c) => !valid(c));
+    // Only ticked chores count, so only ticked chores can block the total.
+    const bad = chores.filter((c) => c.box.checked && !valid(c));
     chores.forEach((c) => {
-      if (valid(c)) { c.mins.removeAttribute("aria-invalid"); c.mins.removeAttribute("aria-describedby"); }
+      if (!c.box.checked || valid(c)) { c.mins.removeAttribute("aria-invalid"); c.mins.removeAttribute("aria-describedby"); }
       else { c.mins.setAttribute("aria-invalid", "true"); c.mins.setAttribute("aria-describedby", error.id); }
     });
     blocked = bad.length > 0;

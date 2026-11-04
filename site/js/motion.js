@@ -310,12 +310,16 @@ export function initMotion() {
     ScrollTrigger.batch(".chore, .calc__examples li", { start: "top 94%", once: true, onEnter: (b) => gsap.from(b, { x: -28, opacity: hide, duration: 0.6, ease: "expo.out", stagger: 0.05 }) });
     gsap.from(".calc__result", { y: 50, opacity: hide, duration: 0.9, ease: "expo.out", scrollTrigger: { trigger: ".calc__body", start: "top 85%", once: true } });
 
-    // About: the two type cards open from the bottom edge like a shutter; names and lines follow.
+    // About: the cards open from the bottom edge like a shutter (a letter rises, a photo settles); names and lines follow.
     splitIn($("#about-title"));
     $$(".person").forEach((p) => {
-      gsap.timeline({ scrollTrigger: { trigger: p, start: "top 88%", once: true } })
-        .fromTo($(".person__card", p), { clipPath: "inset(0% 0% 100% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.1, ease: "power3.inOut" })
-        .from($(".person__mark", p), { yPercent: 14, duration: 1.2, ease: "expo.out" }, 0.1)
+      const mark = $(".person__mark", p);
+      const photo = $(".person__photo", p);
+      const tl = gsap.timeline({ scrollTrigger: { trigger: p, start: "top 88%", once: true } })
+        .fromTo($(".person__card", p), { clipPath: "inset(0% 0% 100% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.1, ease: "power3.inOut" });
+      if (mark) tl.from(mark, { yPercent: 14, duration: 1.2, ease: "expo.out" }, 0.1);
+      if (photo) tl.from(photo, { scale: 1.12, duration: 1.4, ease: "expo.out", clearProps: "transform" }, 0.1);
+      tl
         .from($$(".person__name, .person__role, .person__text", p), { y: 18, opacity: hide, duration: 0.6, ease: "expo.out", stagger: 0.08 }, 0.4);
     });
     gsap.from(".about__line", { y: 18, opacity: hide, duration: 0.7, ease: "expo.out", scrollTrigger: { trigger: ".about__line", start: "top 90%", once: true } });

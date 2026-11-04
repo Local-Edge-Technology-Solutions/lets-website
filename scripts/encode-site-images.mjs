@@ -4,8 +4,8 @@
 //   node scripts/encode-site-images.mjs [source dir]
 //
 // The source dir defaults to site/src-images/, the originals kept in the repo (not published). Every
-// photo is from Unsplash (Unsplash License) or Pexels (Pexels License), both free for commercial use with
-// no credit required; the source pages are listed in site/assets/credits.json for our own records.
+// stock photo is from Unsplash (Unsplash License) or Pexels (Pexels License), both free for commercial use with
+// no credit required; zeke.jpg is the headshot Zeke sent us. Sources are listed in site/assets/credits.json.
 import sharp from "sharp";
 import fs from "node:fs";
 import path from "node:path";
@@ -25,6 +25,7 @@ const jobs = {
   salon: ["salon.jpg", [400, 640]],
   bakery: ["bakery.jpg", [400, 640]],
   online: ["owner-desk.jpg", [400, 640], { left: 0, top: 200, width: 2200, height: 2750 }],
+  zeke: ["zeke.jpg", [480, 800, 1024], { left: 0, top: 40, width: 1024, height: 1280 }],
 };
 
 for (const [name, [file, widths, crop]] of Object.entries(jobs)) {

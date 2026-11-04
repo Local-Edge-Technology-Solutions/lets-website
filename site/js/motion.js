@@ -152,7 +152,7 @@ function shatter() {
         fontFamily: cs.fontFamily, fontSize: cs.fontSize, letterSpacing: cs.letterSpacing, lineHeight: `${r.height}px`,
       });
     });
-    // The scatter lands the letters on the till's pile of paper: inside the hero picture, not over the words.
+    // The scatter lands the letters among the laptop's sticky notes: inside the hero picture, not over the words.
     const pic = picture.getBoundingClientRect();
     frags.forEach((_, k) => {
       const u = (scatter[k].x + 1) / 2, v = (scatter[k].y + 1) / 2;
@@ -191,7 +191,7 @@ function shatter() {
     defaults: { immediateRender: false },
     scrollTrigger: { trigger: ".hero", start: "top top", endTrigger: list, end: "center 58%", scrub: true, invalidateOnRefresh: true },
   });
-  // The hero itself recedes as it goes: the till tilts and lifts, the sentence drifts up.
+  // The hero itself recedes as it goes: the picture tilts and lifts, the sentence drifts up.
   tl.fromTo(".hero__picture", { rotation: 4, y: 0 }, { rotation: 10, y: () => -geom.H * 0.12, ease: "none", duration: 0.5 }, 0)
     .fromTo(".hero__copy, .hero__fact", { y: 0 }, { y: () => -geom.H * 0.08, ease: "none", duration: 0.5 }, 0);
   // The swap: the real line goes, its letters stand in exactly where it was.

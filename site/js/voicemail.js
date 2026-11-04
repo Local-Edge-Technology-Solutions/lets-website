@@ -1,4 +1,4 @@
-// Showpiece 2: a sample voicemail becomes a call-back list. A scripted illustration with made-up callers:
+// Showpiece 2: a sample voicemail becomes a call-back list. A scripted illustration with invented callers:
 // no audio, no recording. Without script the first transcript and its row are already on the page.
 // Each press runs one sample once; Next and Replay follow. Only completion is announced.
 import { gsap, SplitText, calm, $, $$ } from "./env.js";
@@ -94,7 +94,7 @@ export function initVoicemail() {
     length.textContent = sample.length;
     transcript.innerHTML = sample.html;
   };
-  const finish = (sample, i) => {
+  const finish = (sample, i, quiet) => {
     run = null;
     split = null;
     transcript.classList.remove("is-typing");
@@ -103,7 +103,7 @@ export function initVoicemail() {
     gsap.set(bars, { clearProps: "transform,backgroundColor" });
     setBusy(false);
     showNextControls();
-    announce(sample, i);
+    if (!quiet) announce(sample, i);
   };
 
   const start = (i) => {
@@ -195,10 +195,10 @@ export function initVoicemail() {
   controls.hidden = false;
   root.dataset.vmReady = "";
 
-  // If reduced motion switches on mid-run: stop the run and everything it started, clear what was in flight,
-  // show the finished sample fully visible, and only then announce it.
-  matchMedia("(prefers-reduced-motion: reduce)").addEventListener("change", (e) => {
-    if (!e.matches) return;
+  // Land everything now: stop the run and everything it started, clear what was in flight, and show the
+  // finished sample fully visible. Used when reduced motion switches on mid-run (then announced), and when the
+  // visitor picks another problem above (quietly), so nothing keeps flying over a panel that was put away.
+  const landNow = (quiet) => {
     // Between runs, a last flying copy can still be in the air on a slow frame: land it now, fully visible.
     if (!run || !current) {
       [...children].forEach((t) => t.progress(1));
@@ -221,6 +221,8 @@ export function initVoicemail() {
     gsap.set(row, { clearProps: "transform,opacity,visibility" });
     $$("[data-cell]", row).forEach((c) => gsap.set(c, { clearProps: "opacity" }));
     current = null;
-    finish(sample, i);
-  });
+    finish(sample, i, quiet);
+  };
+  matchMedia("(prefers-reduced-motion: reduce)").addEventListener("change", (e) => { if (e.matches) landNow(false); });
+  root.addEventListener("vm:land", () => landNow(true));
 }

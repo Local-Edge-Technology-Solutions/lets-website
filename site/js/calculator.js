@@ -115,14 +115,14 @@ export function initCalculator() {
   send.addEventListener("click", () => {
     const picked = ticked();
     if (blocked) { status.textContent = `Fix the minutes first: each one must be from 0 to ${fmt.format(MAX)} a week.`; return; }
-    if (!picked.length) { status.textContent = "Tick at least one chore first."; return; }
+    if (!picked.length) { status.textContent = "Tick at least one task first."; return; }
     const box = document.querySelector('[data-lead] textarea[name="challenge"]');
     if (!box) return;
     const h = Math.round((total() * 52) / 60);
-    const block = `Chores I ticked on your calculator: ${picked.map((c) => `${c.name.toLowerCase()} (${minutes(c)} min a week)`).join("; ")}. About ${fmt.format(h)} hours a year.`;
+    const block = `Tasks I ticked on your calculator: ${picked.map((c) => `${c.name.toLowerCase()} (${minutes(c)} min a week)`).join("; ")}. About ${fmt.format(h)} hours a year.`;
     const now = box.value;
     if (!now.includes(block)) box.value = now.trim() ? `${now.replace(/\s+$/, "")}\n\n${block}` : block;
-    status.textContent = "Added your ticked chores to the message in the form below.";
+    status.textContent = "Added your ticked tasks to the message in the form below.";
     box.focus();
     box.setSelectionRange(box.value.length, box.value.length);
   });

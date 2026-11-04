@@ -281,10 +281,11 @@ export function initMotion() {
     gsap.from(".intro__words > *", { y: 28, opacity: hide, duration: 0.8, ease: "expo.out", stagger: 0.08, scrollTrigger: { trigger: ".intro__words", start: "top 90%", once: true } });
     gsap.from(".chip--press", { rotation: 14, scale: 1.2, opacity: hide, duration: 0.8, ease: "expo.out", scrollTrigger: { trigger: ".chip--press", start: "top 88%", once: true } });
 
-    // Voicemail: the card is laid down, the list slid beside it.
-    splitIn($("#vm-title"));
-    gsap.from(".vm__intro > *:not([hidden])", { y: 20, opacity: hide, duration: 0.7, ease: "expo.out", stagger: 0.07, scrollTrigger: { trigger: ".vm__intro", start: "top 90%", once: true } });
-    gsap.timeline({ scrollTrigger: { trigger: ".vm__stage", start: "top 86%", once: true } })
+    // What's eating your week: the picker is dealt in; in the voicemail answer, the card is laid down and the
+    // list slid beside it.
+    splitIn($("#week-title"));
+    gsap.from(".fixes .vm__intro > *, .fixes__picker:not([hidden])", { y: 20, opacity: hide, duration: 0.7, ease: "expo.out", stagger: 0.07, scrollTrigger: { trigger: ".fixes .vm__intro", start: "top 90%", once: true } });
+    gsap.timeline({ scrollTrigger: { trigger: ".fix--calls", start: "top 86%", once: true } })
       .from(".vm-card", { y: 60, rotation: -1.5, opacity: hide, duration: 0.9, ease: "expo.out" })
       .from(".vm-list", { y: 80, rotation: 4, opacity: hide, duration: 0.9, ease: "expo.out" }, 0.12)
       .from(".vm-wave i", { scaleY: 0.1, duration: 0.6, ease: "expo.out", stagger: { each: 0.008, from: "start" } }, 0.2);
@@ -303,7 +304,7 @@ export function initMotion() {
       gsap.fromTo(".showcase__photo", { scale: 1.1 }, { scale: 1, ease: "none", scrollTrigger: { trigger: show, start: "top bottom", end: "bottom top", scrub: true } });
     }
 
-    // Calculator: the chores are dealt in like rows on a sheet; the figure panel arrives beside them.
+    // Calculator: the tasks are dealt in like rows on a sheet; the figure panel arrives beside them.
     splitIn($("#calc-title"));
     gsap.from(".calc__head .statement", { y: 20, opacity: hide, duration: 0.7, ease: "expo.out", scrollTrigger: { trigger: ".calc__head", start: "top 85%", once: true } });
     ScrollTrigger.batch(".chore, .calc__examples li", { start: "top 94%", once: true, onEnter: (b) => gsap.from(b, { x: -28, opacity: hide, duration: 0.6, ease: "expo.out", stagger: 0.05 }) });
@@ -347,7 +348,7 @@ export function initMotion() {
 
     // Footer: the four blocks are set like wood type, rising from the baseline as the close arrives.
     gsap.from(".mark__block", { yPercent: 30, duration: 0.9, ease: "expo.out", stagger: 0.11, scrollTrigger: { trigger: ".mark", start: "top 94%", once: true } });
-    gsap.from(".footer__grid > *, .credits, .footer__last", { y: 16, duration: 0.6, ease: "expo.out", stagger: 0.06, scrollTrigger: { trigger: ".footer__grid", start: "top 94%", once: true } });
+    gsap.from(".footer__grid > *, .footer__last", { y: 16, duration: 0.6, ease: "expo.out", stagger: 0.06, scrollTrigger: { trigger: ".footer__grid", start: "top 94%", once: true } });
 
     // Feedback under the hand.
     $$(".button, .picker label, .menu__toggle").forEach((c) => undo.push(pressFeedback(c)));

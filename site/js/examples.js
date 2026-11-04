@@ -1,4 +1,4 @@
-// "Show it for": re-deals the six example slips for one kind of business. Every slip is a made-up example;
+// "Show it for": re-deals the six example slips for one kind of business. Every slip is an example;
 // names, towns and amounts are invented. Without script the mixed set in the HTML stays.
 import { calm, $ } from "./env.js";
 import { redeal } from "./motion.js";
@@ -56,7 +56,7 @@ const slipHTML = ([title, rows, foot, kind]) => {
     ? `<p class="slip__msg">${esc(rows)}</p>`
     : `<dl>${rows.map(([a, b]) => `<div><dt>${esc(a)}</dt><dd>${esc(b)}</dd></div>`).join("")}</dl>`;
   const end = kind === "approve" ? `<span class="ui-btn">Approve all ${rows.length}</span> ${esc(foot)}` : esc(foot);
-  return `<p class="slip__top"><b>${esc(title)}</b><span>Made-up example</span></p><p class="slip__rule" aria-hidden="true">- - - - - - - - - - - - - - - -</p>${body}<p class="slip__foot">${end}</p>`;
+  return `<p class="slip__top"><b>${esc(title)}</b><span>Example</span></p><p class="slip__rule" aria-hidden="true">- - - - - - - - - - - - - - - -</p>${body}<p class="slip__foot">${end}</p>`;
 };
 
 export function initExamples() {

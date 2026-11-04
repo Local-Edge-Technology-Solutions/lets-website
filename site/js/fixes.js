@@ -23,6 +23,8 @@ export function initFixes() {
     if (prev && prev !== next) (prev.matches("[data-vm]") ? prev : $("[data-vm]", prev))?.dispatchEvent(new Event("vm:land"));
     if (animate && prev === next) return;
     const swap = () => {
+      // Land it again here: Replay might have been pressed while the old answer was fading out.
+      if (prev && prev !== next) (prev.matches("[data-vm]") ? prev : $("[data-vm]", prev))?.dispatchEvent(new Event("vm:land"));
       items.forEach((i) => { i.hidden = i !== next; });
       current = key;
       status.textContent = `Showing what we’d build for ${$(".fix__problem", next).textContent.toLowerCase()}.`;

@@ -294,7 +294,7 @@ export function initMotion() {
     splitIn($("#examples-title"));
     const show = $(".showcase");
     const slips = $$(".slip", show);
-    gsap.from(".showcase__copy .statement, .picker:not([hidden])", { y: 24, opacity: hide, duration: 0.7, ease: "expo.out", stagger: 0.08, scrollTrigger: { trigger: ".showcase__copy", start: "top 85%", once: true } });
+    gsap.from(".showcase__copy .statement, .showcase .picker:not([hidden])", { y: 24, opacity: hide, duration: 0.7, ease: "expo.out", stagger: 0.08, scrollTrigger: { trigger: ".showcase__copy", start: "top 85%", once: true } });
     if (wide && show.offsetHeight <= innerHeight + 4) {
       gsap.timeline({ scrollTrigger: { trigger: show, start: "top top", end: "+=85%", pin: true, scrub: true, anticipatePin: 1 } })
         .from(slips, { yPercent: 108, ease: "none", stagger: 0.14, duration: 0.5 }, 0)

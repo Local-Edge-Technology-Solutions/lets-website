@@ -1,10 +1,11 @@
 [
  {
-  "file": "src-images/owner-desk.jpg",
+  "file": "src-images/laptop-notes.jpg",
   "used_as": "hero",
-  "page": "https://unsplash.com/photos/woman-in-yellow-long-sleeve-shirt-wearing-white-cowboy-hat-yhpw4-3xX7I",
-  "license": "Unsplash License",
-  "licenseUrl": "https://unsplash.com/license",
+  "page": "https://www.pexels.com/photo/close-up-shot-of-a-laptop-with-sticky-notes-6991843/",
+  "photographer": "DS stories",
+  "license": "Pexels License",
+  "licenseUrl": "https://www.pexels.com/license/",
   "creditRequired": false,
   "licenseCheckedOnPage": "2026-11-04"
  },
@@ -57,6 +58,15 @@
   "file": "src-images/bakery.jpg",
   "used_as": "bakery",
   "page": "https://unsplash.com/photos/brown-bread-on-white-ceramic-plate-dll9fcu8NLk",
+  "license": "Unsplash License",
+  "licenseUrl": "https://unsplash.com/license",
+  "creditRequired": false,
+  "licenseCheckedOnPage": "2026-11-04"
+ },
+ {
+  "file": "src-images/owner-desk.jpg",
+  "used_as": "online",
+  "page": "https://unsplash.com/photos/woman-in-yellow-long-sleeve-shirt-wearing-white-cowboy-hat-yhpw4-3xX7I",
   "license": "Unsplash License",
   "licenseUrl": "https://unsplash.com/license",
   "creditRequired": false,

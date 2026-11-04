@@ -4,8 +4,8 @@
 //   node scripts/encode-site-images.mjs [source dir]
 //
 // The source dir defaults to site/src-images/, the originals kept in the repo (not published). Every
-// photo is from Unsplash under the Unsplash License (free for commercial use, no credit required); the
-// source pages are listed in site/assets/credits.json for our own records.
+// photo is from Unsplash (Unsplash License) or Pexels (Pexels License), both free for commercial use with
+// no credit required; the source pages are listed in site/assets/credits.json for our own records.
 import sharp from "sharp";
 import fs from "node:fs";
 import path from "node:path";
@@ -17,13 +17,14 @@ fs.mkdirSync(out, { recursive: true });
 
 // name: [source file, widths, crop in source pixels (optional)]
 const jobs = {
-  hero: ["owner-desk.jpg", [480, 720, 960], { left: 0, top: 150, width: 2200, height: 2933 }],
+  hero: ["laptop-notes.jpg", [480, 720, 960], { left: 900, top: 0, width: 1800, height: 2400 }],
   showcase: ["cafe-counter.jpg", [720, 1200, 1800]],
   intro: ["tablet-till.jpg", [480, 854]],
   alley: ["printers-alley.jpg", [400, 640]],
   boutique: ["boutique.jpg", [400, 640]],
   salon: ["salon.jpg", [400, 640]],
   bakery: ["bakery.jpg", [400, 640]],
+  online: ["owner-desk.jpg", [400, 640], { left: 0, top: 200, width: 2200, height: 2750 }],
 };
 
 for (const [name, [file, widths, crop]] of Object.entries(jobs)) {

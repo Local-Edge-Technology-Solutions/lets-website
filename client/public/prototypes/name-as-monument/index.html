@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Local Edge: we find the busywork and build it away</title>
+  <meta name="description" content="Local Edge Technology Solutions is two people near Nashville who find the busywork slowing a small business down and build custom automations and AI tools to take it off their plate.">
+  <meta name="theme-color" content="#1f3038">
+  <script>
+    // Motion boot gate: hides only the hero's intro targets, only when motion is allowed, and never for long.
+    (function () {
+      var d = document.documentElement; d.classList.add('js');
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      d.setAttribute('data-boot', 'pending');
+      setTimeout(function () { if (d.getAttribute('data-boot') === 'pending') d.setAttribute('data-boot', 'recovered'); }, 1000);
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to the page</a>
+
+<main id="main">
+
+<!-- HERO: name band and rails -->
+<header class="hero" id="top">
+  <div class="hero__band">
+    <h1 class="monument" data-fit="band" data-intro aria-label="Local Edge">
+      <span class="monument__line"><span class="monument__word">Local Edge</span></span>
+    </h1>
+  </div>
+
+  <nav class="hero__links" aria-label="Sections" data-intro>
+    <a href="#examples">Examples</a>
+    <a href="#how">How it works</a>
+    <a href="#about">About</a>
+    <a href="#questions">Questions</a>
+  </nav>
+
+  <div class="hero__left">
+    <figure class="tile tile--portrait" data-intro>
+      <img src="assets/cumberland-river-above-nashville-900.jpg" width="900" height="572"
+           alt="Old postcard view of the Cumberland River upstream of Nashville, with wildflowers on the bank" fetchpriority="high" decoding="async">
+    </figure>
+    <ul class="tile tile--facts" data-intro>
+      <li>Two people, Ben and Zeke</li>
+      <li>Near Nashville, Tennessee</li>
+      <li>Any kind of small business</li>
+      <li>Phone, Zoom, Teams or Meet</li>
+    </ul>
+  </div>
+
+  <div class="hero__centre">
+    <figure class="tile tile--photo" data-intro>
+      <img src="assets/nh-52909-typing-pool-navy-department-washington.jpg" width="1280" height="1145"
+           alt="A crowded typing pool in 1918: rows of clerks at typewriters with stacks of paper on every desk" fetchpriority="high" decoding="async">
+    </figure>
+    <p class="tile tile--statement" data-intro>You don&rsquo;t have to know what to ask for. We find what&rsquo;s slowing your business down and build the automations and AI tools that fix it.</p>
+  </div>
+
+  <ul class="hero__rail">
+    <li class="rail rail--1" data-intro>Missed calls become a call-back list.</li>
+    <li class="rail rail--2" data-intro>Finished jobs become invoices, waiting for one click.</li>
+    <li class="rail rail--3" data-intro>Spreadsheets become a Friday report that writes itself.</li>
+    <li class="rail rail--action" data-intro><a class="action-tile" href="#contact">Let&rsquo;s talk <span class="arrow" aria-hidden="true">&rarr;</span></a></li>
+  </ul>
+</header>
+
+<!-- INTRO: title, note, facts row -->
+<section class="intro wrap" aria-labelledby="intro-title">
+  <div class="intro__top grid">
+    <h2 id="intro-title" class="head intro__title">We do the figuring&nbsp;out</h2>
+    <p class="intro__note">Most owners can&rsquo;t name the problem, only the feeling that the week is too full. That&rsquo;s enough to start.</p>
+  </div>
+  <dl class="intro__facts">
+    <div><dt>One conversation</dt><dd>That&rsquo;s all you bring. Zeke asks how a normal week really goes.</dd></div>
+    <div><dt>Any business</dt><dd>Trades, offices, shops, clinics, kitchens, crews.</dd></div>
+    <div><dt>Anywhere</dt><dd>Phone, Zoom, Teams or Meet, from near Nashville.</dd></div>
+    <div><dt>Made for you</dt><dd>Built around how your work already happens.</dd></div>
+  </dl>
+  <div class="intro__bottom grid">
+    <p class="lead intro__lead">Every business has its version of this: the same calls, forms and follow-ups, done by hand every week. We find yours.</p>
+    <figure class="intro__clip">
+      <video autoplay muted loop playsinline preload="metadata" poster="assets/operators-writing-tickets-poster.jpg" width="640" height="480" aria-hidden="true">
+        <source src="assets/operators-writing-tickets.webm" type="video/webm">
+        <source src="assets/operators-writing-tickets.mp4" type="video/mp4">
+      </video>
+      <figcaption>Long-distance operators writing call tickets by hand, about 1949.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- SHOWCASE: band of unequal panels + the live thing -->
+<section class="show" id="examples" aria-labelledby="show-title">
+  <div class="wrap show__head grid">
+    <h2 id="show-title" class="head show__title">What we take off your&nbsp;plate</h2>
+    <fieldset class="picker">
+      <legend>Businesses like yours</legend>
+      <div class="picker__options">
+        <button type="button" data-biz="plumbing" aria-pressed="true">Plumbing company</button>
+        <button type="button" data-biz="dental" aria-pressed="false">Dental office</button>
+        <button type="button" data-biz="restaurant" aria-pressed="false">Restaurant</button>
+        <button type="button" data-biz="books" aria-pressed="false">Bookkeeping firm</button>
+        <button type="button" data-biz="rentals" aria-pressed="false">Property manager</button>
+        <button type="button" data-biz="lawn" aria-pressed="false">Landscaping crew</button>
+        <button type="button" data-biz="law" aria-pressed="false">Law office</button>
+        <button type="button" data-biz="salon" aria-pressed="false">Salon</button>
+      </div>
+    </fieldset>
+  </div>
+
+  <div class="band" aria-live="polite">
+    <article class="panel panel--1" tabindex="0" aria-labelledby="p1-t">
+      <img src="assets/photograph-of-women-working-at-a-bell.jpg" width="1920" height="1525" alt="" loading="lazy" decoding="async">
+      <div class="panel__title"><h3 id="p1-t"><span data-f="bizName">Brightwater Plumbing</span>, as an&nbsp;example</h3></div>
+      <div class="frag frag--calls" data-ui>
+        <div class="frag__bar"><span>Call-backs for today</span><span class="frag__count" data-f="callCount">4 waiting</span></div>
+        <ol class="calls" data-f="calls">
+          <li><span class="calls__who">Dana Whitfield</span><span class="calls__why">Water heater leaking in the garage</span><span class="calls__when">7:42 am</span><span class="calls__tag">Urgent</span></li>
+          <li><span class="calls__who">Luis Ortega</span><span class="calls__why">Quote for a kitchen sink swap</span><span class="calls__when">9:15 am</span></li>
+          <li><span class="calls__who">Pam Reddick</span><span class="calls__why">Move Thursday&rsquo;s visit</span><span class="calls__when">11:03 am</span></li>
+          <li><span class="calls__who">Gary Hensley</span><span class="calls__why">Asked about a second bathroom</span><span class="calls__when">12:30 pm</span></li>
+        </ol>
+        <p class="frag__foot">Each missed call is written up from the voicemail and sorted by urgency.</p>
+      </div>
+    </article>
+
+    <article class="panel panel--2" tabindex="0" aria-labelledby="p2-t">
+      <img src="assets/a-woman-with-a-hollerith-pantograph-punch.jpg" width="1920" height="1513" alt="" loading="lazy" decoding="async">
+      <h3 id="p2-t" class="sr-only">Example reminder text</h3>
+      <div class="frag frag--sms" data-ui>
+        <p class="sms__head">Text to <span data-f="smsTo">Marcus</span></p>
+        <p class="sms__out" data-f="smsOut">Hi Marcus, it&rsquo;s Brightwater Plumbing. Your water heater install is Thursday, 8&ndash;10 am. Reply 1 to confirm or 2 to pick another time.</p>
+        <p class="sms__in">1</p>
+        <p class="sms__out sms__out--auto" data-f="smsBack">Confirmed. See you Thursday.</p>
+        <p class="sms__meta">Sent on its own, the day before</p>
+      </div>
+    </article>
+
+    <article class="panel panel--3" tabindex="0" aria-labelledby="p3-t">
+      <img src="assets/keypunch-operator-1950-census-ibm-016.jpg" width="1920" height="1579" alt="" loading="lazy" decoding="async">
+      <h3 id="p3-t" class="sr-only">Example invoices waiting for approval</h3>
+      <div class="frag frag--bills" data-ui>
+        <div class="frag__bar"><span data-f="billTitle">Invoices waiting for your OK</span></div>
+        <table class="bills">
+          <tbody data-f="bills">
+            <tr><td>Whitfield, water heater</td><td class="num">$1,840.00</td></tr>
+            <tr><td>Ortega, sink swap</td><td class="num">$415.00</td></tr>
+            <tr><td>Reddick, drain clearing</td><td class="num">$185.00</td></tr>
+            <tr><td>Hensley, estimate visit</td><td class="num">$95.00</td></tr>
+          </tbody>
+          <tfoot><tr><td>Total</td><td class="num" data-f="billTotal">$2,535.00</td></tr></tfoot>
+        </table>
+        <span class="bills__button" data-f="billButton">Approve all 4</span>
+      </div>
+    </article>
+
+    <article class="panel panel--4" tabindex="0" aria-labelledby="p4-t">
+      <img src="assets/134-keypunch-operator-1950.jpg" width="1920" height="1521" alt="" loading="lazy" decoding="async">
+      <h3 id="p4-t" class="sr-only">Example Friday report</h3>
+      <div class="frag frag--report" data-ui>
+        <p class="report__head">Friday report</p>
+        <p class="report__week">Week of Oct 27</p>
+        <dl class="report__figs" data-f="figs">
+          <div><dt>Jobs finished</dt><dd>23</dd></div>
+          <div><dt>Invoiced</dt><dd>$18,420</dd></div>
+          <div><dt>Unpaid 30+ days</dt><dd>$2,310</dd></div>
+        </dl>
+        <p class="report__note" data-f="finding">Water heaters were 6 of the 23 jobs.</p>
+      </div>
+    </article>
+  </div>
+  <p class="wrap show__caption">Examples only. Every name, number and amount here is made up to show the kind of thing we build. Pictures: busywork as it looked in 1918&ndash;1950.</p>
+</section>
+
+<!-- MARQUEE: the signature move -->
+<div class="marquee">
+  <button class="marquee__toggle" type="button" aria-pressed="false" hidden>Pause</button>
+  <div class="marquee__track" aria-hidden="true">
+    <span>Let&rsquo;s take it off your plate</span><span>Let&rsquo;s take it off your plate</span>
+    <span>Let&rsquo;s take it off your plate</span><span>Let&rsquo;s take it off your plate</span>
+  </div>
+</div>
+
+<!-- HOW IT WORKS: one verb at a time -->
+<section class="how" id="how" aria-label="How it works">
+  <p class="how__count" aria-hidden="true"><span data-count-now>1</span> of 4</p>
+  <div class="step">
+    <img src="assets/clerks-helping-customers-file-income-taxes-1946.jpg" width="1920" height="1213" alt="Clerks across a long counter helping a queue of people with their tax forms, 1946" loading="lazy" decoding="async">
+    <div class="step__word"><h2 class="verb">Let&rsquo;s <span class="verb__mask"><span class="verb__word">talk</span></span></h2></div>
+    <p class="step__say">Start with one conversation by phone, Zoom, Teams or Meet. Zeke asks how a normal week really&nbsp;goes.</p>
+  </div>
+  <div class="step">
+    <img src="assets/cumberland-river-and-nashville-tn-usa-sl2.jpg" width="1920" height="1920" alt="Nashville and the bends of the Cumberland River seen from the Skylab space station, 1973" loading="lazy" decoding="async">
+    <div class="step__word"><h2 class="verb">Let&rsquo;s <span class="verb__mask"><span class="verb__word">look</span></span></h2></div>
+    <p class="step__say">We follow the work the way it actually happens: who answers the phone, where the paper piles up, what gets typed&nbsp;twice.</p>
+  </div>
+  <div class="step">
+    <img src="assets/files-in-the-department-of-justice-1892.jpg" width="1920" height="1548" alt="Engraving of an 1892 records room, its walls filled floor to ceiling with document files" loading="lazy" decoding="async">
+    <div class="step__word"><h2 class="verb">Let&rsquo;s <span class="verb__mask"><span class="verb__word">find it</span></span></h2></div>
+    <p class="step__say">We find the busywork that&rsquo;s slowing you down and tell you plainly which pieces are worth handing to a&nbsp;machine.</p>
+  </div>
+  <div class="step">
+    <img src="assets/control-data-processing-ibm-equipment-oak-ridge.jpg" width="1920" height="1478" alt="A data processing room at Oak Ridge, Tennessee, in 1967, with tape drives and printers" loading="lazy" decoding="async">
+    <div class="step__word"><h2 class="verb">Let&rsquo;s <span class="verb__mask"><span class="verb__word">build it</span></span></h2></div>
+    <p class="step__say">Then we build the automation or AI tool that takes it off your plate, made for your business and nobody&nbsp;else&rsquo;s.</p>
+  </div>
+</section>
+
+<!-- ABOUT: initials as drop caps -->
+<section class="about wrap" id="about" aria-labelledby="about-title">
+  <div class="grid">
+    <h2 id="about-title" class="head about__title">Two people near&nbsp;Nashville</h2>
+    <ul class="about__facts">
+      <li>Near Nashville, Tennessee</li>
+      <li>Local Edge Technology Solutions, LLC</li>
+      <li>Phone, Zoom, Teams or Meet</li>
+    </ul>
+    <div class="about__text">
+      <p class="bio"><span class="initial initial--b" aria-hidden="true"><b>B</b></span><strong>Ben</strong> has spent twenty years in advertising and now leads AI work at a Nashville ad agency. He knows how a small team&rsquo;s week fills up with copying, chasing and re-typing, and he builds the tools that hand that work to a machine.</p>
+      <p class="bio"><span class="initial initial--z" aria-hidden="true"><b>Z</b></span><strong>Zeke</strong> comes from IT and runs his own servers at home. He&rsquo;s usually the first person you&rsquo;ll talk to: he asks how your work really happens, step by step, until the slow part shows itself.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ: large questions, answers beside -->
+<section class="faq" id="questions" aria-labelledby="faq-title">
+  <div class="wrap">
+    <div class="qa grid qa--head"><h2 id="faq-title" class="q q--title">Fair questions</h2></div>
+    <div class="qa grid"><h3 class="q">What if I don&rsquo;t know what to automate?</h3><p class="a">That&rsquo;s normal, and finding it is our job, not yours. Tell us how a normal week goes. We&rsquo;ll spot where the time disappears and show you what could run on its own.</p></div>
+    <div class="qa grid"><h3 class="q">What kinds of businesses do you work with?</h3><p class="a">Small businesses of any kind: trades, offices, shops, clinics, kitchens, crews. If someone repeats the same task every week, there&rsquo;s usually something to take off their plate.</p></div>
+    <div class="qa grid"><h3 class="q">Who will I talk to first?</h3><p class="a">Usually Zeke. He asks who does what, where things pile up and what gets typed twice. You don&rsquo;t need to prepare anything.</p></div>
+    <div class="qa grid"><h3 class="q">How do we meet?</h3><p class="a">By phone, Zoom, Teams or Meet, wherever you are. We&rsquo;re based near Nashville and work with small businesses anywhere.</p></div>
+    <div class="qa grid"><h3 class="q">Is this going to replace my people?</h3><p class="a">The point is to give people their time back. The copying, chasing and re-typing goes to the machine; the work that needs a person stays with a person.</p></div>
+    <div class="qa grid"><h3 class="q">What does &ldquo;AI tools&rdquo; mean here?</h3><p class="a">Sometimes it&rsquo;s a simple automation that moves information from one place to another. Sometimes it&rsquo;s an AI tool that reads, sorts or drafts for you, like a first reply to every new enquiry. We use whichever does the job.</p></div>
+  </div>
+</section>
+
+<!-- CONTACT: the form as display rows -->
+<section class="contact" id="contact" aria-labelledby="contact-title">
+  <form class="form" action="#contact" method="post" novalidate>
+    <div class="row row--a wrap"><h2 id="contact-title" class="row__text">Tell us about your&nbsp;week</h2></div>
+    <div class="row row--b wrap">
+      <label class="row__text" for="f-challenge">What&rsquo;s taking up your time?</label>
+      <textarea id="f-challenge" name="challenge" rows="2" required aria-describedby="f-challenge-hint" placeholder="Chasing invoices, answering the same three questions, re-typing orders&hellip;"></textarea>
+      <p id="f-challenge-hint" class="row__hint">A sentence is plenty. Not sure? Tell us what kind of business you run and we&rsquo;ll take it from there.</p>
+    </div>
+    <div class="row row--a wrap">
+      <label class="row__text" for="f-email">Your email</label>
+      <input id="f-email" name="email" type="email" autocomplete="email" required placeholder="you@yourbusiness.com">
+    </div>
+    <div class="row row--b wrap row--pair">
+      <div>
+        <label class="row__text" for="f-name">Your name <span class="opt">(optional)</span></label>
+        <input id="f-name" name="name" type="text" autocomplete="name">
+      </div>
+      <div>
+        <label class="row__text" for="f-phone">Phone <span class="opt">(optional)</span></label>
+        <input id="f-phone" name="phone" type="tel" autocomplete="tel">
+      </div>
+    </div>
+    <div class="row row--go wrap">
+      <button class="go" type="submit"><span class="go__word">Let&rsquo;s talk</span><span class="go__dot" aria-hidden="true">&rarr;</span></button>
+      <p class="go__status" role="status" aria-live="polite"></p>
+    </div>
+  </form>
+</section>
+
+</main>
+
+<!-- FOOTER: columns above, wordmark below -->
+<footer class="foot">
+  <div class="foot__cols wrap">
+    <div><p class="foot__first">Local Edge Technology Solutions, LLC</p><p>Near Nashville, Tennessee</p><p>localedgesolutions.ai</p></div>
+    <nav aria-label="Footer"><p class="foot__first">On this page</p><p><a href="#examples">Examples</a></p><p><a href="#how">How it works</a></p><p><a href="#about">About</a></p><p><a href="#questions">Questions</a></p></nav>
+    <div><p class="foot__first">How we meet</p><p>Phone, Zoom, Teams or Meet</p><p><a href="#contact">Start the conversation</a></p></div>
+    <div class="foot__credits"><p class="foot__first">Pictures</p><p id="credits" class="credits">Pictures and footage: <a href="https://commons.wikimedia.org/wiki/File:NH_52909_-_typing_pool,_Navy_Department,_Washington_DC.jpg">“NH 52909 - typing pool, Navy Department, Washington DC”</a> by AnalyticalHistoricalHobbyist, <a href="https://creativecommons.org/publicdomain/mark/1.0/">public domain</a>, via Wikimedia Commons; <a href="https://commons.wikimedia.org/wiki/File:Keypunch_operator_1950_census_IBM_016.jpg">“Keypunch operator 1950 census IBM 016”</a> by U.S. Census Bureau employees, <a href="https://creativecommons.org/publicdomain/mark/1.0/">public domain</a>, via Wikimedia Commons; <a href="https://commons.wikimedia.org/wiki/File:134_Keypunch_Operator,_1950_-_DPLA_-_409624b0fcf2854c2097556ab933ff3a.jpg">“134 Keypunch Operator, 1950”</a> by Department of Defense. Department of the Army. Office of th…, <a href="https://creativecommons.org/publicdomain/mark/1.0/">public domain</a>, via Wikimedia Commons; <a href="https://commons.wikimedia.org/wiki/File:Photograph_of_Women_Working_at_a_Bell_System_Telephone_Switchboard_(3660047829).jpg">“Photograph of Women Working at a Bell System Telephone Switchboard (3660047829)”</a> by The U.S. National Archives, <a href="https://www.flickr.com/commons/usage/">no known copyright restrictions</a>, via Wikimedia Commons; <a href="https://commons.wikimedia.org/wiki/File:Card_puncher_-_NARA_-_513295.jpg">“A woman with a Hollerith pantograph punch , the keyboard is for the 1940 US census popula…”</a>, <a href="https://creativecommons.org/publicdomain/mark/1.0/">public domain</a>, via Wikimedia Commons; <a href="https://commons.wikimedia.org/wiki/File:Control_Data_Processing_IBM_equipment_Oak_Ridge_(7159856998).jpg">“Control Data Processing IBM equipment Oak Ridge (7159856998)”</a> by doe-oakridge, <a href="https://creativecommons.org/publicdomain/mark/1.0/">public domain</a>, via Wikimedia Commons; <a href="https://commons.wikimedia.org/wiki/File:Cumberland_River_and_Nashville,_TN,_USA_(sl2-81-198).jpg">“Cumberland River and Nashville, TN, USA (sl2-81-198)”</a> by NASA Johnson Space Center, <a href="https://creativecommons.org/publicdomain/mark/1.0/">public domain</a>, via Wikimedia Commons; <a href="https://commons.wikimedia.org/wiki/File:Cumberland_River_above_Nashville,_Nashville,_Tenn_(74051).jpg">“Cumberland River above Nashville, Nashville, Tenn (74051)”</a> by Pub. by Southern Latex Co., Nashville, Tenn. &quot;Tichnor Quali…, <a href="https://creativecommons.org/publicdomain/mark/1.0/">public domain</a>, via Wikimedia Commons; <a href="https://commons.wikimedia.org/wiki/File:Files_in_the_Department_of_Justice,_1892.jpg">“Files in the Department of Justice, 1892”</a>, <a href="https://creativecommons.org/publicdomain/mark/1.0/">public domain</a>, via Wikimedia Commons; <a href="https://archive.org/details/Operator1949_4">“Operator Toll Dialing: Teamwork”</a> by Audio Productions, Inc., <a href="https://creativecommons.org/licenses/publicdomain/">public domain</a>, via Internet Archive; <a href="https://commons.wikimedia.org/wiki/File:Clerks_helping_customers_file_income_taxes,_1946.tif">“Clerks helping customers file income taxes, 1946”</a> by Toronto Telegram staff, <a href="https://creativecommons.org/publicdomain/mark/1.0/">public domain</a>, via Wikimedia Commons.</p></div>
+  </div>
+  <div class="foot__mark wrap"><p class="wordmark" data-fit="foot" aria-hidden="true"><span>Local Edge</span></p></div>
+  <p class="foot__legal wrap">&copy; 2026 Local Edge Technology Solutions, LLC. Prototype: the examples on this page are made up.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/SplitText.min.js" defer></script>
+<script src="main.js" defer></script>
+<script src="motion.js" defer></script>
+</body>
+</html>

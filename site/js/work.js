@@ -49,7 +49,10 @@ export function initWork() {
     const t = tl;
     tl = null;
     t.progress(1).kill();
+    // The windows' colour fades are CSS transitions; a settle lands at once, without them.
+    street.classList.add("is-settling");
     tidy();
+    requestAnimationFrame(() => requestAnimationFrame(() => street.classList.remove("is-settling")));
   };
 
   // Each building starts pushed out from the middle of its own row, so a wrapped street (three rows of

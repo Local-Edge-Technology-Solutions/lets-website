@@ -802,3 +802,22 @@ p { text-wrap: pretty; }
 }
 /* Approved: a wider band of light round each window, so approved reads differently from only lit. */
 .bd .st-ill .st-halo .st-win { stroke-width: calc(var(--st-sw) * 8); }
+/* Codex code review, round 1. */
+/* The preview never changes height when it is approved: the button keeps room for two lines and the status
+   line for three where the preview is narrow. */
+@container bd (max-width: 559px) {
+  .bd-btn { min-height: calc(2 * 1.45em + 1.5rem + 4px); line-height: 1.45; }
+  .bd-status { min-height: calc(3 * 1.45em); }
+}
+/* Reduced motion, or a run settled early: the windows change colour at once. */
+.bd-street.is-settling .st-win, .bd-street.is-settling .st-halo, .bd-street.is-settling .st-halo-line { transition: none !important; }
+@media (prefers-reduced-motion: reduce) {
+  .bd .st-ill .st-win, .bd .st-halo, .bd .st-halo-line, .bd-btn { transition: none; }
+}
+/* Tablet and below: the intro stacks (words, the list, then the photo), like every other paired row. */
+@media (max-width: 1000px) {
+  .intro__words, .done { grid-column: 1 / -1; }
+  .chip--press { grid-column: 4 / -1; grid-row: auto; }
+}
+/* The narrowest phones (320): the four tabs keep to one line. */
+@container bd (max-width: 360px) { .bd-tabs { gap: 0.25rem 0.9rem; font-size: 0.9375rem; } }

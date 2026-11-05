@@ -219,7 +219,17 @@ export function initMotion() {
     };
   });
 
-  const refresh = () => ScrollTrigger.refresh();
+  // A visit that opens on a fragment (#contact, #work): the showcase pin adds height above it after the
+  // browser has already jumped, so once measurements settle, land on the fragment again, unless the
+  // visitor has started scrolling themselves (Codex review, 2026-11-05).
+  let moved = false;
+  const mine = () => { moved = true; };
+  ["wheel", "touchstart", "keydown", "pointerdown"].forEach((t) => addEventListener(t, mine, { once: true, passive: true }));
+  const refresh = () => {
+    ScrollTrigger.refresh();
+    const target = location.hash.length > 1 && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    if (target && !moved) target.scrollIntoView({ block: "start" });
+  };
   if (document.readyState === "complete") refresh();
   else addEventListener("load", refresh, { once: true });
   // If the face arrived after the bounded wait, measure the letters again in the real face.

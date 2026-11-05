@@ -136,8 +136,12 @@ export function initMotion() {
     // echo: its copy would be measured before the fonts, the split and the pin had settled, and could land
     // over the words below (critique, 2026-11-05). Echoes start once the page has loaded and settled.
     let settled = false;
-    const settle = () => { const t = setTimeout(() => { settled = true; }, 700); undo.push(() => clearTimeout(t)); };
-    Promise.all([document.readyState === "complete" ? null : new Promise((r) => addEventListener("load", r, { once: true })), document.fonts?.ready]).then(settle);
+    let disposed = false;
+    let settleTimer = 0;
+    let onLoad = null;
+    const loaded = document.readyState === "complete" ? null : new Promise((r) => { onLoad = r; addEventListener("load", r, { once: true }); });
+    Promise.all([loaded, document.fonts?.ready]).then(() => { if (!disposed) settleTimer = setTimeout(() => { settled = true; }, 700); });
+    undo.push(() => { disposed = true; clearTimeout(settleTimer); if (onLoad) removeEventListener("load", onLoad); });
     const splitIn = (el) => {
       if (!el) return;
       let slipped = false;

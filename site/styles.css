@@ -900,3 +900,5 @@ p { text-wrap: pretty; }
    drops alone to a ragged right-hand line. */
 .slips [data-ui].slip dl div { display: block; padding: 0.3rem 0; }
 .slips [data-ui].slip dd { text-align: left; margin-left: 0; font-weight: 700; }
+/* Tablet: with the rows stacked the slips are taller, so the last row no longer bleeds below the section edge. */
+@media (min-width: 641px) and (max-width: 1000px) { .slips .slip:nth-child(n+4) { margin-bottom: 0; } }

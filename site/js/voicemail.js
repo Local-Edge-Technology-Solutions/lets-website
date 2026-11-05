@@ -1,7 +1,7 @@
 // Showpiece 2: a sample voicemail becomes a call-back list. A scripted illustration with invented callers:
 // no audio, no recording. Without script the first transcript and its row are already on the page.
 // Each press runs one sample once; Next and Replay follow. Only completion is announced.
-import { gsap, SplitText, calm, $, $$ } from "./env.js";
+import { gsap, ScrollTrigger, SplitText, calm, $, $$ } from "./env.js";
 
 const SAMPLES = [
   {
@@ -94,6 +94,8 @@ export function initVoicemail() {
     length.textContent = sample.length;
     transcript.innerHTML = sample.html;
   };
+  let remeasureCall = null;
+  const remeasure = () => { remeasureCall?.kill(); remeasureCall = gsap.delayedCall(0.6, () => ScrollTrigger.refresh()); };
   const finish = (sample, i, quiet) => {
     run = null;
     split = null;
@@ -104,6 +106,8 @@ export function initVoicemail() {
     setBusy(false);
     showNextControls();
     if (!quiet) announce(sample, i);
+    // The list just grew (or a new cycle emptied it), so the sections below moved: measure their triggers again.
+    remeasure();
   };
 
   const start = (i) => {

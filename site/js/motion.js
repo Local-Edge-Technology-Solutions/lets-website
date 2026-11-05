@@ -100,19 +100,6 @@ export function pressFeedback(control, { squash = 0.95, ink = 0.28 } = {}) {
   };
 }
 
-// ---- The examples' re-deal: each slip's lines lift off, the new ones print in, row by row.
-const rowsOf = (slip) => $$(".slip__top, dl > div, .slip__msg, .slip__foot", slip);
-export function redeal(slips, swap) {
-  if (calm()) { swap(); return; }
-  const out = gsap.timeline();
-  slips.forEach((s, i) => out.to(rowsOf(s), { y: -10, autoAlpha: 0, duration: 0.18, ease: "power2.in", stagger: 0.012 }, i * 0.03));
-  out.call(() => {
-    swap();
-    const inn = gsap.timeline();
-    slips.forEach((s, i) => inn.fromTo(rowsOf(s), { y: 12, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.42, ease: "expo.out", stagger: 0.035, clearProps: "transform,opacity,visibility" }, i * 0.06));
-  });
-}
-
 export function initMotion() {
   const mm = gsap.matchMedia();
   mm.add({ motion: "(prefers-reduced-motion: no-preference)", wide: "(min-width: 1001px)" }, (ctx) => {
@@ -130,7 +117,7 @@ export function initMotion() {
 
     // Headings are never moved or hidden; where marked, a second impression slips into register as each
     // arrives. Called section by section so every
-    // ScrollTrigger is created in page order (the showcase pin adds height).
+    // ScrollTrigger is created in page order.
     const splits = [];
     // A heading already on screen while the page is still settling (a visit that opens on #about, say) gets no
     // echo: its copy would be measured before the fonts, the split and the pin had settled, and could land
@@ -160,42 +147,29 @@ export function initMotion() {
       }));
     };
 
-    // Billing Day: its heading rises; the preview itself only answers the Approve button (js/work.js).
-    splitIn($("#work-title"));
-    gsap.from(".work__text", { y: 24, duration: 0.8, ease: "expo.out", scrollTrigger: { trigger: ".work__head", start: "top 88%", once: true } });
-
-    // The to-do list ticks itself, once, when it arrives: the words are always there; only the ticks draw.
-    const ticks = $$(".done__box svg");
-    gsap.set(ticks, { clipPath: "inset(0% 100% 0% 0%)" });
-    gsap.to(ticks, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.35, ease: "power2.out", stagger: 0.18, delay: 0.2, scrollTrigger: { trigger: ".done", start: "top 85%", once: true } });
-    undo.push(() => gsap.set(ticks, { clearProps: "clipPath" }));
-
-    splitIn($("#intro-title"));
-    gsap.from(".intro__words > *", { y: 28, duration: 0.8, ease: "expo.out", stagger: 0.08, scrollTrigger: { trigger: ".intro__words", start: "top 90%", once: true } });
+    // What we fix: the heading arrives, the intro rises; each problem's words step in as it arrives and its
+    // example is laid down beside them (the voicemail card, then its list; a slip printed in).
+    splitIn($("#week-title"));
+    gsap.from(".probs__intro > *", { y: 24, duration: 0.8, ease: "expo.out", stagger: 0.08, scrollTrigger: { trigger: ".probs__intro", start: "top 90%", once: true } });
+    $$(".prob").forEach((row) => {
+      const tl = gsap.timeline({ scrollTrigger: { trigger: row, start: "top 86%", once: true } });
+      tl.from($$(".prob__words > :not([hidden])", row), { y: 18, duration: 0.7, ease: "expo.out", stagger: 0.06 }, 0);
+      const card = $(".prob__card", row);
+      if (card) tl.from(card, { y: 60, rotation: -6, duration: 0.9, ease: "expo.out" }, 0.15);
+    });
+    gsap.timeline({ scrollTrigger: { trigger: ".prob--calls", start: "top 86%", once: true } })
+      .from(".vm-card", { y: 60, rotation: -1.5, duration: 0.9, ease: "expo.out" }, 0.1)
+      .from(".vm-list", { y: 80, rotation: 4, duration: 0.9, ease: "expo.out" }, 0.22)
+      .from(".vm-wave i", { scaleY: 0.1, duration: 0.6, ease: "expo.out", stagger: { each: 0.008, from: "start" } }, 0.3);
+    gsap.from(".probs__else-words > *", { y: 24, duration: 0.8, ease: "expo.out", stagger: 0.08, scrollTrigger: { trigger: ".probs__else", start: "top 88%", once: true } });
     gsap.from(".chip--press", { rotation: 14, scale: 1.2, duration: 0.8, ease: "expo.out", scrollTrigger: { trigger: ".chip--press", start: "top 88%", once: true } });
 
-    // What's eating your week: the picker is dealt in; in the voicemail answer, the card is laid down and the
-    // list slid beside it.
-    splitIn($("#week-title"));
-    gsap.from(".fixes .vm__intro > *, .fixes__picker:not([hidden])", { y: 20, duration: 0.7, ease: "expo.out", stagger: 0.07, scrollTrigger: { trigger: ".fixes .vm__intro", start: "top 90%", once: true } });
-    gsap.timeline({ scrollTrigger: { trigger: ".fix--calls", start: "top 86%", once: true } })
-      .from(".vm-card", { y: 60, rotation: -1.5, duration: 0.9, ease: "expo.out" })
-      .from(".vm-list", { y: 80, rotation: 4, duration: 0.9, ease: "expo.out" }, 0.12)
-      .from(".vm-wave i", { scaleY: 0.1, duration: 0.6, ease: "expo.out", stagger: { each: 0.008, from: "start" } }, 0.2);
-
-    // Showcase: on wide screens the section holds while the six slips print up out of the desk, one by one.
-    splitIn($("#examples-title"));
-    const show = $(".showcase");
-    const slips = $$(".slip", show);
-    gsap.from(".showcase__copy .statement, .showcase .picker:not([hidden])", { y: 24, duration: 0.7, ease: "expo.out", stagger: 0.08, scrollTrigger: { trigger: ".showcase__copy", start: "top 85%", once: true } });
-    if (wide && show.offsetHeight <= innerHeight + 4) {
-      gsap.timeline({ scrollTrigger: { trigger: show, start: "top top", end: "+=85%", pin: true, scrub: true, anticipatePin: 1 } })
-        .from(slips, { yPercent: 108, ease: "none", stagger: 0.14, duration: 0.5 }, 0)
-        .fromTo(".showcase__photo", { scale: 1.12 }, { scale: 1, ease: "none", duration: 1.2 }, 0);
-    } else {
-      ScrollTrigger.batch(slips, { start: "top 94%", once: true, onEnter: (b) => gsap.from(b, { y: 40, duration: 0.7, ease: "expo.out", stagger: 0.08 }) });
-      gsap.fromTo(".showcase__photo", { scale: 1.1 }, { scale: 1, ease: "none", scrollTrigger: { trigger: show, start: "top bottom", end: "bottom top", scrub: true } });
-    }
+    // Billing Day: its heading rises; the preview itself only answers the Approve button (js/work.js).
+    // Ben's record follows, row by row.
+    splitIn($("#work-title"));
+    gsap.from(".work__text", { y: 24, duration: 0.8, ease: "expo.out", scrollTrigger: { trigger: ".work__head", start: "top 88%", once: true } });
+    gsap.from(".record__title, .record__lead", { y: 20, duration: 0.7, ease: "expo.out", stagger: 0.08, scrollTrigger: { trigger: ".record", start: "top 88%", once: true } });
+    ScrollTrigger.batch(".record__row", { start: "top 92%", once: true, onEnter: (b) => gsap.from(b, { y: 26, duration: 0.7, ease: "expo.out", stagger: 0.07 }) });
 
     // Calculator: the tasks are dealt in like rows on a sheet; the figure panel arrives beside them.
     splitIn($("#calc-title"));
@@ -210,12 +184,11 @@ export function initMotion() {
       .from(".person > *", { y: 18, duration: 0.6, ease: "expo.out", stagger: 0.05 }, 0.2);
     gsap.from(".about__line", { y: 18, duration: 0.7, ease: "expo.out", scrollTrigger: { trigger: ".about__line", start: "top 90%", once: true } });
 
-    // How it works: each line steps in along the stair as it climbs the screen.
+    // How it works: each step's heading and words rise as the step arrives.
     splitIn($("#how-title"));
     $$(".stair").forEach((st) => {
       gsap.from(st.children, { y: 18, duration: 0.7, ease: "expo.out", stagger: 0.08, scrollTrigger: { trigger: st, start: "top 88%", once: true } });
     });
-
     gsap.from(".week-slip", { y: 60, rotation: -8, duration: 0.9, ease: "expo.out", scrollTrigger: { trigger: ".week-slip", start: "top 90%", once: true } });
 
     splitIn($("#faq-title"));
@@ -227,12 +200,11 @@ export function initMotion() {
     });
     ScrollTrigger.batch(".storefronts li", { start: "top 94%", once: true, onEnter: (b) => gsap.from(b, { y: 50, rotation: (i) => (i % 2 ? 4 : -4), duration: 0.8, ease: "expo.out", stagger: 0.07 }) });
 
-    splitIn($("#contact-title"), { moveOnly: true });
-    // Contact: the coupon is handed over, then its cells fill in.
+    // Contact: the form is handed over, then its cells fill in.
     gsap.timeline({ scrollTrigger: { trigger: ".coupon", start: "top 88%", once: true } })
       .from(".coupon", { y: 70, rotation: -2.5, duration: 0.9, ease: "expo.out" })
       .from(".coupon__right > :not(.hp):not(:empty)", { y: 14, duration: 0.5, ease: "expo.out", stagger: 0.06 }, 0.2)
-      .from(".coupon__text", { y: 14, duration: 0.6, ease: "expo.out" }, 0.3);
+      .from(".coupon__left > *", { y: 14, duration: 0.6, ease: "expo.out", stagger: 0.06 }, 0.3);
 
     // Footer: the four blocks are set like wood type, rising from the baseline as the close arrives.
     gsap.from(".mark__block", { yPercent: 30, duration: 0.9, ease: "expo.out", stagger: 0.11, scrollTrigger: { trigger: ".mark", start: "top 94%", once: true } });
@@ -249,7 +221,7 @@ export function initMotion() {
     };
   });
 
-  // A visit that opens on a fragment (#contact, #work): the showcase pin adds height above it after the
+  // A visit that opens on a fragment (#contact, #work): split headings and late fonts can move it after the
   // browser has already jumped, so once measurements settle, land on the fragment again, unless the
   // visitor has started scrolling themselves (Codex review, 2026-11-05).
   const refresh = () => {

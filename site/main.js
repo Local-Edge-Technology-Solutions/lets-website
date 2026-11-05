@@ -3,8 +3,8 @@
 import { fontsReady } from "./js/env.js";
 import { initMenu } from "./js/menu.js";
 import { initVoicemail } from "./js/voicemail.js";
-import { initFixes } from "./js/fixes.js";
-import { initExamples } from "./js/examples.js";
+import { initAsk } from "./js/ask.js";
+import { initBusy } from "./js/busy.js";
 import { initCalculator } from "./js/calculator.js";
 import { initForm } from "./js/form.js";
 import { initWork } from "./js/work.js";
@@ -16,8 +16,8 @@ const safely = (name, fn) => {
 
 safely("menu", initMenu);
 safely("voicemail", initVoicemail);
-safely("fixes", initFixes);
-safely("examples", initExamples);
+safely("ask", initAsk);
+safely("busy", initBusy);
 safely("calculator", initCalculator);
 safely("form", initForm);
 safely("work", initWork);

@@ -828,3 +828,58 @@ p { text-wrap: pretty; }
   .bd-btn { min-height: calc(2 * 1.45em + 1.5rem + 4px); line-height: 1.45; }
   .bd-status { min-height: calc(3 * 1.45em); }
 }
+
+/* ---------- round 4, 2026-11-05: the second independent critique ---------- */
+/* No label above the preview's figure: the figure, then its words. */
+.bd.is-approved .bd-fig__sub { color: var(--bd-ledger); font-weight: 700; }
+/* Each lot says Approved once the month is approved (the windows glow too). */
+.bd-lot-ok { display: none; margin-top: 0.15rem; font-size: var(--step-small); font-weight: 700; color: var(--bd-ledger); }
+.bd.is-approved .bd-lot-ok { display: block; }
+/* The preview's type on the page's own scale: small, body, lead, and one figure size. */
+.bd { font-size: var(--step-body); }
+.bd-practice, .bd-tabs, .bd-fig__sub, .bd-inv__sub, .bd-inv__hours, .bd-status, .bd-foot, .bd-lot-name { font-size: var(--step-small); }
+.bd-brand, .bd-round__title, .bd-inv__name, .bd-approve__title, .bd-lot-amt, .bd-btn { font-size: var(--step-body); }
+.bd-inv__amt, .bd-approve__total { font-size: var(--step-lead); }
+.bd-title, .bd-fig__big { font-size: clamp(2rem, 1.3rem + 2vw, 3.125rem); }
+/* About: Ben's words, then Zeke's card with his own photo above his name; never a photo beside the wrong name. */
+.about__people > .about__photo { display: none; }
+.person--ben { grid-column: 1 / span 4; grid-row: 1; }
+.person--zeke { grid-column: 5 / span 8; grid-row: 1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--gutter); align-content: start; }
+.person--zeke .about__photo { display: block; grid-column: 1; grid-row: 1 / span 6; margin: 0; overflow: clip; }
+.person--zeke .about__photo .person__photo { width: 100%; height: auto; aspect-ratio: 4 / 5; max-height: 62svh; object-fit: cover; object-position: 50% 20%; }
+.person--zeke > :not(.about__photo) { grid-column: 2; }
+@media (max-width: 1000px) {
+  .person--ben { grid-column: 1 / span 6; grid-row: 1; }
+  .person--zeke { grid-column: 7 / span 6; grid-row: 1; grid-template-columns: minmax(0, 1fr); }
+  .person--zeke .about__photo { grid-row: auto; margin-bottom: 1.25rem; }
+  .person--zeke > :not(.about__photo) { grid-column: 1; }
+  .person__text { max-width: none; }
+}
+@media (max-width: 640px) {
+  .person--ben, .person--zeke { grid-column: 1 / -1; grid-row: auto; }
+  .person--zeke .about__photo { width: 82%; }
+}
+/* How it works: each step is a row (its heading, then its words) on tablets too; on a phone, full width. */
+@media (min-width: 641px) {
+  .stair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: var(--gutter); align-items: baseline; }
+  .stair p { margin-top: 0; max-width: none; }
+}
+@media (max-width: 640px) { .stair p { max-width: none; } }
+/* The last step's teal block: its words on the same column as the rows above. */
+.stair--last { padding-inline: 0; }
+.stair--last .stair__line { padding-left: clamp(1rem, 2vw, 1.5rem); }
+/* What we build: the panel is solid enough that the photo's own menu type never competes with the heading. */
+.showcase__copy { background: rgb(10 10 10 / 0.86); }
+.stair--last p { padding-right: clamp(1rem, 2vw, 1.5rem); }
+/* The Approved mark keeps its room in both states, so the preview never changes height. */
+.bd-lot-ok { display: block; visibility: hidden; }
+.bd.is-approved .bd-lot-ok { visibility: visible; }
+/* The problem names are headings in sentence case, not small capitals over the text (they read as kickers). */
+.fix__problem { text-transform: none; letter-spacing: -0.03em; }
+/* Six sizes on the whole page: small (15), body (19), lead (30), the preview's figure, head (88), display.
+   The small interface pieces (slips, chips, the call-back list) all take the small size. */
+.page [data-ui] .done__top span, .page [data-ui] .slip__top span, .page [data-ui] .vm-list__top span,
+.page .slip, .page .fixes .fix__card.slip, .page .week-slip, .page [data-ui].slip .slip__top b, .page [data-ui].week-slip .slip__top b,
+.page [data-ui] .cb__name, .page [data-ui] .cb__urgency, .page [data-ui] .cb__town, .page [data-ui].vm-list .vm-list__foot { font-size: var(--step-small); }
+.page [data-ui].done .done__row { font-size: var(--step-body); }
+.page .calc__hours { font-size: var(--step-head); }

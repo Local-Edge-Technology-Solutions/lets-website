@@ -7,13 +7,13 @@
 import { gsap, calm, $, $$ } from "./env.js";
 
 const REVIEW = {
-  label: "Invoices to review",
+  label: "to review · 6 invoices",
   step: "Approve October",
   button: "Approve 6 invoices · $2,341.25",
   status: "Approving doesn’t send anything. Send to QuickBooks: coming next.",
 };
 const APPROVED = {
-  label: "Approved",
+  label: "approved · 6 invoices",
   step: "October approved",
   button: "Replay approval",
   status: "Sample invoices approved. Nothing sent to QuickBooks or clients.",

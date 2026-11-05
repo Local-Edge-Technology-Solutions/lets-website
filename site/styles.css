@@ -346,8 +346,8 @@ p { text-wrap: pretty; }
 .coupon__perf i:last-child { bottom: calc(var(--notch) / -2); }
 .coupon__perf { width: 0; position: relative; }
 .coupon__perf::before { content: ""; position: absolute; top: 2.25rem; bottom: 2.25rem; left: -3px; width: 6px; background: var(--teal); -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='16'%3E%3Ccircle cx='3' cy='8' r='3'/%3E%3C/svg%3E") repeat-y 0 0 / 6px 16px; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='16'%3E%3Ccircle cx='3' cy='8' r='3'/%3E%3C/svg%3E") repeat-y 0 0 / 6px 16px; }
-.coupon__left { padding: clamp(1.75rem, 3.4vw, 3rem); display: flex; flex-direction: column; justify-content: space-between; gap: 2rem; }
-.coupon__title { font-size: clamp(2.75rem, 0.5rem + 6.6vw, 8rem); color: var(--teal); }
+.coupon__left { padding: clamp(1.75rem, 3.4vw, 3rem); display: flex; flex-direction: column; justify-content: flex-start; gap: 1.5rem; }
+.coupon__title { font-size: clamp(2.75rem, 0.5rem + 8vw, 8rem); color: var(--teal); }
 .coupon__text { font-size: var(--step-lead); font-weight: 700; line-height: 1.25; max-width: 28ch; }
 .coupon__right { padding: clamp(1.75rem, 3.4vw, 3rem); display: grid; gap: 10px; align-content: start; }
 .cell { display: grid; gap: 0.2rem; background: var(--white); color: var(--ink); padding: 0.6rem 0.9rem 0.5rem; cursor: text; transition: background-color var(--t-hover) ease; }
@@ -537,12 +537,29 @@ p { text-wrap: pretty; }
   .showcase .picker__options { grid-template-columns: repeat(3, auto); }
   .picker__options label { display: flex; }
   .picker__options span { flex: 1 1 auto; }
-  /* Questions: the band is as tall as its word. */
-  .faq__head { min-height: 0; padding-top: var(--section); }
+  /* Missed calls: the words travel beside the voicemail and the list. */
+  .fix--calls .fix__words { position: sticky; top: 18svh; align-self: start; }
+  /* About: the two cards side by side, so the pinned title is held about one screen. */
+  .about__people { row-gap: 4rem; }
+  .person--ben { grid-column: 1 / span 3; }
+  .person--zeke { grid-column: 4 / span 3; margin-top: 8rem; }
+  /* How it works: headings break evenly, with no word left alone. */
+  .stair__line { text-wrap: balance; }
 }
+/* Narrow desktop: the last step starts a column earlier and its heading steps down, so it stays on two lines. */
+@media (min-width: 1001px) and (max-width: 1279px) {
+  .how__grid .stair:nth-child(4) { grid-column: 3 / -1; }
+  .stair--last .stair__line { font-size: 0.85em; }
+}
+/* Questions, every width: the band is as tall as its word. */
+.faq__head { min-height: 0; padding-top: var(--section); }
 
-/* Tablet: the storefronts go three and two. */
+/* Tablet: the storefronts go three and two; the problems picker goes four and four; Missed calls runs full width. */
 @media (min-width: 641px) and (max-width: 1000px) {
+  .fixes__picker .picker__options { display: grid; grid-template-columns: repeat(4, auto); }
+  .picker__options label { display: flex; }
+  .picker__options span { flex: 1 1 auto; }
+  .fix--calls .fix__words { grid-column: 1 / -1; }
   .storefronts { grid-template-columns: repeat(6, minmax(0, 1fr)); }
   .storefronts li { grid-column: span 2; }
   .storefronts li:nth-child(n+4) { grid-column: span 3; }
@@ -550,9 +567,11 @@ p { text-wrap: pretty; }
   .stair--last { margin-left: calc((var(--col) - 1) * 3vw); }
 }
 
-/* Phone: the About title at the page's scale, the bios across the full width, the normal side margin. */
+/* Phone: the bios across the full width, the normal side margin, the pickers in even pairs. */
 @media (max-width: 640px) {
-  .about__title { font-size: calc((100cqi - 2 * var(--margin)) / 3.4); }
+  .picker__options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .picker__options label { display: flex; }
+  .picker__options span { flex: 1 1 auto; }
   .person--ben, .person--zeke { grid-column: 1 / -1; }
   .person__card { width: 76%; }
   .person--zeke .person__card { margin-left: auto; }

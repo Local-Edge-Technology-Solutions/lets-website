@@ -45,7 +45,7 @@ export function initForm() {
         form.reset();
         tell("Thanks. Your message is on its way to Ben and Zeke.", { ok: true });
       } else {
-        tell("Thanks. Your message is on its way to Ben and Zeke. The changes you made while it was sending haven’t been sent; press Let’s talk again to send them.", { ok: true });
+        tell("Thanks. Your message is on its way to Ben and Zeke. The changes you made while it was sending haven’t been sent; press Send again to send them.", { ok: true });
       }
     } catch (err) {
       const status = err && err.status;

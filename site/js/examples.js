@@ -46,7 +46,7 @@ const T = {
     ["The week, on one page", [["Orders", "64"], ["Repeat orders", "21"], ["Catering inquiries", "5"]], "Lands in your inbox Friday at 4"],
   ],
 };
-T.any = [T.agency[0], T.agency[1], T.shop[3], T.salon[2], T.bakery[3], T.shop[5]];
+T.any = [T.agency[0], T.bookkeeping[4], T.shop[3], T.salon[2], T.bakery[3], T.shop[5]];
 const NAMES = { any: "any business", shop: "a shop or boutique", salon: "a salon, spa or studio", agency: "an agency or office", bookkeeping: "bookkeeping", bakery: "a restaurant, bakery or café" };
 const HEIGHTS = [40, 34, 44, 30, 38, 28];
 

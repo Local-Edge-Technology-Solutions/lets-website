@@ -307,7 +307,7 @@ p { text-wrap: pretty; }
 .person__card-name { position: absolute; z-index: 2; left: 1.25rem; top: 1rem; font-weight: 900; font-size: var(--step-lead); letter-spacing: -0.03em; }
 .person__name { font-size: var(--step-lead); font-weight: 900; letter-spacing: -0.03em; margin-top: 1.25rem; }
 .person__role { font-size: var(--step-small); font-weight: 700; color: var(--mid-on-dark); margin-top: 0.15rem; }
-.person__text { margin-top: 0.75rem; max-width: 34ch; }
+.person__text { margin-top: 0.75rem; max-width: 34ch; text-wrap: pretty; }
 
 /* ---------- how it works ---------- */
 .how { padding: var(--section) var(--margin); }
@@ -359,7 +359,7 @@ p { text-wrap: pretty; }
 .cell input::placeholder, .cell textarea::placeholder { color: var(--muted); opacity: 1; }
 .cell__help { font-size: var(--step-small); color: var(--soft-on-dark); margin: 0 0 0.5rem; }
 .cell-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.coupon__submit { width: 100%; margin-top: 0.4rem; }
+.coupon__submit { width: 100%; margin-top: 0.4rem; background: var(--teal); color: var(--black); }
 .coupon__status { font-size: var(--step-body); font-weight: 700; color: var(--white); }
 .coupon__status:empty { display: none; }
 .coupon__status a { color: var(--teal); }

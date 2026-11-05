@@ -105,8 +105,13 @@ export function initCalculator() {
     send.removeAttribute("aria-disabled");
     if (hours.textContent === "–") odo.show();
     const m = total();
-    odo.set(Math.round((m * 52) / 60));
-    sum.textContent = `${fmt.format(m)} minutes a week × 52 ÷ 60`;
+    const h = Math.round((m * 52) / 60);
+    odo.set(h);
+    // The sum is a live region: screen readers hear the year's total with it, not only the arithmetic.
+    const said = document.createElement("span");
+    said.className = "sr-only";
+    said.textContent = `, about ${fmt.format(h)} hours a year`;
+    sum.replaceChildren(`${fmt.format(m)} minutes a week × 52 ÷ 60`, said);
   };
   root.addEventListener("input", update);
   root.addEventListener("change", update);

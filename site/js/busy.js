@@ -27,11 +27,18 @@ export function initBusy() {
 
   let tl = null;
   let pending = null;
+  let pile = null;
   let piled = false;
-  // Any run in progress jumps to its end (a second press, a resize, motion turned off mid-run).
+  // Anything in progress jumps to its end (a second press, a resize, motion turned off mid-run): the waiting
+  // auto-play, a pile-up still dropping in (its notifications land, fully visible), and a run.
   const settle = () => {
     pending?.kill();
     pending = null;
+    if (pile) {
+      pile.kill();
+      pile = null;
+      gsap.set(notes, { clearProps: "transform,opacity,visibility" });
+    }
     if (!tl) return;
     const t = tl;
     tl = null;
@@ -49,17 +56,19 @@ export function initBusy() {
   const pileUp = () => {
     piled = true;
     if (calm()) return null;
-    return gsap.from(notes, { y: -18, autoAlpha: 0, duration: 0.5, ease: "expo.out", stagger: 0.22, clearProps: "transform,opacity,visibility" });
+    pile = gsap.from(notes, { y: -18, autoAlpha: 0, duration: 0.5, ease: "expo.out", stagger: 0.22, clearProps: "transform,opacity,visibility", onComplete: () => { pile = null; } });
+    return pile;
   };
 
   const play = (announce) => {
     settle();
-    const keep = document.activeElement === go || document.activeElement === replay;
     const finish = () => {
       tl = null;
       tidy();
+      // Only a control that is about to disappear hands its focus on, and only if it still has it now.
+      const hadFocus = document.activeElement === go;
       show(true, announce ? SAID : "");
-      if (keep) talk.focus();
+      if (hadFocus) talk.focus();
     };
     if (calm()) { finish(); return; }
     tl = gsap.timeline({ onComplete: finish });
@@ -80,8 +89,8 @@ export function initBusy() {
     show(false, "");
     if (keep) go.focus();
     if (calm()) { play(true); return; }
-    const pile = pileUp();
-    pending = gsap.delayedCall(pile ? pile.duration() + 0.9 : 0, () => { pending = null; play(true); });
+    const dropping = pileUp();
+    pending = gsap.delayedCall(dropping ? dropping.duration() + 0.9 : 0, () => { pending = null; play(true); });
   };
 
   go.addEventListener("click", () => play(true));

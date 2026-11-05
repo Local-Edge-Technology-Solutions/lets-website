@@ -39,13 +39,23 @@ function registrationSlip(heading, ink, { x = 14, y = 6, duration = 0.7, lines: 
   if (cs.position === "static") heading.style.position = "relative";
   if (cs.zIndex === "auto") heading.style.zIndex = "1";
   parent.append(copy);
-  const restore = () => { copy.remove(); [heading.style.position, heading.style.zIndex] = saved; parent.style.position = parentPos; };
+  let done = false;
+  const restore = () => {
+    if (done) return;
+    done = true;
+    liveSlips.delete(stop);
+    copy.remove(); [heading.style.position, heading.style.zIndex] = saved; parent.style.position = parentPos;
+  };
+  // A slip still running when the motion layer is torn down (motion turned off mid-slip) is stopped and removed.
+  const stop = () => { tl.kill(); restore(); };
+  liveSlips.add(stop);
   tl.fromTo(copy, { x, y }, { x: x * 0.35, y: -y * 0.3, duration: duration * 0.55, ease: "power2.out" })
     .to(copy, { x: 0, y: 0, duration: duration * 0.45, ease: "expo.out" })
     .call(restore);
   tl.eventCallback("onInterrupt", restore);
   return tl;
 }
+const liveSlips = new Set();
 
 // ---- Animaxxing pressFeedback, adapted: squash on press and an ink ripple from the press point. Release eases
 // out without the recipe's elastic spring. Returns a remover for its listeners and styles.
@@ -219,6 +229,7 @@ export function initMotion() {
 
     return () => {
       undo.forEach((f) => f());
+      [...liveSlips].forEach((f) => f());
       splits.forEach((s) => s.revert());
       document.documentElement.classList.remove("gsap-press");
     };

@@ -549,8 +549,10 @@ p { text-wrap: pretty; }
 /* Narrow desktop: the last step starts a column earlier and its heading steps down, so it stays on two lines. */
 @media (min-width: 1001px) and (max-width: 1279px) {
   .how__grid .stair:nth-child(4) { grid-column: 3 / -1; }
-  .stair--last .stair__line { font-size: 0.85em; }
+  .stair--last .stair__line { font-size: calc(var(--step-head) * 0.85); }
 }
+/* Every width: big headings and captions break evenly, so no word is left alone on a line. */
+.head.split-target, .stair__line, .chip figcaption { text-wrap: balance; }
 /* Questions, every width: the band is as tall as its word. */
 .faq__head { min-height: 0; padding-top: var(--section); }
 
@@ -564,6 +566,7 @@ p { text-wrap: pretty; }
   .storefronts li { grid-column: span 2; }
   .storefronts li:nth-child(n+4) { grid-column: span 3; }
   .storefronts li:last-child { justify-self: stretch; width: auto; }
+  .storefronts li:nth-child(n+4) img { aspect-ratio: 6 / 5; }
   .stair--last { margin-left: calc((var(--col) - 1) * 3vw); }
 }
 
@@ -577,5 +580,8 @@ p { text-wrap: pretty; }
   .person--zeke .person__card { margin-left: auto; }
   .person__text { max-width: none; }
   .contact { padding-inline: var(--margin); }
+  .band { padding-inline: var(--margin); }
+  .storefronts li:last-child { width: 100%; }
+  .storefronts li:last-child img { aspect-ratio: 3 / 2; }
   .stair--last { margin-left: calc((var(--col) - 1) / 2 * 6vw); }
 }

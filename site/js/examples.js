@@ -16,13 +16,13 @@ const T = {
   salon: [
     ["New client inquiries", [["Cut and color", "2"], ["Massage", "1"]], "Three replies drafted"],
     ["Openings to offer", [["Thursday", "2:00 p.m."], ["Waitlist", "3 people"]], "Invitation drafted"],
-    ["Time to book again", [["Amy L.", "cut, 7 weeks"], ["Rosa P.", "massage, 5 weeks"], ["Kim T.", "color, 9 weeks"]], "Three rebooking texts drafted"],
+    ["Time to book again", [["Amy L.", "cut, 7 weeks"], ["Rosa P.", "massage, 5 weeks"], ["Kim T.", "color, 9 weeks"]], "Three rebooking texts drafted"],
     ["Text to a client", "“Hi Amy! You’re with Marisol on Thursday at 2:30 for color and a cut. Reply C to confirm or R to reschedule.”", "Sent 9:00. Confirmed 9:41"],
     ["Forms still needed", [["Jess M.", "first-visit form"], ["Amy L.", "contact details"]], "Two reminders drafted"],
     ["The week, on one page", [["Bookings", "24"], ["Return visits", "9"], ["New clients", "3"]], "Lands in your inbox Friday at 4"],
   ],
   agency: [
-    ["New inquiries answered", [["Website project", "call times sent"], ["Brochure", "details asked for"], ["Referral from Jo", "call booked"]], "Answered within the hour"],
+    ["New inquiries answered", [["Website project", "call times sent"], ["Brochure", "details asked for"], ["Referral from Jo", "call booked"]], "Answered within the hour"],
     ["Quotes to follow up", [["Flyer design", "$240"], ["Email template", "$180"], ["Logo refresh", "$650"]], "Three follow-ups drafted"],
     ["Calls to arrange", [["New inquiries", "2"], ["Referrals", "1"]], "Times offered from your calendar"],
     ["Client files missing", [["Logo files", "1"], ["Product photos", "2"]], "Three reminders drafted"],

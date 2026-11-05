@@ -883,3 +883,8 @@ p { text-wrap: pretty; }
 .page [data-ui] .cb__name, .page [data-ui] .cb__urgency, .page [data-ui] .cb__town, .page [data-ui].vm-list .vm-list__foot { font-size: var(--step-small); }
 .page [data-ui].done .done__row { font-size: var(--step-body); }
 .page .calc__hours { font-size: var(--step-head); }
+/* The status line keeps two lines of room at every width (three where the Approve card is narrow), so
+   approving never changes the preview's height between breakpoints either. */
+.bd-status { min-height: calc(2 * 1.45em); line-height: 1.45; }
+@container bdap (max-width: 460px) { .bd-status { min-height: calc(3 * 1.45em); } }
+@container bdap (max-width: 300px) { .bd-status { min-height: calc(4 * 1.45em); } }

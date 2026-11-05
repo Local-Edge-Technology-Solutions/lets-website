@@ -118,8 +118,8 @@ export function initMotion() {
     const slipCall = gsap.delayedCall(1.05, () => registrationSlip(h1, "var(--white)", { x: 18, y: 8, duration: 0.8 }));
     undo.push(() => slipCall.kill());
 
-    // Headings: lines slide in sideways from the left margin once (never down over what follows, never hidden),
-    // then a second impression slips into register where marked. Called section by section so every
+    // Headings are never moved or hidden; where marked, a second impression slips into register as each
+    // arrives. Called section by section so every
     // ScrollTrigger is created in page order (the showcase pin adds height).
     const splits = [];
     const splitIn = (el) => {
@@ -127,12 +127,11 @@ export function initMotion() {
       let slipped = false;
       splits.push(SplitText.create(el, {
         type: "lines", autoSplit: true,
+        // The heading itself never moves (a moving line was clipped by the page edge or crossed what followed,
+        // Codex 2026-11-05); where marked, its second impression slips into register as it arrives.
         onSplit(self) {
-          return gsap.from(self.lines, {
-            xPercent: -6, duration: 0.75, ease: "expo.out", stagger: 0.09,
-            scrollTrigger: { trigger: el, start: "top 92%", once: true },
-            onComplete: () => { if (el.dataset.slip && !slipped) { slipped = true; registrationSlip(el, el.dataset.slip, { lines: self.lines }); } },
-          });
+          return gsap.timeline({ scrollTrigger: { trigger: el, start: "top 92%", once: true } })
+            .call(() => { if (el.dataset.slip && !slipped) { slipped = true; registrationSlip(el, el.dataset.slip, { lines: self.lines }); } });
         },
       }));
     };

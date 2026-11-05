@@ -151,12 +151,9 @@ p { text-wrap: pretty; }
 
 /* ---------- intro: the proposition, and the busywork list the headline's letters land in ---------- */
 
-.chip--press { grid-column: 8 / span 5; grid-row: 1 / 3; align-self: center; transform: rotate(3deg); }
-.chip--press img { aspect-ratio: 4 / 5; object-fit: cover; object-position: 72% 30%; background: var(--photo-ground); }
-
 /* the to-do list: an interface fragment, so it keeps its own small rules */
 
- [data-ui] .slip__top span, [data-ui] .vm-list__top span { font-size: 0.8125rem; font-weight: 700; background: var(--ink); color: var(--white); padding: 0.1rem 0.4rem; flex: none; }
+  [data-ui] .vm-list__top span { font-size: 0.8125rem; font-weight: 700; background: var(--ink); color: var(--white); padding: 0.1rem 0.4rem; flex: none; }
 
 /* ---------- voicemail: the live thing ---------- */
 .voicemail { padding: var(--section) var(--margin); background: var(--deep); color: var(--white); }
@@ -202,18 +199,9 @@ p { text-wrap: pretty; }
 .picker label:active span { transform: scale(0.96); }
 @media (hover: hover) and (pointer: fine) { .picker label:hover input:not(:checked) + span { background: var(--surface); } }
 
-.slip { flex: 1 1 0; min-width: 0; min-height: calc(var(--h) * 1svh + 4svh); margin-bottom: -4svh; background: var(--white); color: var(--ink); padding: 1rem 1rem calc(4svh + 1.25rem); font-size: 0.9375rem; line-height: 1.35; overflow: clip; }
-.slip:nth-child(2) { transform: rotate(-1.5deg); transform-origin: 50% 100%; }
-.slip:nth-child(5) { transform: rotate(1.2deg); transform-origin: 50% 100%; }
-[data-ui].slip .slip__top { display: flex; justify-content: space-between; gap: 0.5rem; align-items: baseline; }
-[data-ui].slip .slip__top b { font-weight: 900; font-size: 1rem; line-height: 1.15; }
 /* In the narrow slips the label sits above the title, so the title keeps the full width. */
 
-[data-ui].slip dl div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0 0.75rem; padding: 0.18rem 0; }
 /* In a narrow receipt a row's value drops to its own line, right-aligned, rather than squeezing either side. */
-[data-ui].slip dd { font-variant-numeric: tabular-nums; font-weight: 700; text-align: right; flex: none; margin-left: auto; max-width: 100%; }
-
-[data-ui].slip .slip__foot { margin-top: 0.6rem; font-weight: 700; display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap; }
 
 /* ---------- calculator ---------- */
 .calc { padding: var(--section) var(--margin); }
@@ -279,11 +267,6 @@ p { text-wrap: pretty; }
 .stair--last .stair__line { color: var(--teal-on-white); }
 .how__grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); }
 .how__grid .stairs { grid-column: 1 / -1; grid-row: 1; }
-.how__grid > .slip.week-slip { min-height: 0; margin: 0; flex: none; }
-.week-slip { grid-column: 1 / span 4; grid-row: 1; align-self: end; transform: rotate(-2deg); transform-origin: 50% 100%; background: var(--black); color: var(--white); padding: 1.4rem 1.4rem 1.5rem; max-width: 27rem; font-size: 1.0625rem; line-height: 1.4; }
-[data-ui].week-slip .slip__top b { font-size: 1.1875rem; }
-[data-ui].week-slip .slip__top span { background: var(--teal); color: var(--black); }
-[data-ui].week-slip dd { color: var(--teal); }
 
 /* ---------- faq: a band per question ---------- */
 .faq__head { min-height: 40svh; display: flex; align-items: flex-end; padding: 3rem var(--margin) 2rem; }
@@ -364,20 +347,20 @@ p { text-wrap: pretty; }
   .hero__picture { position: relative; inset: auto; grid-column: 8 / span 5; grid-row: 1 / 3; margin-bottom: -14%; }
   .hero__body { grid-template-rows: auto minmax(0, 1fr); padding-bottom: 2.5rem; }
   
-  .chip--press { grid-column: 8 / span 5; }
+  
   
   
   
   [data-ui].vm-card { grid-column: 1 / -1; }
   [data-ui].vm-list { grid-column: 3 / -1; margin-top: -1rem; }
   
-  .slip { min-height: 15rem; margin-bottom: 0; padding-bottom: 1.25rem; }
-  .slip:nth-child(n+4) { margin-bottom: -1.5rem; }
+  
+  
   .calc__head h2, .calc__head .statement { grid-column: 1 / -1; }
   .calc__static, .chores { grid-column: 1 / -1; }
   .calc__result { grid-column: 1 / -1; position: static; }
-  .week-slip { grid-row: 2; grid-column: 2 / span 9; align-self: start; }
-  .how__grid > .slip.week-slip { margin-top: 3rem; }
+  
+  
   
   .band__q { grid-column: 1 / span 12; }
   .band__a { grid-column: 1 / span 12; margin-top: 1rem; }
@@ -398,7 +381,7 @@ p { text-wrap: pretty; }
   .hero__act .button { width: 100%; }
   .hero__picture { order: 3; width: 64%; align-self: center; margin-top: 0.5rem; margin-bottom: -18%; transform: rotate(4deg); }
   
-  .chip--press { width: 82%; align-self: flex-end; margin-right: 0.5rem; }
+  
   .vm__controls { width: 100%; }
   
   
@@ -409,10 +392,10 @@ p { text-wrap: pretty; }
   
   
   
-  .slip { min-height: 0; margin-bottom: 0; padding-bottom: 1.25rem; font-size: 1rem; }
-  .slip:nth-child(n+4) { margin-bottom: 0; }
-  .slip:nth-child(odd) { margin-right: 8%; }
-  .slip:nth-child(even) { margin-left: 8%; }
+  
+  
+  
+  
   .chore__pick { padding: 0.7rem 0.8rem; gap: 0.7rem; }
   .chore__mins { padding: 0.4rem 0.5rem; }
   .chore__mins span { display: none; }
@@ -465,7 +448,7 @@ p { text-wrap: pretty; }
   
   
   /* How it works: the steps go down the left two-thirds; the Monday slip stays in view on the right. */
-  .week-slip { grid-column: 9 / -1; grid-row: 1; align-self: start; justify-self: end; position: sticky; top: 20svh; width: 100%; }
+  
   /* Pickers: even rows, so no chip is left alone on a line. */
   
   
@@ -512,7 +495,6 @@ p { text-wrap: pretty; }
 /* ---------- round 3, 2026-11-05: real work first, nothing resting on text, one grid ---------- */
 
 /* Slips: the dashed tear line is gone (a decorative line in every screenshot); the title keeps its room. */
-[data-ui].slip .slip__top { margin-bottom: 0.6rem; }
 
 /* One editorial grid: a text block beside a left block starts on column 7; its partner ends by 6. */
 
@@ -758,10 +740,7 @@ p { text-wrap: pretty; }
   .bd .st-ill .st-win, .bd .st-halo, .bd .st-halo-line, .bd-btn { transition: none; }
 }
 /* Tablet and below: the intro stacks (words, the list, then the photo), like every other paired row. */
-@media (max-width: 1000px) {
-  
-  .chip--press { grid-column: 4 / -1; grid-row: auto; }
-}
+
 /* The narrowest phones (320): the four tabs keep to one line. */
 @container bd (max-width: 360px) { .bd-tabs { gap: 0.25rem 0.9rem; font-size: 0.9375rem; } }
 /* Codex re-review: the Approve card's own width decides whether its button may wrap, so its height is held
@@ -821,8 +800,7 @@ p { text-wrap: pretty; }
 
 /* Six sizes on the whole page: small (15), body (19), lead (30), the preview's figure, head (88), display.
    The small interface pieces (slips, chips, the call-back list) all take the small size. */
- .page [data-ui] .slip__top span, .page [data-ui] .vm-list__top span,
-.page .slip, .page .week-slip, .page [data-ui].slip .slip__top b, .page [data-ui].week-slip .slip__top b,
+  .page [data-ui] .vm-list__top span,
 .page [data-ui] .cb__name, .page [data-ui] .cb__urgency, .page [data-ui] .cb__town, .page [data-ui].vm-list .vm-list__foot { font-size: var(--step-small); }
 
 .page .calc__hours { font-size: var(--step-head); }
@@ -844,19 +822,24 @@ p { text-wrap: pretty; }
 
 /* Tablet: with the rows stacked the slips are taller, so the last row no longer bleeds below the section edge. */
 
-/* ---------- v4, 2026-11-05: what we fix. The busy phone (Monday night) beside the four problems; pressing
-   "Automate the busywork" clears it (Tuesday morning, handled). ---------- */
+/* ---------- v4, 2026-11-05: what we fix. The busy phone (Monday night) beside the four problems; it clears to
+   Tuesday morning, handled. Then a missed call handled, up close. ---------- */
 .probs { padding: var(--section) var(--margin); }
 .probs__title { color: var(--teal); }
 .probs__intro { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 1.25rem; margin-top: clamp(1.5rem, 3vw, 2.5rem); align-items: end; }
-.probs__intro .statement { grid-column: 1 / span 7; max-width: 40ch; }
-.probs__why { grid-column: 9 / span 4; font-weight: 700; }
+.probs__intro .statement { grid-column: 1 / span 6; max-width: 40ch; }
+.probs__why { grid-column: 7 / span 5; display: grid; gap: 0.75rem; max-width: 46ch; }
 .probs__src, .fix4__src { display: inline-block; font-size: var(--step-small); font-weight: 600; color: var(--mid-on-dark); text-decoration: underline; text-underline-offset: 0.2em; }
 .probs__body { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 3rem; align-items: start; margin-top: clamp(3rem, 6vw, 5rem); }
 
 .busy { grid-column: 1 / span 5; position: sticky; top: clamp(1rem, 6svh, 3.5rem); display: grid; justify-items: center; gap: 1.25rem; }
-.busy__controls { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+.busy__controls { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0.75rem 1.25rem; }
 .busy__controls .button { font-size: var(--step-body); min-height: 3.5rem; padding: 0 1.4rem; }
+.busy__replay { background: none; border: 0; padding: 0.5rem 0.25rem; color: inherit; font-weight: 700; text-decoration: underline; text-underline-offset: 0.2em; cursor: pointer; }
+.busy__replay:focus-visible { outline: 3px solid var(--white); outline-offset: 3px; }
+/* A demo control is outlined and says it plays something; a solid button always means "talk to us". */
+.button--demo { gap: 0.7rem; }
+.button--demo::before { content: ""; flex: none; width: 0.7em; height: 0.8em; background: currentColor; clip-path: polygon(0 0, 100% 50%, 0 100%); }
 
 /* The phone: a flat black body, a screen inside. Interface type is the page's own face at small sizes. */
 .phone { position: relative; width: min(100%, 21rem); margin: 0; padding: 0.65rem; background: var(--black); border-radius: 2.6rem; color: var(--black); }
@@ -870,13 +853,13 @@ p { text-wrap: pretty; }
 .note__app { font-size: 0.8125rem; font-weight: 700; color: var(--muted); }
 .note__title { font-size: var(--step-small); font-weight: 900; letter-spacing: -0.01em; }
 .note__text { font-size: var(--step-small); color: var(--muted); font-weight: 600; }
-.phone__state--after { background: var(--teal); }
+.phone__state--after { background: var(--teal); align-content: center; }
 .phone__state--after .phone__time { color: var(--black); }
 .phone__state--after .phone__day { color: var(--deep); }
 .note--done { gap: 0.35rem; padding: 0.9rem 0.95rem 1rem; }
 .note--done .note__title { font-size: var(--step-body); }
 .note__list { display: grid; gap: 0.4rem; margin: 0.35rem 0 0.25rem; }
-.note__list li { position: relative; padding-left: 1.6rem; font-size: var(--step-small); font-weight: 700; }
+.note__list li { position: relative; padding-left: 1.6rem; font-size: var(--step-small); font-weight: 700; text-wrap: balance; }
 .note__list li::before { content: ""; position: absolute; left: 0; top: 0.12em; width: 1.05rem; height: 1.05rem; background: var(--teal); }
 .note__list li::after { content: ""; position: absolute; left: 0.36rem; top: 0.22em; width: 0.32rem; height: 0.6rem; border: solid var(--black); border-width: 0 2.5px 2.5px 0; transform: rotate(45deg); }
 .phone__tag { position: absolute; top: 1.35rem; right: 1.55rem; font-size: 0.8125rem; font-weight: 700; background: var(--white); color: var(--black); padding: 0.1rem 0.45rem; z-index: 3; }
@@ -886,46 +869,114 @@ p { text-wrap: pretty; }
 .js .busy:not(.is-done) .phone__state--after { visibility: hidden; }
 .js .busy.is-done .phone__state--before { visibility: hidden; }
 
-.fixes4 { grid-column: 7 / -1; display: grid; }
-.fix4 { display: grid; gap: 0.6rem; justify-items: start; padding: 1.5rem 0 1.75rem; border-top: 2px solid var(--teal); }
-.fix4:first-child { padding-top: 0; border-top: 0; }
-.fix4__name { font-size: var(--step-lead); font-weight: 900; line-height: 1.1; letter-spacing: -0.03em; color: var(--teal); }
+/* The four problems: space between them, not rules. White names; teal only on the figures. */
+.fixes4 { grid-column: 7 / -1; display: grid; row-gap: clamp(2.25rem, 4vw, 3rem); }
+.fix4 { display: grid; gap: 0.6rem; justify-items: start; }
+.fix4__name { font-size: var(--step-lead); font-weight: 900; line-height: 1.1; letter-spacing: -0.03em; color: var(--white); }
 .fix4__how { max-width: 46ch; }
 .fix4__how .link { text-decoration: underline; text-underline-offset: 0.2em; font-weight: 700; }
-.fix4__stat { max-width: 52ch; font-size: var(--step-small); font-weight: 600; color: var(--soft-on-dark); }
+.fix4__stat { max-width: 52ch; font-size: var(--step-small); font-weight: 500; color: var(--soft-on-dark); }
 .fix4__stat b { font-size: var(--step-body); font-weight: 900; color: var(--teal); }
-.fix4__ask { display: inline-flex; align-items: center; min-height: 2.75rem; margin-top: 0.3rem; padding: 0 1.1rem; border: 3px solid var(--teal); color: var(--teal); font-weight: 900; text-decoration: none; transition: background-color var(--t-hover) ease, color var(--t-hover) ease; }
+.fix4__ask { margin-top: 0.15rem; font-weight: 900; color: var(--white); text-decoration: underline; text-decoration-thickness: 0.1em; text-underline-offset: 0.22em; transition: color var(--t-hover) ease; }
 .fix4__ask:focus-visible { outline: 3px solid var(--white); outline-offset: 3px; }
-@media (hover: hover) and (pointer: fine) { .fix4__ask:hover { background: var(--teal); color: var(--black); } }
-.fix4--else .fix4__name { color: var(--white); }
+@media (hover: hover) and (pointer: fine) { .fix4__ask:hover { color: var(--teal); } }
 
-/* The voicemail, up close. */
-.vmband { padding: var(--section) var(--margin); }
-.vmband__title { color: var(--teal); }
-.vmband__intro { display: grid; gap: 1.25rem; justify-items: start; margin-top: clamp(1.5rem, 3vw, 2.5rem); max-width: 46rem; }
-.vmband__intro p:not(.sr-only) { font-size: var(--step-lead); font-weight: 700; line-height: 1.3; max-width: 40ch; }
-.vmband [data-ui].vm-card { background: var(--photo-ground); }
+/* A missed call handled, up close: the words stay beside the voicemail and its call-back list. */
+.vmrow { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 2rem; align-items: start; margin-top: clamp(4rem, 8vw, 7rem); }
+.vmrow__words { grid-column: 1 / span 5; display: grid; gap: 1.1rem; justify-items: start; position: sticky; top: 12svh; }
+.vmrow__title { font-size: var(--step-lead); font-weight: 900; line-height: 1.1; letter-spacing: -0.03em; }
+.vmrow__words p:not(.sr-only) { max-width: 40ch; }
+.vmrow .vm__stage { grid-column: 6 / -1; grid-row: 1; margin-top: 0; display: grid; grid-template-columns: minmax(0, 1fr); row-gap: 1rem; }
+.vmrow .vm__stage [data-ui].vm-card, .vmrow .vm__stage [data-ui].vm-list { grid-column: 1 / -1; margin-top: 0; }
+.vmrow [data-ui].vm-list { width: min(100%, 30rem); justify-self: end; transform: none; }
+.vm-card__tag { font-size: 0.8125rem; font-weight: 700; background: var(--teal); color: var(--black); padding: 0.1rem 0.4rem; }
 
-/* Billing Day, then a week of Ben's tools. */
-.record { margin-top: clamp(4rem, 8vw, 7rem); }
-.record__title { font-size: var(--step-lead); line-height: 1.1; letter-spacing: -0.03em; }
-.record__lead { margin-top: 0.75rem; font-weight: 600; max-width: 56ch; }
-.record__list { margin-top: clamp(1.5rem, 3vw, 2.5rem); display: grid; }
-.record__row { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 0.25rem; padding: 1.1rem 0 1.2rem; border-top: 2px solid var(--black); align-items: baseline; }
-.record__when { grid-column: 1 / span 3; font-weight: 900; color: var(--teal-on-white); }
-.record__what { grid-column: 4 / span 8; font-size: var(--step-lead); font-weight: 700; line-height: 1.2; letter-spacing: -0.02em; max-width: 40ch; }
-.record__also { margin-top: 1.5rem; max-width: 70ch; font-weight: 600; color: var(--muted); }
+/* Ben's card: three things his tools do in a normal week, each on its own ground (no rules). */
+.person__record { margin-top: 1.5rem; display: grid; gap: 0.9rem; }
+.person__record .person__text { margin-top: 0; }
+.record__list { display: grid; gap: 0.5rem; }
+.record__row { background: var(--photo-ground); padding: 0.8rem 1rem 0.9rem; line-height: 1.35; }
+.record__when { display: block; font-size: var(--step-small); font-weight: 900; color: var(--teal); margin-bottom: 0.15rem; }
+.record__what { color: var(--white); }
+
+/* The Let's talk button that stays in reach (phones and tablets). */
+.dock { position: fixed; z-index: 30; right: var(--margin); bottom: calc(var(--margin) + env(safe-area-inset-bottom)); min-height: 3rem; border: 2px solid var(--teal); transform: translateY(160%); visibility: hidden; transition: transform 300ms var(--ease-out), visibility 0s linear 300ms, background-color var(--t-hover) ease, color var(--t-hover) ease; }
+.dock.is-on { transform: none; visibility: visible; transition: transform 300ms var(--ease-out), visibility 0s, background-color var(--t-hover) ease, color var(--t-hover) ease; }
+@media (min-width: 1001px) { .dock { display: none; } }
+@media (prefers-reduced-motion: reduce) { .dock, .dock.is-on { transition: none; } }
 
 @media (max-width: 1000px) {
   .probs__intro .statement, .probs__why { grid-column: 1 / -1; }
   .busy { grid-column: 1 / -1; position: static; }
   .fixes4 { grid-column: 1 / -1; }
-  .record__when { grid-column: 1 / -1; }
-  .record__what { grid-column: 1 / -1; }
+  .vmrow__words { grid-column: 1 / -1; position: static; }
+  .vmrow .vm__stage { grid-column: 1 / -1; grid-row: auto; }
 }
 @media (max-width: 640px) {
   .phone { width: min(100%, 20rem); }
-  .phone__screen { min-height: 0; }
+  .phone__screen { min-height: 30rem; }
+  .phone__clock { font-size: 2.5rem; }
   .busy__controls { width: 100%; }
   .busy__controls .button { flex: 1 1 auto; }
+  .vmrow [data-ui].vm-list { width: 100%; }
+}
+
+/* ---------- audit round 1, 2026-11-05: strict conversion, design and truth audits ---------- */
+/* Weight carries meaning again: running text at 400, headings and labels heavy. The hero's lead line leads. */
+.hero .lead { font-weight: 600; }
+.hero__fact, .probs__why, .work__text, .coupon__facts li, .calc__how, .chores__legend, .vmrow__words p { font-weight: 400; }
+/* On a phone the section heads step down so the page title stays the largest type. */
+@media (max-width: 640px) {
+  :root { --step-head: 2rem; }
+  .hero__copy { gap: 1rem; }
+  .hero__picture { width: 56%; margin-top: 0; }
+}
+/* How it works: each step on the page grid (heading on the left half, words from column 7); the last step's
+   teal block runs to the page edges so its heading starts on the same line as the others. */
+.how__grid .stairs { grid-column: 1 / -1; }
+@media (min-width: 641px) {
+  .stair { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+  .stair .stair__line { grid-column: 1 / span 6; }
+  .stair p { grid-column: 7 / span 5; }
+}
+.how__grid .stair--last { margin-inline: calc(-1 * var(--margin)); padding: clamp(1.5rem, 3vw, 2.5rem) var(--margin); }
+.stair--last .stair__line { padding-left: 0; }
+.stair--last p { padding-right: 0; }
+@media (max-width: 640px) { .stair--last p { padding-inline: 0; } }
+/* Questions: one ground for the whole section, space between the questions. */
+.band--a, .band--b { background: var(--deep); color: var(--white); }
+.band { padding-block: 2.25rem; }
+.faq .band:first-of-type { padding-top: 3rem; }
+.faq .band:last-child { padding-bottom: var(--section); }
+/* The form: full width on the page grid; on a phone the title, the email, the message and the button come
+   first, and the three reassurances follow the button. */
+.coupon { width: 100%; grid-template-columns: repeat(12, minmax(0, 1fr)); }
+.coupon__left { grid-column: 1 / span 6; }
+.coupon__right { grid-column: 7 / -1; }
+@media (max-width: 1000px) {
+  .coupon__left, .coupon__right { grid-column: 1 / -1; }
+}
+@media (max-width: 640px) {
+  .coupon { display: flex; flex-direction: column; gap: 10px; padding: 1.5rem 1.25rem; }
+  .coupon__left, .coupon__right { display: contents; }
+  .coupon__text { margin-bottom: 0.75rem; }
+  .coupon__facts { order: 10; margin-top: 1rem; }
+  .coupon__privacy { order: 11; }
+}
+/* Billing Day on a phone: no tab row, the street as two rows of three square lots, so the preview stays well
+   under a screen and a half. */
+@container bd (max-width: 559px) {
+  .bd-tabs { display: none; }
+  .bd .st-street { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.75rem 0; }
+  .bd .st-lot { aspect-ratio: 1; }
+  .bd .st-lot > .st-lot-bldg { left: -10%; width: 120%; }
+}
+/* Resting tilts: only the hero picture leans; interface pieces sit square (their entrances still turn). */
+[data-ui].vm-list { transform: none; }
+/* Reduced motion: the phone shows Monday night and Tuesday morning one under the other (nothing waits hidden
+   behind a button), and its only control is the contact link. */
+@media (prefers-reduced-motion: reduce) {
+  .js .busy .phone__state { grid-area: auto; visibility: visible !important; }
+  .busy [data-busy-go], .busy [data-busy-back] { display: none !important; }
+  .busy [data-busy-talk][hidden] { display: inline-flex !important; }
 }

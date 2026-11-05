@@ -10,13 +10,13 @@ const REVIEW = {
   label: "to review · 6 invoices",
   step: "Approve October",
   button: "Approve 6 invoices · $2,341.25",
-  status: "Approving doesn’t send anything. Send to QuickBooks: coming next.",
+  status: "Example: approving here doesn’t send anything.",
 };
 const APPROVED = {
   label: "approved · 6 invoices",
   step: "October approved",
   button: "Replay approval",
-  status: "Sample invoices approved. Nothing sent to QuickBooks or clients.",
+  status: "Example approved. Nothing was sent to QuickBooks or to clients.",
 };
 
 export function initWork() {

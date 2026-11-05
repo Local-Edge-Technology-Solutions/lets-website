@@ -1,10 +1,11 @@
-// "Automate the busywork": the Monday-night phone full of busywork clears one notification at a time, and the
-// screen turns to Tuesday morning with one summary of what was handled. An illustration with invented names:
-// nothing is sent anywhere. It plays once on its own when the phone first comes into view (never under reduced
-// motion); the buttons play it again or go back. Without script both screens are shown, one under the other.
+// "Watch it get handled": the Monday-night phone fills with busywork, then clears one notification at a time,
+// and the screen turns to Tuesday morning with one summary of what was handled. An illustration with invented
+// names: nothing is sent anywhere. The notifications pile up as the phone arrives; once the whole phone has been
+// in view for a moment it clears on its own (never under reduced motion). After that the main control is the
+// contact link, with a small Replay beside it. Without script both screens are shown, one under the other.
 import { gsap, ScrollTrigger, calm, $, $$ } from "./env.js";
 
-const SAID = "Tuesday morning: the busywork is handled. Dana Reyes is on the call-back list, Elm Studio got a friendly reminder, three inquiries were answered and one call booked, and last week’s numbers are in the inbox.";
+const SAID = "Tuesday morning: the busywork is handled. Dana Reyes is on the call-back list, Thistlecove Studio got a friendly reminder, three inquiries were answered and one call booked, and last week’s numbers are in the inbox.";
 
 export function initBusy() {
   const root = $("[data-busy]");
@@ -12,10 +13,11 @@ export function initBusy() {
   const before = $("[data-busy-before]", root);
   const after = $("[data-busy-after]", root);
   const go = $("[data-busy-go]", root);
-  const back = $("[data-busy-back]", root);
+  const talk = $("[data-busy-talk]", root);
+  const replay = $("[data-busy-back]", root);
   const controls = $("[data-busy-controls]", root);
   const status = $("[data-busy-status]", root);
-  if (!before || !after || !go || !back || !controls || !status) return;
+  if (!before || !after || !go || !talk || !replay || !controls || !status) return;
   const notes = $$(".note", before);
   const clockBefore = $(".phone__time", before);
   const clockAfter = $(".phone__time", after);
@@ -25,6 +27,7 @@ export function initBusy() {
 
   let tl = null;
   let pending = null;
+  let piled = false;
   // Any run in progress jumps to its end (a second press, a resize, motion turned off mid-run).
   const settle = () => {
     pending?.kill();
@@ -38,18 +41,25 @@ export function initBusy() {
   const show = (done, said) => {
     root.classList.toggle("is-done", done);
     go.hidden = done;
-    back.hidden = !done;
+    talk.hidden = !done;
+    replay.hidden = !done;
     if (said) status.textContent = said;
+  };
+  // The week piles up: each notification drops in, newest last.
+  const pileUp = () => {
+    piled = true;
+    if (calm()) return null;
+    return gsap.from(notes, { y: -18, autoAlpha: 0, duration: 0.5, ease: "expo.out", stagger: 0.22, clearProps: "transform,opacity,visibility" });
   };
 
   const play = (announce) => {
     settle();
-    const keep = document.activeElement === go;
+    const keep = document.activeElement === go || document.activeElement === replay;
     const finish = () => {
       tl = null;
       tidy();
       show(true, announce ? SAID : "");
-      if (keep) back.focus();
+      if (keep) talk.focus();
     };
     if (calm()) { finish(); return; }
     tl = gsap.timeline({ onComplete: finish });
@@ -62,23 +72,28 @@ export function initBusy() {
     tl.fromTo(rows, { x: -12, autoAlpha: 0 }, { x: 0, autoAlpha: 1, duration: 0.4, ease: "expo.out", stagger: 0.14 }, 1.45);
   };
 
-  const rewind = () => {
+  // Replay: back to Monday night, the week piles up again, then it clears.
+  const again = () => {
     settle();
     tidy();
-    show(false, "Back to Monday night.");
-    if (document.activeElement === back || !back.isConnected) go.focus();
-    if (!calm()) gsap.from(notes, { y: -14, autoAlpha: 0, duration: 0.45, ease: "expo.out", stagger: 0.06, clearProps: "transform,opacity,visibility" });
+    const keep = document.activeElement === replay;
+    show(false, "");
+    if (keep) go.focus();
+    if (calm()) { play(true); return; }
+    const pile = pileUp();
+    pending = gsap.delayedCall(pile ? pile.duration() + 0.9 : 0, () => { pending = null; play(true); });
   };
 
   go.addEventListener("click", () => play(true));
-  back.addEventListener("click", rewind);
+  replay.addEventListener("click", again);
 
-  // Once, on its own, the first time the phone is well into view.
+  // As the phone arrives, the week piles up; once all of it has been in view for a moment, it clears.
+  ScrollTrigger.create({ trigger: root, start: "top 80%", once: true, onEnter: () => { if (!piled && !root.classList.contains("is-done")) pileUp(); } });
   ScrollTrigger.create({
-    trigger: root, start: "top 60%", once: true,
+    trigger: before, start: "bottom 96%", once: true,
     onEnter: () => {
-      if (calm() || root.classList.contains("is-done")) return;
-      pending = gsap.delayedCall(0.7, () => { pending = null; if (!root.classList.contains("is-done")) play(false); });
+      if (calm() || root.classList.contains("is-done") || tl) return;
+      pending = gsap.delayedCall(2.6, () => { pending = null; if (!root.classList.contains("is-done")) play(false); });
     },
   });
 

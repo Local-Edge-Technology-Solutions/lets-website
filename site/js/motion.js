@@ -147,29 +147,22 @@ export function initMotion() {
       }));
     };
 
-    // What we fix: the heading arrives, the intro rises; each problem's words step in as it arrives and its
-    // example is laid down beside them (the voicemail card, then its list; a slip printed in).
+    // What we fix: the heading arrives, the intro rises; each problem's words step in as it arrives (the busy
+    // phone runs its own story, js/busy.js). The voicemail card is laid down and its list slid beside it.
     splitIn($("#week-title"));
     gsap.from(".probs__intro > *", { y: 24, duration: 0.8, ease: "expo.out", stagger: 0.08, scrollTrigger: { trigger: ".probs__intro", start: "top 90%", once: true } });
-    $$(".prob").forEach((row) => {
-      const tl = gsap.timeline({ scrollTrigger: { trigger: row, start: "top 86%", once: true } });
-      tl.from($$(".prob__words > :not([hidden])", row), { y: 18, duration: 0.7, ease: "expo.out", stagger: 0.06 }, 0);
-      const card = $(".prob__card", row);
-      if (card) tl.from(card, { y: 60, rotation: -6, duration: 0.9, ease: "expo.out" }, 0.15);
+    $$(".fix4").forEach((row) => {
+      gsap.from(row.children, { y: 18, duration: 0.7, ease: "expo.out", stagger: 0.06, scrollTrigger: { trigger: row, start: "top 90%", once: true } });
     });
-    gsap.timeline({ scrollTrigger: { trigger: ".prob--calls", start: "top 86%", once: true } })
+    gsap.from(".vmrow__words > :not([hidden])", { y: 20, duration: 0.7, ease: "expo.out", stagger: 0.07, scrollTrigger: { trigger: ".vmrow", start: "top 86%", once: true } });
+    gsap.timeline({ scrollTrigger: { trigger: ".vmrow", start: "top 80%", once: true } })
       .from(".vm-card", { y: 60, rotation: -1.5, duration: 0.9, ease: "expo.out" }, 0.1)
       .from(".vm-list", { y: 80, rotation: 4, duration: 0.9, ease: "expo.out" }, 0.22)
       .from(".vm-wave i", { scaleY: 0.1, duration: 0.6, ease: "expo.out", stagger: { each: 0.008, from: "start" } }, 0.3);
-    gsap.from(".probs__else-words > *", { y: 24, duration: 0.8, ease: "expo.out", stagger: 0.08, scrollTrigger: { trigger: ".probs__else", start: "top 88%", once: true } });
-    gsap.from(".chip--press", { rotation: 14, scale: 1.2, duration: 0.8, ease: "expo.out", scrollTrigger: { trigger: ".chip--press", start: "top 88%", once: true } });
 
     // Billing Day: its heading rises; the preview itself only answers the Approve button (js/work.js).
-    // Ben's record follows, row by row.
     splitIn($("#work-title"));
     gsap.from(".work__text", { y: 24, duration: 0.8, ease: "expo.out", scrollTrigger: { trigger: ".work__head", start: "top 88%", once: true } });
-    gsap.from(".record__title, .record__lead", { y: 20, duration: 0.7, ease: "expo.out", stagger: 0.08, scrollTrigger: { trigger: ".record", start: "top 88%", once: true } });
-    ScrollTrigger.batch(".record__row", { start: "top 92%", once: true, onEnter: (b) => gsap.from(b, { y: 26, duration: 0.7, ease: "expo.out", stagger: 0.07 }) });
 
     // Calculator: the tasks are dealt in like rows on a sheet; the figure panel arrives beside them.
     splitIn($("#calc-title"));
@@ -182,6 +175,7 @@ export function initMotion() {
     gsap.timeline({ scrollTrigger: { trigger: ".about__people", start: "top 85%", once: true } })
       .from(".about__photo img", { scale: 1.12, duration: 1.4, ease: "expo.out", clearProps: "transform" }, 0)
       .from(".person > *", { y: 18, duration: 0.6, ease: "expo.out", stagger: 0.05 }, 0.2);
+    ScrollTrigger.batch(".record__row", { start: "top 94%", once: true, onEnter: (b) => gsap.from(b, { y: 18, duration: 0.6, ease: "expo.out", stagger: 0.08 }) });
     gsap.from(".about__line", { y: 18, duration: 0.7, ease: "expo.out", scrollTrigger: { trigger: ".about__line", start: "top 90%", once: true } });
 
     // How it works: each step's heading and words rise as the step arrives.
@@ -189,7 +183,6 @@ export function initMotion() {
     $$(".stair").forEach((st) => {
       gsap.from(st.children, { y: 18, duration: 0.7, ease: "expo.out", stagger: 0.08, scrollTrigger: { trigger: st, start: "top 88%", once: true } });
     });
-    gsap.from(".week-slip", { y: 60, rotation: -8, duration: 0.9, ease: "expo.out", scrollTrigger: { trigger: ".week-slip", start: "top 90%", once: true } });
 
     splitIn($("#faq-title"));
     // Questions: each band's question rises, its answer a beat after; the storefronts are pinned up.

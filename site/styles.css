@@ -821,3 +821,10 @@ p { text-wrap: pretty; }
 }
 /* The narrowest phones (320): the four tabs keep to one line. */
 @container bd (max-width: 360px) { .bd-tabs { gap: 0.25rem 0.9rem; font-size: 0.9375rem; } }
+/* Codex re-review: the Approve card's own width decides whether its button may wrap, so its height is held
+   wherever the card is narrow (phones, and tablets where it sits beside the invoice). */
+.bd-approve { container: bdap / inline-size; }
+@container bdap (max-width: 460px) {
+  .bd-btn { min-height: calc(2 * 1.45em + 1.5rem + 4px); line-height: 1.45; }
+  .bd-status { min-height: calc(3 * 1.45em); }
+}

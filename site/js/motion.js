@@ -4,6 +4,11 @@
 // run and torn down with it when the motion preference or the width class changes.
 import { gsap, ScrollTrigger, SplitText, calm, $, $$, fontsReady } from "./env.js";
 
+// Has the visitor started moving the page themselves? Listened for from the moment this module loads (before
+// the font wait), so a fragment is never re-landed over their own scrolling.
+let moved = false;
+["wheel", "touchstart", "keydown", "pointerdown"].forEach((t) => addEventListener(t, () => { moved = true; }, { once: true, passive: true }));
+
 // ---- Animaxxing registrationSlip, adapted: a second impression in another ink lands out of register behind a
 // heading, then slips true under it and is removed. The heading never moves.
 function registrationSlip(heading, ink, { x = 14, y = 6, duration = 0.7, lines: given } = {}) {
@@ -222,9 +227,6 @@ export function initMotion() {
   // A visit that opens on a fragment (#contact, #work): the showcase pin adds height above it after the
   // browser has already jumped, so once measurements settle, land on the fragment again, unless the
   // visitor has started scrolling themselves (Codex review, 2026-11-05).
-  let moved = false;
-  const mine = () => { moved = true; };
-  ["wheel", "touchstart", "keydown", "pointerdown"].forEach((t) => addEventListener(t, mine, { once: true, passive: true }));
   const refresh = () => {
     ScrollTrigger.refresh();
     const target = location.hash.length > 1 && document.getElementById(decodeURIComponent(location.hash.slice(1)));

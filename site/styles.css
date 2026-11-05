@@ -240,7 +240,9 @@ p { text-wrap: pretty; }
 .slips [data-ui].slip .slip__top { flex-direction: column-reverse; align-items: flex-start; gap: 0.4rem; }
 [data-ui].slip .slip__rule { color: var(--muted); overflow: clip; white-space: nowrap; margin: 0.35rem 0; letter-spacing: 0.05em; }
 [data-ui].slip dl div { display: flex; justify-content: space-between; gap: 0.75rem; padding: 0.18rem 0; }
-[data-ui].slip dd { font-variant-numeric: tabular-nums; font-weight: 700; text-align: right; flex: 0 1 auto; min-width: 0; }
+/* A value may wrap between its words but never below its longest word; the label gives way first. */
+[data-ui].slip dd { font-variant-numeric: tabular-nums; font-weight: 700; text-align: right; flex: 0 1 auto; min-width: min-content; }
+[data-ui].slip dt { min-width: 0; }
 [data-ui].slip .slip__msg { background: var(--surface); padding: 0.6rem 0.7rem; }
 [data-ui].slip .slip__foot { margin-top: 0.6rem; font-weight: 700; display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap; }
 [data-ui].slip .ui-btn { background: var(--accent); color: var(--white); padding: 0.3rem 0.6rem; font-weight: 900; }

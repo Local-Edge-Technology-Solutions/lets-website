@@ -241,7 +241,7 @@ p { text-wrap: pretty; }
 [data-ui].slip .slip__rule { color: var(--muted); overflow: clip; white-space: nowrap; margin: 0.35rem 0; letter-spacing: 0.05em; }
 [data-ui].slip dl div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0 0.75rem; padding: 0.18rem 0; }
 /* In a narrow receipt a row's value drops to its own line, right-aligned, rather than squeezing either side. */
-[data-ui].slip dd { font-variant-numeric: tabular-nums; font-weight: 700; text-align: right; flex: none; margin-left: auto; }
+[data-ui].slip dd { font-variant-numeric: tabular-nums; font-weight: 700; text-align: right; flex: none; margin-left: auto; max-width: 100%; }
 [data-ui].slip .slip__msg { background: var(--surface); padding: 0.6rem 0.7rem; }
 [data-ui].slip .slip__foot { margin-top: 0.6rem; font-weight: 700; display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap; }
 [data-ui].slip .ui-btn { background: var(--accent); color: var(--white); padding: 0.3rem 0.6rem; font-weight: 900; }

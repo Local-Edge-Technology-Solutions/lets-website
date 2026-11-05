@@ -56,7 +56,7 @@ const slipHTML = ([title, rows, foot, kind]) => {
     ? `<p class="slip__msg">${esc(rows)}</p>`
     : `<dl>${rows.map(([a, b]) => `<div><dt>${esc(a)}</dt><dd>${esc(b)}</dd></div>`).join("")}</dl>`;
   const end = kind === "approve" ? `<span class="ui-btn">Approve all ${rows.length}</span> ${esc(foot)}` : esc(foot);
-  return `<p class="slip__top"><b>${esc(title)}</b><span>Example</span></p><p class="slip__rule" aria-hidden="true">- - - - - - - - - - - - - - - -</p>${body}<p class="slip__foot">${end}</p>`;
+  return `<p class="slip__top"><b>${esc(title)}</b><span>Example</span></p>${body}<p class="slip__foot">${end}</p>`;
 };
 
 export function initExamples() {

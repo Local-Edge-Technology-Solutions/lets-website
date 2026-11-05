@@ -44,7 +44,7 @@ function registrationSlip(heading, ink, { x = 14, y = 6, duration = 0.7, lines: 
 
 // ---- Animaxxing pressFeedback, adapted: squash on press and an ink ripple from the press point. Release eases
 // out without the recipe's elastic spring. Returns a remover for its listeners and styles.
-function pressFeedback(control, { squash = 0.95, ink = 0.28 } = {}) {
+export function pressFeedback(control, { squash = 0.95, ink = 0.28 } = {}) {
   const savedPos = control.style.position;
   const savedOverflow = control.style.overflow;
   const savedTap = control.style.getPropertyValue("-webkit-tap-highlight-color");
@@ -86,7 +86,7 @@ function pressFeedback(control, { squash = 0.95, ink = 0.28 } = {}) {
 }
 
 // ---- The examples' re-deal: each slip's lines lift off, the new ones print in, row by row.
-const rowsOf = (slip) => $$(".slip__top, .slip__rule, dl > div, .slip__msg, .slip__foot", slip);
+const rowsOf = (slip) => $$(".slip__top, dl > div, .slip__msg, .slip__foot", slip);
 export function redeal(slips, swap) {
   if (calm()) { swap(); return; }
   const out = gsap.timeline();
@@ -98,145 +98,6 @@ export function redeal(slips, swap) {
   });
 }
 
-// ---- Showpiece 1: the busywork shatter. As the hero leaves, the letters of THE BUSYWORK break off, scatter,
-// and settle into the ticked to-do list in the next section, then crossfade into its real text.
-// The real heading and the real list never leave the HTML; the letters are aria-hidden copies in an
-// overlay that lives outside every clipped box, measured from the real glyphs (so kerning matches).
-function shatter() {
-  const source = $("[data-shatter-source]");
-  const layer = $("[data-shatter]");
-  const list = $("[data-done]");
-  if (!source || !layer || !list) return () => {};
-  const text = source.firstChild;
-  if (!text || text.nodeType !== 3) return () => {};
-  const rows = $$(".done__row", list);
-  const words = rows.map((r) => $(".done__text", r));
-  const ticks = rows.map((r) => $(".done__box svg", r));
-  const glyphs = [...text.data].map((c, i) => ({ c, i })).filter((g) => g.c.trim());
-  const frags = glyphs.map((g) => {
-    const s = document.createElement("span");
-    s.className = "shatter__char";
-    s.textContent = g.c;
-    layer.append(s);
-    return s;
-  });
-  // Letters are dealt to the four rows in reading order: THE / BUS / YW / ORK.
-  const groups = rows.map(() => []);
-  frags.forEach((_, k) => groups[Math.min(rows.length - 1, Math.floor((k * rows.length) / frags.length))].push(k));
-  const rowOf = frags.map((_, k) => groups.findIndex((g) => g.includes(k)));
-  // Fixed scatter, so the move is the same on every visit and on the way back up.
-  const rnd = gsap.utils.random(-1, 1, 0.001, true);
-  const scatter = frags.map(() => ({ x: rnd(), y: rnd(), r: rnd() }));
-  const geom = { start: [], end: [], scale: [], mid: [], size: 0, W: innerWidth, H: innerHeight };
-  const picture = $(".hero__picture");
-
-  const measure = () => {
-    const cs = getComputedStyle(source);
-    const size = parseFloat(cs.fontSize);
-    geom.size = size;
-    geom.W = innerWidth;
-    geom.H = innerHeight;
-    // The inner line may still be rising (its CSS load animation); its wrapper never moves.
-    const wrap = source.parentElement.getBoundingClientRect();
-    const inner = source.getBoundingClientRect();
-    const offX = inner.left - wrap.left;
-    const offY = inner.top - wrap.top;
-    const range = document.createRange();
-    glyphs.forEach((g, k) => {
-      range.setStart(text, g.i);
-      range.setEnd(text, g.i + 1);
-      const r = range.getBoundingClientRect();
-      geom.start[k] = { x: r.left - offX + scrollX, y: r.top - offY + scrollY, w: r.width, h: r.height };
-      Object.assign(frags[k].style, {
-        left: `${geom.start[k].x}px`, top: `${geom.start[k].y}px`,
-        fontFamily: cs.fontFamily, fontSize: cs.fontSize, letterSpacing: cs.letterSpacing, lineHeight: `${r.height}px`,
-      });
-    });
-    // The scatter lands the letters among the laptop's sticky notes: inside the hero picture, not over the words.
-    const pic = picture.getBoundingClientRect();
-    frags.forEach((_, k) => {
-      const u = (scatter[k].x + 1) / 2, v = (scatter[k].y + 1) / 2;
-      const w = geom.start[k].w, h = geom.start[k].h;
-      geom.mid[k] = {
-        x: pic.left + scrollX + pic.width * 0.06 + u * Math.max(0, pic.width * 0.88 - w) - geom.start[k].x,
-        y: pic.top + scrollY + pic.height * 0.08 + v * Math.max(0, pic.height * 0.7 - h) - geom.start[k].y,
-      };
-    });
-    let bottom = 0;
-    groups.forEach((group, j) => {
-      const t = words[j].getBoundingClientRect();
-      const ts = parseFloat(getComputedStyle(words[j]).fontSize);
-      const s = (ts * 1.05) / size;
-      let x = t.left + scrollX;
-      group.forEach((k) => {
-        const h = geom.start[k].h * s;
-        geom.end[k] = { x, y: t.top + scrollY + (t.height - h) / 2 };
-        geom.scale[k] = s;
-        x += geom.start[k].w * s;
-      });
-      bottom = Math.max(bottom, t.bottom + scrollY);
-    });
-    layer.style.height = `${Math.ceil(bottom + geom.H)}px`;
-  };
-  measure();
-  ScrollTrigger.addEventListener("refreshInit", measure);
-
-  const ink = getComputedStyle(source).color;
-  const teal = getComputedStyle(document.documentElement).getPropertyValue("--teal").trim();
-  gsap.set(frags, { autoAlpha: 0, x: 0, y: 0, color: ink });
-  gsap.set(words, { opacity: 0 });
-  gsap.set(ticks, { clipPath: "inset(0% 100% 0% 0%)" });
-
-  const tl = gsap.timeline({
-    defaults: { immediateRender: false },
-    scrollTrigger: { trigger: ".hero", start: "top top", endTrigger: list, end: "center 58%", scrub: true, invalidateOnRefresh: true },
-  });
-  // The hero itself recedes as it goes: the picture tilts and lifts, the sentence drifts up.
-  tl.fromTo(".hero__picture", { rotation: 4, y: 0 }, { rotation: 10, y: () => -geom.H * 0.12, ease: "none", duration: 0.5 }, 0)
-    .fromTo(".hero__copy, .hero__fact", { y: 0 }, { y: () => -geom.H * 0.08, ease: "none", duration: 0.5 }, 0);
-  // The swap: the real line goes, its letters stand in exactly where it was.
-  tl.set(source, { opacity: 0 }, 0.02).set(frags, { autoAlpha: 1 }, 0.02);
-  // Break and scatter.
-  tl.fromTo(frags, { x: 0, y: 0, rotation: 0, color: ink }, {
-    x: (k) => geom.mid[k].x,
-    y: (k) => geom.mid[k].y,
-    rotation: (k) => scatter[k].r * 120,
-    duration: 0.38, ease: "power2.out", stagger: { each: 0.008, from: "center" },
-  }, 0.03);
-  // Settle into the list, a row at a time.
-  tl.fromTo(frags, {
-    x: (k) => geom.mid[k].x,
-    y: (k) => geom.mid[k].y,
-    rotation: (k) => scatter[k].r * 120,
-    scale: 1,
-  }, {
-    x: (k) => geom.end[k].x - geom.start[k].x,
-    y: (k) => geom.end[k].y - geom.start[k].y,
-    rotation: 0,
-    scale: (k) => geom.scale[k],
-    duration: 0.42, ease: "power3.inOut", stagger: (k) => rowOf[k] * 0.03,
-  }, 0.44);
-  // Ink: black over the teal hero, teal across the black section, black again on the white list.
-  tl.fromTo(frags, { color: ink }, { color: teal, duration: 0.08, ease: "none" }, 0.46)
-    .fromTo(frags, { color: teal }, { color: ink, duration: 0.06, ease: "none" }, 0.8);
-  // Crossfade into the real words; the ticks draw in.
-  tl.to(frags, { autoAlpha: 0, duration: 0.06, ease: "none", stagger: (k) => rowOf[k] * 0.02 }, 0.92)
-    .to(words, { opacity: 1, duration: 0.06, ease: "none", stagger: 0.02 }, 0.92)
-    .to(ticks, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.07, ease: "none", stagger: 0.025 }, 0.93);
-
-  return () => {
-    ScrollTrigger.removeEventListener("refreshInit", measure);
-    tl.scrollTrigger?.kill();
-    tl.kill();
-    frags.forEach((f) => f.remove());
-    layer.style.height = "";
-    gsap.set(source, { clearProps: "opacity" });
-    gsap.set(words, { clearProps: "opacity" });
-    gsap.set(ticks, { clearProps: "clipPath" });
-    gsap.set(".hero__picture, .hero__copy, .hero__fact", { clearProps: "transform" });
-  };
-}
-
 export function initMotion() {
   const mm = gsap.matchMedia();
   mm.add({ motion: "(prefers-reduced-motion: no-preference)", wide: "(min-width: 1001px)" }, (ctx) => {
@@ -244,29 +105,25 @@ export function initMotion() {
     document.documentElement.classList.add("gsap-press");
     const wide = ctx.conditions.wide;
     const undo = [];
-    // On narrower screens a page runs to many screens; there, entrances only move and never fade, so nothing
-    // ever waits invisible for a scroll that a visitor (or a jump to #contact) might skip past.
-    const hide = wide ? 0 : 1;
-    // The close of the page (questions, the form, the footer) is where every "Let's talk" button jumps to,
-    // so there nothing fades in after the jump: those entrances only move. Entrances use opacity, never
-    // visibility, so a control that has not arrived yet can still take keyboard focus.
+    // Entrances only move, at every width: nothing ever waits invisible (or masked) for a scroll that a
+    // visitor, a jump to #contact or a screenshot might skip past (critique cap, 2026-11-05).
 
     // Hero: the masked lines rise in CSS; then a white second impression slips into register under the black.
     const h1 = $(".hero__title");
     const slipCall = gsap.delayedCall(1.05, () => registrationSlip(h1, "var(--white)", { x: 18, y: 8, duration: 0.8 }));
     undo.push(() => slipCall.kill());
 
-    // Headings: lines rise out of their masks once, then a second impression slips into register where marked.
+    // Headings: lines rise into place once (no mask, never hidden), then a second impression slips into register where marked.
     // Called section by section so every ScrollTrigger is created in page order (the showcase pin adds height).
     const splits = [];
-    const splitIn = (el, { moveOnly = !wide } = {}) => {
+    const splitIn = (el) => {
       if (!el) return;
       let slipped = false;
       splits.push(SplitText.create(el, {
-        type: "lines", mask: moveOnly ? undefined : "lines", autoSplit: true,
+        type: "lines", autoSplit: true,
         onSplit(self) {
           return gsap.from(self.lines, {
-            yPercent: moveOnly ? 35 : 110, duration: 0.75, ease: "expo.out", stagger: 0.09,
+            yPercent: 35, duration: 0.75, ease: "expo.out", stagger: 0.09,
             scrollTrigger: { trigger: el, start: "top 92%", once: true },
             onComplete: () => { if (el.dataset.slip && !slipped) { slipped = true; registrationSlip(el, el.dataset.slip, { lines: self.lines }); } },
           });
@@ -274,65 +131,63 @@ export function initMotion() {
       }));
     };
 
-    // Showpiece 1 replaces the old hero scroll timeline.
-    undo.push(shatter());
+    // Billing Day: its heading rises; the preview itself only answers the Approve button (js/work.js).
+    splitIn($("#work-title"));
+    gsap.from(".work__text", { y: 24, duration: 0.8, ease: "expo.out", scrollTrigger: { trigger: ".work__head", start: "top 88%", once: true } });
+
+    // The to-do list ticks itself, once, when it arrives: the words are always there; only the ticks draw.
+    const ticks = $$(".done__box svg");
+    gsap.set(ticks, { clipPath: "inset(0% 100% 0% 0%)" });
+    gsap.to(ticks, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.35, ease: "power2.out", stagger: 0.18, delay: 0.2, scrollTrigger: { trigger: ".done", start: "top 85%", once: true } });
+    undo.push(() => gsap.set(ticks, { clearProps: "clipPath" }));
 
     splitIn($("#intro-title"));
-    gsap.from(".intro__words > *", { y: 28, opacity: hide, duration: 0.8, ease: "expo.out", stagger: 0.08, scrollTrigger: { trigger: ".intro__words", start: "top 90%", once: true } });
-    gsap.from(".chip--press", { rotation: 14, scale: 1.2, opacity: hide, duration: 0.8, ease: "expo.out", scrollTrigger: { trigger: ".chip--press", start: "top 88%", once: true } });
+    gsap.from(".intro__words > *", { y: 28, duration: 0.8, ease: "expo.out", stagger: 0.08, scrollTrigger: { trigger: ".intro__words", start: "top 90%", once: true } });
+    gsap.from(".chip--press", { rotation: 14, scale: 1.2, duration: 0.8, ease: "expo.out", scrollTrigger: { trigger: ".chip--press", start: "top 88%", once: true } });
 
     // What's eating your week: the picker is dealt in; in the voicemail answer, the card is laid down and the
     // list slid beside it.
     splitIn($("#week-title"));
-    gsap.from(".fixes .vm__intro > *, .fixes__picker:not([hidden])", { y: 20, opacity: hide, duration: 0.7, ease: "expo.out", stagger: 0.07, scrollTrigger: { trigger: ".fixes .vm__intro", start: "top 90%", once: true } });
+    gsap.from(".fixes .vm__intro > *, .fixes__picker:not([hidden])", { y: 20, duration: 0.7, ease: "expo.out", stagger: 0.07, scrollTrigger: { trigger: ".fixes .vm__intro", start: "top 90%", once: true } });
     gsap.timeline({ scrollTrigger: { trigger: ".fix--calls", start: "top 86%", once: true } })
-      .from(".vm-card", { y: 60, rotation: -1.5, opacity: hide, duration: 0.9, ease: "expo.out" })
-      .from(".vm-list", { y: 80, rotation: 4, opacity: hide, duration: 0.9, ease: "expo.out" }, 0.12)
+      .from(".vm-card", { y: 60, rotation: -1.5, duration: 0.9, ease: "expo.out" })
+      .from(".vm-list", { y: 80, rotation: 4, duration: 0.9, ease: "expo.out" }, 0.12)
       .from(".vm-wave i", { scaleY: 0.1, duration: 0.6, ease: "expo.out", stagger: { each: 0.008, from: "start" } }, 0.2);
 
     // Showcase: on wide screens the section holds while the six slips print up out of the desk, one by one.
     splitIn($("#examples-title"));
     const show = $(".showcase");
     const slips = $$(".slip", show);
-    gsap.from(".showcase__copy .statement, .showcase .picker:not([hidden])", { y: 24, opacity: hide, duration: 0.7, ease: "expo.out", stagger: 0.08, scrollTrigger: { trigger: ".showcase__copy", start: "top 85%", once: true } });
+    gsap.from(".showcase__copy .statement, .showcase .picker:not([hidden])", { y: 24, duration: 0.7, ease: "expo.out", stagger: 0.08, scrollTrigger: { trigger: ".showcase__copy", start: "top 85%", once: true } });
     if (wide && show.offsetHeight <= innerHeight + 4) {
       gsap.timeline({ scrollTrigger: { trigger: show, start: "top top", end: "+=85%", pin: true, scrub: true, anticipatePin: 1 } })
         .from(slips, { yPercent: 108, ease: "none", stagger: 0.14, duration: 0.5 }, 0)
         .fromTo(".showcase__photo", { scale: 1.12 }, { scale: 1, ease: "none", duration: 1.2 }, 0);
     } else {
-      ScrollTrigger.batch(slips, { start: "top 94%", once: true, onEnter: (b) => gsap.from(b, { y: 40, opacity: hide, duration: 0.7, ease: "expo.out", stagger: 0.08 }) });
+      ScrollTrigger.batch(slips, { start: "top 94%", once: true, onEnter: (b) => gsap.from(b, { y: 40, duration: 0.7, ease: "expo.out", stagger: 0.08 }) });
       gsap.fromTo(".showcase__photo", { scale: 1.1 }, { scale: 1, ease: "none", scrollTrigger: { trigger: show, start: "top bottom", end: "bottom top", scrub: true } });
     }
 
     // Calculator: the tasks are dealt in like rows on a sheet; the figure panel arrives beside them.
     splitIn($("#calc-title"));
-    gsap.from(".calc__head .statement", { y: 20, opacity: hide, duration: 0.7, ease: "expo.out", scrollTrigger: { trigger: ".calc__head", start: "top 85%", once: true } });
-    ScrollTrigger.batch(".chore, .calc__examples li", { start: "top 94%", once: true, onEnter: (b) => gsap.from(b, { x: -28, opacity: hide, duration: 0.6, ease: "expo.out", stagger: 0.05 }) });
-    gsap.from(".calc__result", { y: 50, opacity: hide, duration: 0.9, ease: "expo.out", scrollTrigger: { trigger: ".calc__body", start: "top 85%", once: true } });
+    gsap.from(".calc__head .statement", { y: 20, duration: 0.7, ease: "expo.out", scrollTrigger: { trigger: ".calc__head", start: "top 85%", once: true } });
+    ScrollTrigger.batch(".chore, .calc__examples li", { start: "top 94%", once: true, onEnter: (b) => gsap.from(b, { x: -28, duration: 0.6, ease: "expo.out", stagger: 0.05 }) });
+    gsap.from(".calc__result", { y: 50, duration: 0.9, ease: "expo.out", scrollTrigger: { trigger: ".calc__body", start: "top 85%", once: true } });
 
-    // About: the cards open from the bottom edge like a shutter (a letter rises, a photo settles); names and lines follow.
+    // About: the photo settles in its frame; the bios rise beside it.
     splitIn($("#about-title"));
-    $$(".person").forEach((p) => {
-      const mark = $(".person__mark", p);
-      const photo = $(".person__photo", p);
-      const tl = gsap.timeline({ scrollTrigger: { trigger: p, start: "top 88%", once: true } })
-        .fromTo($(".person__card", p), { clipPath: "inset(0% 0% 100% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 1.1, ease: "power3.inOut" });
-      if (mark) tl.from(mark, { yPercent: 14, duration: 1.2, ease: "expo.out" }, 0.1);
-      if (photo) tl.from(photo, { scale: 1.12, duration: 1.4, ease: "expo.out", clearProps: "transform" }, 0.1);
-      tl
-        .from($$(".person__name, .person__role, .person__text", p), { y: 18, opacity: hide, duration: 0.6, ease: "expo.out", stagger: 0.08 }, 0.4);
-    });
-    gsap.from(".about__line", { y: 18, opacity: hide, duration: 0.7, ease: "expo.out", scrollTrigger: { trigger: ".about__line", start: "top 90%", once: true } });
+    gsap.timeline({ scrollTrigger: { trigger: ".about__people", start: "top 85%", once: true } })
+      .from(".about__photo img", { scale: 1.12, duration: 1.4, ease: "expo.out", clearProps: "transform" }, 0)
+      .from(".person > *", { y: 18, duration: 0.6, ease: "expo.out", stagger: 0.05 }, 0.2);
+    gsap.from(".about__line", { y: 18, duration: 0.7, ease: "expo.out", scrollTrigger: { trigger: ".about__line", start: "top 90%", once: true } });
 
     // How it works: each line steps in along the stair as it climbs the screen.
+    splitIn($("#how-title"));
     $$(".stair").forEach((st) => {
-      const line = $(".stair__line", st);
-      splitIn(line);
-      if (wide) gsap.fromTo(line, { x: () => -innerWidth * 0.1 }, { x: 0, ease: "none", scrollTrigger: { trigger: st, start: "top bottom", end: "top 55%", scrub: true } });
-      gsap.from($("p", st), { y: 18, opacity: hide, duration: 0.7, ease: "expo.out", scrollTrigger: { trigger: st, start: "top 86%", once: true } });
+      gsap.from(st.children, { y: 18, duration: 0.7, ease: "expo.out", stagger: 0.08, scrollTrigger: { trigger: st, start: "top 88%", once: true } });
     });
 
-    gsap.from(".week-slip", { y: 60, rotation: -8, opacity: hide, duration: 0.9, ease: "expo.out", scrollTrigger: { trigger: ".week-slip", start: "top 90%", once: true } });
+    gsap.from(".week-slip", { y: 60, rotation: -8, duration: 0.9, ease: "expo.out", scrollTrigger: { trigger: ".week-slip", start: "top 90%", once: true } });
 
     splitIn($("#faq-title"));
     // Questions: each band's question rises, its answer a beat after; the storefronts are pinned up.
@@ -355,7 +210,7 @@ export function initMotion() {
     gsap.from(".footer__grid > *, .footer__last", { y: 16, duration: 0.6, ease: "expo.out", stagger: 0.06, scrollTrigger: { trigger: ".footer__grid", start: "top 94%", once: true } });
 
     // Feedback under the hand.
-    $$(".button, .picker label, .menu__toggle").forEach((c) => undo.push(pressFeedback(c)));
+    $$(".button, .picker label, .menu__toggle, .bd-btn").forEach((c) => undo.push(pressFeedback(c)));
 
     return () => {
       undo.forEach((f) => f());

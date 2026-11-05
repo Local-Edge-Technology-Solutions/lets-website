@@ -132,6 +132,12 @@ export function initMotion() {
     // arrives. Called section by section so every
     // ScrollTrigger is created in page order (the showcase pin adds height).
     const splits = [];
+    // A heading already on screen while the page is still settling (a visit that opens on #about, say) gets no
+    // echo: its copy would be measured before the fonts, the split and the pin had settled, and could land
+    // over the words below (critique, 2026-11-05). Echoes start once the page has loaded and settled.
+    let settled = false;
+    const settle = () => { const t = setTimeout(() => { settled = true; }, 700); undo.push(() => clearTimeout(t)); };
+    Promise.all([document.readyState === "complete" ? null : new Promise((r) => addEventListener("load", r, { once: true })), document.fonts?.ready]).then(settle);
     const splitIn = (el) => {
       if (!el) return;
       let slipped = false;
@@ -141,7 +147,11 @@ export function initMotion() {
         // Codex 2026-11-05); where marked, its second impression slips into register as it arrives.
         onSplit(self) {
           return gsap.timeline({ scrollTrigger: { trigger: el, start: "top 92%", once: true } })
-            .call(() => { if (el.dataset.slip && !slipped) { slipped = true; registrationSlip(el, el.dataset.slip, { lines: self.lines }); } });
+            .call(() => {
+              if (!el.dataset.slip || slipped) return;
+              slipped = true;
+              if (settled) registrationSlip(el, el.dataset.slip, { lines: self.lines });
+            });
         },
       }));
     };

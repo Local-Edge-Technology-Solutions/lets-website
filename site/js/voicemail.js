@@ -110,8 +110,18 @@ export function initVoicemail() {
     remeasure();
   };
 
+  // On a phone the card and the list stay folded until the first Play (styles.css). Open them before anything is
+  // measured, so the typing and the flying details work from real positions; the page below moved, so remeasure.
+  const open = () => {
+    if (root.classList.contains("is-open")) return;
+    root.classList.add("is-open");
+    void root.offsetHeight;
+    ScrollTrigger.refresh();
+  };
+
   const start = (i) => {
     if (busy) return;
+    open();
     const sample = SAMPLES[i];
     index = i;
     status.textContent = "";
@@ -119,6 +129,7 @@ export function initVoicemail() {
     if (i === 0) list.replaceChildren();
     $$(`[data-sample="${i}"]`, list).forEach((r) => r.remove());
     prepare(sample);
+    remeasure();
 
     if (calm()) {
       list.append(rowFor(sample, false));
@@ -155,6 +166,8 @@ export function initVoicemail() {
     current = { sample, i, row };
     tl.call(() => {
       list.append(row);
+      // The list just grew, so everything below moved: measure the triggers again now, not only at the end.
+      remeasure();
       track(gsap.fromTo(row, { y: -16, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: 0.45, ease: "expo.out", clearProps: "transform,opacity,visibility" }));
     }, null, 3.25);
     FIELDS.forEach((f, k) => {
@@ -228,5 +241,8 @@ export function initVoicemail() {
     finish(sample, i, quiet);
   };
   matchMedia("(prefers-reduced-motion: reduce)").addEventListener("change", (e) => { if (e.matches) landNow(false); });
+  // The card and the list change places at 1000px and fold at 640px: a run in flight lands first (its flying copies
+  // were aimed at the old positions), the opened state is kept, and the page is measured again.
+  ["(max-width: 640px)", "(max-width: 1000px)"].forEach((q) => matchMedia(q).addEventListener("change", () => { landNow(true); remeasure(); }));
   root.addEventListener("vm:land", () => landNow(true));
 }

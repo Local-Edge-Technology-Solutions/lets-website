@@ -1,4 +1,4 @@
-// Billing Day, the interactive preview: the one control is "Approve 6 invoices". Pressing it approves the
+// Billing Day, the interactive preview: the one control is "Approve the example month". Pressing it approves the
 // sample month on this page only (nothing is sent anywhere, no request is made) and plays the app's own
 // approval moment, ported from Billing Day's ApprovedStreet: the buildings slide together within their
 // rows, the ground line draws under them, and their windows warm one by one. The words change first and
@@ -9,7 +9,7 @@ import { gsap, calm, $, $$ } from "./env.js";
 const REVIEW = {
   label: "to review · 6 invoices",
   step: "Approve October",
-  button: "Approve 6 invoices · $2,341.25",
+  button: "Approve the example month",
   status: "Example: approving here doesn’t send anything.",
 };
 const APPROVED = {

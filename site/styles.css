@@ -891,19 +891,12 @@ p { text-wrap: pretty; }
 .vmrow [data-ui].vm-list { width: min(100%, 30rem); justify-self: end; transform: none; }
 .vm-card__tag { font-size: 0.8125rem; font-weight: 700; background: var(--teal); color: var(--black); padding: 0.1rem 0.4rem; }
 
-/* Ben's card: three things his tools do in a normal week, each on its own ground (no rules). */
-.person__record { margin-top: 1.5rem; display: grid; gap: 0.9rem; }
-.person__record .person__text { margin-top: 0; }
+/* Ben's record (under Billing Day): three things his tools do, each on its own ground (no rules). */
 .record__list { display: grid; gap: 0.5rem; }
 .record__row { background: var(--photo-ground); padding: 0.8rem 1rem 0.9rem; line-height: 1.35; }
 .record__when { display: block; font-size: var(--step-small); font-weight: 900; color: var(--teal); margin-bottom: 0.15rem; }
 .record__what { color: var(--white); }
 
-/* The Let's talk button that stays in reach (phones and tablets). */
-.dock { position: fixed; z-index: 30; right: var(--margin); bottom: calc(var(--margin) + env(safe-area-inset-bottom)); min-height: 3rem; border: 2px solid var(--teal); transform: translateY(160%); visibility: hidden; transition: transform 300ms var(--ease-out), visibility 0s linear 300ms, background-color var(--t-hover) ease, color var(--t-hover) ease; }
-.dock.is-on { transform: none; visibility: visible; transition: transform 300ms var(--ease-out), visibility 0s, background-color var(--t-hover) ease, color var(--t-hover) ease; }
-@media (min-width: 1001px) { .dock { display: none; } }
-@media (prefers-reduced-motion: reduce) { .dock, .dock.is-on { transition: none; } }
 
 @media (max-width: 1000px) {
   .probs__intro .statement, .probs__why { grid-column: 1 / -1; }
@@ -980,8 +973,121 @@ p { text-wrap: pretty; }
   .busy [data-busy-go], .busy [data-busy-back] { display: none !important; }
   .busy [data-busy-talk][hidden] { display: inline-flex !important; }
 }
-/* Codex review, round 1: the dock leaves at once while someone types; the sticky phone stays put only where the
-   whole phone and its buttons fit (not on short laptop screens, and not when both screens are shown). */
-.dock.is-instant { transition: none; }
+/* Codex review, round 1: the sticky phone stays put only where the whole phone and its buttons fit (not on short
+   laptop screens, and not when both screens are shown). */
 @media (min-width: 1001px) and (max-height: 800px) { .busy { position: static; } }
 @media (prefers-reduced-motion: reduce) { .busy { position: static; } }
+
+/* ---------- round 2, 2026-11-05: strict audit round 2, Codex partner and adversary ---------- */
+/* No floating button: an ask sits at the end of each place a visitor might decide (the problems, how it works,
+   the two of us, our work), the button and the free first talk beside it. */
+.ask-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.5rem; margin-top: 0.75rem; }
+.ask-row .button { font-size: var(--step-body); min-height: 3.5rem; padding: 0 1.6rem; }
+.ask-row__free { font-weight: 900; }
+.how > .ask-row { margin-top: clamp(2.5rem, 5vw, 4rem); }
+@media (max-width: 640px) { .ask-row .button { width: 100%; } }
+
+/* Hero: the picture fills to the right margin on wide screens; on a phone it is shown whole, not cut by the next
+   section. */
+@media (min-width: 1001px) { .hero__picture { grid-column: 7 / span 6; } }
+@media (max-width: 640px) { .hero__picture { margin-bottom: 0; } }
+
+/* The problems: the survey figures in white; teal is kept for actions and the demos. */
+.fix4__stat b { color: var(--white); }
+
+/* A missed call handled. Desktop: the voicemail on the right, the words and then the call-back list on the left,
+   so the details fly across the gutter and no corner is left empty. Phone: the card and the list stay folded until
+   the first Play (js/voicemail.js opens them), and only once that script is running. */
+@media (min-width: 1001px) {
+  .vmrow__words { position: static; }
+  .vmrow .vm__stage { display: contents; }
+  .vmrow .vm__stage [data-ui].vm-card { grid-column: 6 / -1; grid-row: 1 / span 2; }
+  .vmrow .vm__stage [data-ui].vm-list { grid-column: 1 / span 5; grid-row: 2; width: 100%; justify-self: stretch; }
+}
+@media (max-width: 640px) and (prefers-reduced-motion: no-preference) { .vmrow[data-vm-ready]:not(.is-open) .vm__stage { display: none; } }
+
+/* About: with the record moved to Our work, Ben's words run full width on tablets and Zeke's card sets his photo
+   beside his words, so neither column leaves a hole. */
+@media (min-width: 641px) and (max-width: 1000px) {
+  .person--ben { grid-column: 1 / -1; grid-row: auto; }
+  .person--ben .person__text { max-width: 60ch; }
+  .person--zeke { grid-column: 1 / -1; grid-row: auto; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .person--zeke .about__photo { grid-column: 1; grid-row: 1 / span 6; margin: 0; }
+  .person--zeke > :not(.about__photo) { grid-column: 2; }
+}
+
+/* Our work: the brand's deep ground, the preview framed as a product screen in a black bezel (its own faces kept
+   inside). On a phone the invoice detail and the repeated total stay out, so the preview stays compact. */
+.work { background: var(--deep); color: var(--white); }
+.work__text { color: var(--white); }
+.bd { border: clamp(6px, 0.8vw, 10px) solid var(--black); border-radius: clamp(14px, 1.6vw, 22px); }
+@container bd (max-width: 559px) {
+  .bd-inv, .bd-approve__total { display: none; }
+}
+/* Ben's work at the agency: the proof under the product. */
+.proof { margin-top: clamp(3.5rem, 7vw, 6rem); display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 1.5rem; }
+.proof__head { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 1rem; align-items: end; }
+.proof__title { grid-column: 1 / span 6; font-size: var(--step-lead); line-height: 1.1; letter-spacing: -0.03em; }
+.proof__intro { grid-column: 7 / span 6; max-width: 52ch; }
+.proof .record__list { grid-column: 1 / -1; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); }
+.proof .record__row { background: var(--black); padding: 1rem 1.15rem 1.15rem; }
+.proof__trial { grid-column: 1 / span 6; max-width: 52ch; }
+.proof .ask-row { grid-column: 1 / -1; margin-top: 0; }
+@media (max-width: 1000px) {
+  .proof__title, .proof__intro, .proof__trial { grid-column: 1 / -1; }
+  .proof .record__list { grid-template-columns: minmax(0, 1fr); gap: 0.5rem; }
+}
+
+/* Where does your week go? On a phone the unit stays beside each box ("min"), and the five unticked examples wait
+   behind one button (js/calculator.js shows them). */
+.chores__more { display: none; width: 100%; margin-top: 8px; font-size: var(--step-body); min-height: 3.5rem; }
+@media (max-width: 640px) {
+  .chore__mins > span { display: inline; font-size: 0.8125rem; }
+  .chore__mins .chore__wk { display: none; }
+  .chores:not(.is-all) .chore--more { display: none; }
+  .chores:not(.is-all) .chores__more { display: inline-flex; }
+}
+
+/* Questions: one deep field from the heading down; the photos carry no captions (their alt text describes them),
+   sit level, and stay off phones. */
+.faq__head h2 { color: var(--teal); }
+.storefronts li:nth-child(even) { margin-top: 0; }
+@media (max-width: 640px) { .storefronts { display: none; } }
+
+/* Let's talk: email offered as well, its link plainly a link. */
+.coupon__alt { font-size: var(--step-small); color: var(--soft-on-dark); }
+.coupon__alt .link { color: var(--white); text-decoration-color: currentColor; }
+/* On a phone a "Let's talk" tap lands on the form card with the email and the whole send button on screen: the
+   section's top padding goes, the title is one line, the message box is shorter, Name and Phone sit side by side. */
+@media (max-width: 640px) {
+  .contact { padding-top: 12px; }
+  .coupon { gap: 8px; }
+  .coupon__title br { display: none; }
+  .cell textarea { min-height: 4.5rem; }
+  .cell-pair { grid-template-columns: 1fr 1fr; gap: 8px; }
+}
+
+/* Phone type: section heads a step larger, the bold statements a step smaller, so the heads lead clearly. */
+@media (max-width: 640px) {
+  :root { --step-head: 2.25rem; }
+  .statement { font-size: 1.125rem; }
+}
+/* Billing Day on a phone, measured at 360x640 (the preview kept under one and a half screens in both states):
+   the lot labels drop the reserved "Approved" line (the status line and the glowing windows say it), the month
+   title takes one line, and the blocks sit closer. */
+@container bd (max-width: 559px) {
+  .bd-lot-ok, .bd.is-approved .bd-lot-ok { display: none; }
+  .bd-title { font-size: 1.5rem; }
+  .bd-mast, .bd-round, .bd-lower { margin-top: 0.75rem; }
+}
+/* The form on tablets too: the title, the email, the message and the button first, the three reassurances after
+   the button, so a "Let's talk" tap lands with the send button on screen. */
+@media (max-width: 1000px) {
+  .contact { padding-top: 12px; }
+  .coupon { display: flex; flex-direction: column; gap: 8px; padding: 1.5rem 1.25rem; }
+  .coupon__left, .coupon__right { display: contents; }
+  .coupon__text { margin-bottom: 0.5rem; }
+  .coupon__facts { order: 10; margin-top: 1rem; }
+  .coupon__privacy { order: 11; }
+}
+@media (max-width: 640px) { .coupon__text { font-size: var(--step-body); } }

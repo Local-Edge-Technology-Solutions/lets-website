@@ -5,7 +5,7 @@
 // contact link, with a small Replay beside it. Without script both screens are shown, one under the other.
 import { gsap, ScrollTrigger, calm, $, $$ } from "./env.js";
 
-const SAID = "Tuesday morning: the busywork is handled. Dana Reyes is on the call-back list, Thistlecove Studio got a friendly reminder, three inquiries were answered and one call booked, and last week’s numbers are in the inbox.";
+const SAID = "Example. Tuesday morning: the busywork is handled. Dana Reyes is on the call-back list, Thistlecove Studio got a friendly reminder, three inquiries were answered and one call booked, and last week’s numbers are ready for the accountant.";
 
 export function initBusy() {
   const root = $("[data-busy]");
@@ -27,6 +27,16 @@ export function initBusy() {
 
   let tl = null;
   let pending = null;
+  // The control the visitor last put focus on. Moving focus elsewhere clears it; a control hidden while it has
+  // focus (reduced motion hides Watch) does not, so focus can still be handed to the link that replaced it.
+  let held = null;
+  controls.addEventListener("focusin", (e) => { held = e.target; });
+  controls.addEventListener("focusout", (e) => {
+    const to = e.relatedTarget;
+    if (to && controls.contains(to)) return;
+    if (!to && !e.target.getClientRects().length) return;
+    held = null;
+  });
   let pile = null;
   let piled = false;
   // Anything in progress jumps to its end (a second press, a resize, motion turned off mid-run): the waiting
@@ -65,8 +75,8 @@ export function initBusy() {
     const finish = () => {
       tl = null;
       tidy();
-      // Only a control that is about to disappear hands its focus on, and only if it still has it now.
-      const hadFocus = document.activeElement === go;
+      // Only a control that is about to disappear hands its focus on, and only if the visitor left focus on it.
+      const hadFocus = held === go;
       show(true, announce ? SAID : "");
       if (hadFocus) talk.focus();
     };
@@ -102,11 +112,15 @@ export function initBusy() {
     trigger: before, start: "bottom 96%", once: true,
     onEnter: () => {
       if (calm() || root.classList.contains("is-done") || tl) return;
-      pending = gsap.delayedCall(2.6, () => { pending = null; if (!root.classList.contains("is-done")) play(false); });
+      pending = gsap.delayedCall(4.5, () => { pending = null; if (!root.classList.contains("is-done")) play(false); });
     },
   });
 
-  matchMedia("(prefers-reduced-motion: reduce)").addEventListener?.("change", settle);
+  // Motion turned off: a run lands at once, and if Watch had focus (it is hidden now), the contact link takes it.
+  matchMedia("(prefers-reduced-motion: reduce)").addEventListener?.("change", () => {
+    settle();
+    if (held === go && !go.getClientRects().length && talk.getClientRects().length) talk.focus();
+  });
   let width = innerWidth;
   addEventListener("resize", () => { if (innerWidth !== width) { width = innerWidth; settle(); } }, { passive: true });
 

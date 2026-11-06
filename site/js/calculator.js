@@ -1,7 +1,7 @@
 // Showpiece 3: the time-spent calculator. Plain sum: minutes a week for each ticked chore, × 52 ÷ 60.
 // Without script the page shows a worked example; the inputs appear once this code runs.
 // The total rolls on an odometer (Animaxxing's odometer, adapted and simplified for whole numbers).
-import { gsap, calm, $, $$ } from "./env.js";
+import { gsap, ScrollTrigger, calm, $, $$ } from "./env.js";
 
 const fmt = new Intl.NumberFormat("en-US");
 
@@ -128,9 +128,27 @@ export function initCalculator() {
     const now = box.value;
     if (!now.includes(block)) box.value = now.trim() ? `${now.replace(/\s+$/, "")}\n\n${block}` : block;
     status.textContent = "Added your ticked tasks to the message in the form below.";
+    // The form's one required field comes first; with the email already in, the message is next.
+    const email = document.querySelector('[data-lead] input[name="email"]');
+    if (email && !email.value.trim()) { email.focus(); return; }
     box.focus();
     box.setSelectionRange(box.value.length, box.value.length);
   });
+
+  // On a phone the five unticked examples wait behind one button (styles.css); it shows them all.
+  const more = $("[data-calc-more]", root);
+  // Once one of the five has been touched (focused, ticked or edited, at any width), they all stay shown, so a
+  // narrower window never hides a task that counts or the field that has focus.
+  const keep = (e) => { if (e.target.closest?.(".chore--more")) live.classList.add("is-all"); };
+  ["focusin", "input", "change"].forEach((t) => live.addEventListener(t, keep));
+  if (more) {
+    more.addEventListener("click", () => {
+      live.classList.add("is-all");
+      $(".chore--more .chore__pick input", root)?.focus();
+      ScrollTrigger.refresh();
+    });
+    more.hidden = false;
+  }
 
   live.hidden = false;
   statik.hidden = true;

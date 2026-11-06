@@ -1,6 +1,6 @@
 // The motion layer. Recipes adapted from Animaxxing (registrationSlip, pressFeedback) with the taste skill's
 // rules winning: no overshoot, nothing hidden without script, reduced motion gets the finished page.
-// The hero's load sequence is CSS (styles.css). Everything here is built inside one gsap.matchMedia()
+// The hero's one example runs in js/hero.js. Everything here is built inside one gsap.matchMedia()
 // run and torn down with it when the motion preference or the width class changes.
 import { gsap, ScrollTrigger, SplitText, calm, $, $$, fontsReady } from "./env.js";
 
@@ -110,10 +110,8 @@ export function initMotion() {
     // Entrances only move, at every width: nothing ever waits invisible (or masked) for a scroll that a
     // visitor, a jump to #contact or a screenshot might skip past (critique cap, 2026-11-05).
 
-    // Hero: the masked lines rise in CSS; then a white second impression slips into register under the black.
-    const h1 = $(".hero__title");
-    const slipCall = gsap.delayedCall(1.05, () => registrationSlip(h1, "var(--white)", { x: 18, y: 8, duration: 0.8 }));
-    undo.push(() => slipCall.kill());
+    // The hero's headline never moves (round 5: the offer is readable from the first frame); js/hero.js runs
+    // its one example.
 
     // Headings are never moved or hidden; where marked, a second impression slips into register as each
     // arrives. Called section by section so every

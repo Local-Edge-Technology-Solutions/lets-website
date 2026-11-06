@@ -2,6 +2,7 @@
 // Each part upgrades HTML that already works on its own; a failure in one never hides another's content.
 import { fontsReady } from "./js/env.js";
 import { initMenu } from "./js/menu.js";
+import { initHero } from "./js/hero.js";
 import { initVoicemail } from "./js/voicemail.js";
 import { initAsk } from "./js/ask.js";
 import { initBusy } from "./js/busy.js";
@@ -15,6 +16,7 @@ const safely = (name, fn) => {
 };
 
 safely("menu", initMenu);
+safely("hero", initHero);
 safely("voicemail", initVoicemail);
 safely("ask", initAsk);
 safely("busy", initBusy);

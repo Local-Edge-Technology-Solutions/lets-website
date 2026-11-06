@@ -43,8 +43,6 @@
   --section: clamp(5.5rem, 11vw, 10rem);
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
   --t-press: 140ms;
   --t-hover: 180ms;
   --t-ui: 240ms;
@@ -126,28 +124,9 @@ p { text-wrap: pretty; }
 .nav__links { display: flex; gap: clamp(1rem, 2.6vw, 2.5rem); }
 .nav__links a { text-decoration-thickness: 0.12em; }
 .menu { display: none; }
-.hero__title { margin-top: clamp(1.5rem, 5svh, 4rem); position: relative; z-index: 2; }
-.hero__body { flex: 1; min-height: 0; position: relative; margin-top: clamp(1.5rem, 3.5svh, 2.5rem); padding-bottom: clamp(2rem, 5svh, 3.5rem); align-items: start; }
-.hero__copy { grid-column: 1 / span 6; grid-row: 1; display: flex; flex-direction: column; align-items: flex-start; gap: 1.75rem; position: relative; z-index: 2; }
-.hero__fact { font-weight: 700; font-size: var(--step-body); line-height: 1.4; max-width: 44ch; }
-.hero__act { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.5rem; }
-.hero__free { font-weight: 900; font-size: var(--step-body); }
-/* On wide screens the picture sits in its grid area but out of flow, so it bleeds off the bottom without
-   setting the hero's height, and the hero grows with the words on short screens instead of cutting them. */
-.hero__picture {
-  grid-column: 7 / span 5; grid-row: 1; position: absolute; top: 0; left: 0; right: 0; z-index: 1;
-  margin-top: calc(var(--step-display) * -0.55);
-  aspect-ratio: 3 / 4; background: var(--photo-ground); overflow: clip;
-  transform: rotate(4deg); transform-origin: 50% 0;
-}
-.hero__picture picture, .hero__picture img { width: 100%; height: 100%; }
-.hero__picture img { object-fit: cover; object-position: 50% 30%; }
 
 /* The Billing Day card: the app's own look (the .bd tokens), a link to the full preview below. */
 
-/* lines for the masked headline */
-.lines .line { display: block; overflow: clip; padding-bottom: 0.08em; margin-bottom: -0.08em; }
-.lines [data-line] { display: block; }
 
 /* ---------- intro: the proposition, and the busywork list the headline's letters land in ---------- */
 
@@ -343,9 +322,6 @@ p { text-wrap: pretty; }
   .menu__links a { display: block; padding: 0.55rem 0; font-size: var(--step-lead); font-weight: 900; letter-spacing: -0.03em; text-decoration: none; }
   .menu__links a:focus-visible { outline-offset: 0; }
   .hero { height: auto; min-height: 0; }
-  .hero__copy { grid-column: 1 / span 6; grid-row: 1; }
-  .hero__picture { position: relative; inset: auto; grid-column: 8 / span 5; grid-row: 1 / 3; margin-bottom: -14%; }
-  .hero__body { grid-template-rows: auto minmax(0, 1fr); padding-bottom: 2.5rem; }
   
   
   
@@ -374,12 +350,6 @@ p { text-wrap: pretty; }
 @media (max-width: 640px) {
   .nav { gap: 0.5rem; }
   .menu { margin-left: auto; }
-  .hero__title { margin-top: 1.5rem; }
-  .hero__body { display: flex; flex-direction: column; gap: 1.5rem; padding-bottom: 2.5rem; }
-  .hero__copy { gap: 1.25rem; }
-  .hero__act { width: 100%; }
-  .hero__act .button { width: 100%; }
-  .hero__picture { order: 3; width: 64%; align-self: center; margin-top: 0.5rem; margin-bottom: -18%; transform: rotate(4deg); }
   
   
   .vm__controls { width: 100%; }
@@ -414,17 +384,6 @@ p { text-wrap: pretty; }
   .footer__links { grid-template-columns: repeat(2, max-content); }
 }
 
-/* ---------- motion: the load sequence (CSS only, settled by 1.2s; the reduced page is the finished page) ---------- */
-@media (prefers-reduced-motion: no-preference) {
-  .js .hero [data-line] { transform: translateY(105%); animation: line-up 900ms var(--ease-expo) forwards; animation-delay: calc(120ms + var(--i) * 110ms); }
-  .js .hero [data-load] { opacity: 0; transform: translateY(16px); animation: rise 560ms var(--ease-out) forwards; animation-delay: var(--d); }
-  .js .hero [data-open] { clip-path: inset(100% 0 0 0); animation: open-up 1000ms var(--ease-in-out) 180ms forwards; }
-  .js .hero [data-open] img { transform: scale(1.14); animation: settle 1200ms var(--ease-expo) 150ms forwards; }
-}
-@keyframes line-up { to { transform: none; } }
-@keyframes rise { to { opacity: 1; transform: none; } }
-@keyframes open-up { to { clip-path: inset(0 0 0 0); } }
-@keyframes settle { to { transform: none; } }
 [data-ripple] { background: currentColor; }
 .impression-line { display: block; white-space: nowrap; }
 .impression-line::before { content: attr(data-t); }
@@ -710,14 +669,9 @@ p { text-wrap: pretty; }
 @media (max-width: 640px) { .about__photo { grid-column: 1 / span 10; } }
 /* Footer links wrap instead of running into the address at narrow desktop widths. */
 .footer__links { display: flex; flex-wrap: wrap; gap: 0.75rem 2.5rem; }
-/* Short laptop screens (1440x700): tighter rows, a smaller lead and a smaller photo, so the button, the
-   free line and the Billing Day card all fit on the first screen. */
+/* Short laptop screens (1440x700): a tighter nav row, so the offer and its button fit on the first screen. */
 @media (min-width: 1001px) and (max-height: 820px) {
   .hero .nav { padding-block: 0.875rem; }
-  .hero__title { margin-top: 0.25rem; font-size: min(var(--step-display), 21svh); }
-  .hero__body { margin-top: 1rem; padding-bottom: 1.25rem; }
-  .hero__copy { gap: 1rem; }
-  .hero__copy .lead { font-size: 1.375rem; }
 }
 /* The Approve card comes straight after the street (in the page's order too), so on a phone the windows
    that answer the button are just above it; on wide screens the invoice stays on the left. */
@@ -915,14 +869,11 @@ p { text-wrap: pretty; }
 }
 
 /* ---------- audit round 1, 2026-11-05: strict conversion, design and truth audits ---------- */
-/* Weight carries meaning again: running text at 400, headings and labels heavy. The hero's lead line leads. */
-.hero .lead { font-weight: 600; }
-.hero__fact, .probs__why, .work__text, .coupon__facts li, .calc__how, .chores__legend, .vmrow__words p { font-weight: 400; }
+/* Weight carries meaning again: running text at 400, headings and labels heavy. */
+.probs__why, .work__text, .coupon__facts li, .calc__how, .chores__legend, .vmrow__words p { font-weight: 400; }
 /* On a phone the section heads step down so the page title stays the largest type. */
 @media (max-width: 640px) {
   :root { --step-head: 2rem; }
-  .hero__copy { gap: 1rem; }
-  .hero__picture { width: 56%; margin-top: 0; }
 }
 /* How it works: each step on the page grid (heading on the left half, words from column 7); the last step's
    teal block runs to the page edges so its heading starts on the same line as the others. */
@@ -964,7 +915,7 @@ p { text-wrap: pretty; }
   .bd .st-lot { aspect-ratio: 1; }
   .bd .st-lot > .st-lot-bldg { left: -10%; width: 120%; }
 }
-/* Resting tilts: only the hero picture leans; interface pieces sit square (their entrances still turn). */
+/* Resting tilts: interface pieces sit square (their entrances still turn). */
 [data-ui].vm-list { transform: none; }
 /* Reduced motion: the phone shows Monday night and Tuesday morning one under the other (nothing waits hidden
    behind a button), and its only control is the contact link. */
@@ -989,8 +940,6 @@ p { text-wrap: pretty; }
 
 /* Hero: the picture fills to the right margin on wide screens; on a phone it is shown whole, not cut by the next
    section. */
-@media (min-width: 1001px) { .hero__picture { grid-column: 7 / span 6; } }
-@media (max-width: 640px) { .hero__picture { margin-bottom: 0; } }
 
 /* The problems: the survey figures in white; teal is kept for actions and the demos. */
 .fix4__stat b { color: var(--white); }
@@ -1091,3 +1040,64 @@ p { text-wrap: pretty; }
   .coupon__privacy { order: 11; }
 }
 @media (max-width: 640px) { .coupon__text { font-size: var(--step-body); } }
+
+/* ---------- hero, round 5 (2026-11-06): the offer stays still, one example moves ----------
+   Codex partner and adversary, and blind 5-second tests: the offer is readable from the first frame, nothing
+   in it waits for an entrance, and only the example below it moves (once, then rests on the finished picture;
+   reduced motion and no script show the finished picture). Phone first. */
+.hero { min-height: 0; padding-bottom: 2rem; }
+.hero__title { --fit: 7.75; font-size: min(calc((100cqi - 2 * var(--margin)) / var(--fit)), 17svh, 8.75rem); line-height: 0.92; word-spacing: 0.1em; margin-top: 0.75rem; }
+.hero__l { display: block; white-space: nowrap; }
+.hero__box { display: inline-block; line-height: 0.8; background: var(--black); color: var(--teal); padding: 0.07em 0.07em 0.03em; margin-top: 0.06em; }
+.hero__body { display: flex; flex-direction: column; gap: 1rem; margin-top: 1.1rem; }
+.hero__copy { display: grid; gap: 0.5rem; }
+.hero__sub { font-size: 1.25rem; line-height: 1.25; font-weight: 800; letter-spacing: -0.02em; max-width: 26ch; }
+.hero__who { font-size: var(--step-body); font-weight: 700; line-height: 1.3; }
+.hero__act { display: grid; gap: 0.5rem; }
+.hero__act .button { width: 100%; min-height: 3.5rem; }
+.hero__free { font-weight: 900; font-size: var(--step-body); line-height: 1.3; }
+.hero__lead { font-size: 1.125rem; font-weight: 600; max-width: 32ch; }
+
+/* the example: four everyday jobs and what each becomes */
+.jobs { margin: 0; background: var(--black); color: var(--white); padding: 0.875rem 1rem 1rem; }
+.jobs__top { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: 0.6rem; }
+.jobs__top b { font-size: 1.0625rem; font-weight: 900; color: var(--teal); letter-spacing: -0.02em; }
+.jobs__tag { font-size: 0.8125rem; font-weight: 700; background: var(--white); color: var(--black); padding: 0.05rem 0.45rem; }
+.jobs__list { display: grid; gap: 0.3rem; }
+.job { display: grid; grid-template-columns: 6.6rem 1.4rem 1fr; align-items: center; gap: 0.4rem; }
+.job__from { font-weight: 800; font-size: 0.875rem; line-height: 1.15; }
+.job__arrow { width: 100%; fill: none; stroke: var(--teal); stroke-width: 3.5; stroke-linecap: square; }
+.job__to { background: var(--teal); color: var(--black); font-weight: 800; font-size: 0.875rem; line-height: 1.15; padding: 0.3rem 0.5rem; }
+.jobs__check { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.6rem; font-weight: 900; font-size: 1.0625rem; letter-spacing: -0.02em; }
+.jobs__check svg { width: 1.5rem; height: 1.5rem; flex: none; fill: none; stroke: var(--teal); stroke-width: 3.5; stroke-dasharray: 30; }
+
+/* With script and motion, the results start unlit (every word still readable) from the first paint, so nothing
+   flashes; js/hero.js lights them once, one after another, when the example is on screen, then marks it at
+   rest. Each result switches ink and ground in one step, so no frame is low contrast (Codex review). */
+@media (prefers-reduced-motion: no-preference) {
+  .js .jobs:not(.is-rest) .job__to { background: #262626; color: var(--white); }
+  .jobs.is-play .job__to { animation: jobs-chip 1ms steps(1, end) both; animation-delay: calc(200ms + var(--k) * 300ms); }
+  .jobs.is-play .jobs__check svg { animation: jobs-tick 380ms var(--ease-out) 1500ms both; }
+}
+@keyframes jobs-chip { from { background: #262626; color: var(--white); } to { background: var(--teal); color: var(--black); } }
+@keyframes jobs-tick { from { stroke-dashoffset: 30; } to { stroke-dashoffset: 0; } }
+
+/* tablet: one column, roomier */
+@media (min-width: 641px) {
+  .hero__sub, .hero__lead { font-size: var(--step-lead); }
+  .hero__act { grid-template-columns: auto 1fr; align-items: center; column-gap: 1.25rem; }
+  .hero__act .button { width: auto; min-height: 4rem; }
+  .jobs { padding: 1.25rem 1.5rem 1.5rem; max-width: 40rem; }
+  .job { grid-template-columns: 11rem 2.25rem 1fr; }
+  .job__from, .job__to { font-size: var(--step-body); }
+}
+/* desktop: the words on the left, the example on the right */
+@media (min-width: 1001px) {
+  .hero__title { margin-top: clamp(1rem, 3svh, 2.5rem); }
+  .hero__body { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 1.5rem; margin-top: clamp(1.25rem, 3svh, 2.5rem); align-items: start; }
+  .hero__copy, .hero__act, .hero__lead { grid-column: 1 / span 6; }
+  .hero__copy { grid-row: 1; } .hero__act { grid-row: 2; } .hero__lead { grid-row: 3; }
+  .jobs { grid-column: 7 / -1; grid-row: 1 / span 3; max-width: none; padding: clamp(1.25rem, 2.2vw, 2rem); }
+  .jobs__top b { font-size: var(--step-lead); }
+  .hero__sub { max-width: 30ch; }
+}

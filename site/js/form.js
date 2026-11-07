@@ -43,11 +43,11 @@ export function initForm() {
       // Only clear the form if nothing was typed while it was sending; newer edits are never thrown away.
       if (new URLSearchParams(new FormData(form)).toString() === sent) {
         form.reset();
-        tell("Thanks. Your message is on its way to Ben and Zeke.", { ok: true });
+        tell("Thanks. Your message is on its way to us.", { ok: true });
         // The thank-you page confirms it in full, and gives an ad platform one address to count a lead by.
         location.assign("/thanks/");
       } else {
-        tell(`Thanks. Your message is on its way to Ben and Zeke. The changes you made while it was sending haven’t been sent; press “${label}” again to send them.`, { ok: true });
+        tell(`Thanks. Your message is on its way to us. The changes you made while it was sending haven’t been sent; press “${label}” again to send them.`, { ok: true });
       }
     } catch (err) {
       const status = err && err.status;

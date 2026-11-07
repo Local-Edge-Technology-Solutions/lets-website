@@ -102,10 +102,9 @@ export function pressFeedback(control, { squash = 0.95, ink = 0.28 } = {}) {
 
 export function initMotion() {
   const mm = gsap.matchMedia();
-  mm.add({ motion: "(prefers-reduced-motion: no-preference)", wide: "(min-width: 1001px)" }, (ctx) => {
+  mm.add({ motion: "(prefers-reduced-motion: no-preference)" }, (ctx) => {
     if (!ctx.conditions.motion) return;
     document.documentElement.classList.add("gsap-press");
-    const wide = ctx.conditions.wide;
     const undo = [];
     // Entrances only move, at every width: nothing ever waits invisible (or masked) for a scroll that a
     // visitor, a jump to #contact or a screenshot might skip past (critique cap, 2026-11-05).
@@ -145,64 +144,26 @@ export function initMotion() {
       }));
     };
 
-    // What we fix: the heading arrives, the intro rises; each problem's words step in as it arrives (the busy
-    // phone runs its own story, js/busy.js). The voicemail card is laid down and its list slid beside it.
-    splitIn($("#week-title"));
-    gsap.from(".probs__intro > *", { y: 24, duration: 0.8, ease: "expo.out", stagger: 0.08, scrollTrigger: { trigger: ".probs__intro", start: "top 90%", once: true } });
-    $$(".fix4").forEach((row) => {
-      gsap.from(row.children, { y: 18, duration: 0.7, ease: "expo.out", stagger: 0.06, scrollTrigger: { trigger: row, start: "top 90%", once: true } });
-    });
-    gsap.from(".vmrow__words > :not([hidden])", { y: 20, duration: 0.7, ease: "expo.out", stagger: 0.07, scrollTrigger: { trigger: ".vmrow", start: "top 86%", once: true } });
-    gsap.timeline({ scrollTrigger: { trigger: ".vmrow", start: "top 80%", once: true } })
-      .from(".vm-card", { y: 60, rotation: -1.5, duration: 0.9, ease: "expo.out" }, 0.1)
-      .from(".vm-list", { y: 80, rotation: 4, duration: 0.9, ease: "expo.out" }, 0.22)
-      .from(".vm-wave i", { scaleY: 0.1, duration: 0.6, ease: "expo.out", stagger: { each: 0.008, from: "start" } }, 0.3);
-
-    // Billing Day: its heading rises; the preview itself only answers the Approve button (js/work.js).
-    splitIn($("#work-title"));
-    gsap.from(".work__text", { y: 24, duration: 0.8, ease: "expo.out", scrollTrigger: { trigger: ".work__head", start: "top 88%", once: true } });
-
-    // Calculator: the tasks are dealt in like rows on a sheet; the figure panel arrives beside them.
-    splitIn($("#calc-title"));
-    gsap.from(".calc__head .statement", { y: 20, duration: 0.7, ease: "expo.out", scrollTrigger: { trigger: ".calc__head", start: "top 85%", once: true } });
-    ScrollTrigger.batch(".chore, .calc__examples li", { start: "top 94%", once: true, onEnter: (b) => gsap.from(b, { x: -28, duration: 0.6, ease: "expo.out", stagger: 0.05 }) });
-    gsap.from(".calc__result", { y: 50, duration: 0.9, ease: "expo.out", scrollTrigger: { trigger: ".calc__body", start: "top 85%", once: true } });
+    // See one job happen: the heading arrives (the example runs itself, js/voicemail.js).
+    splitIn($("#see-title"));
 
     // About: the photo settles in its frame; the bios rise beside it.
     splitIn($("#about-title"));
     gsap.timeline({ scrollTrigger: { trigger: ".about__people", start: "top 85%", once: true } })
       .from(".about__photo img", { scale: 1.12, duration: 1.4, ease: "expo.out", clearProps: "transform" }, 0)
       .from(".person > *", { y: 18, duration: 0.6, ease: "expo.out", stagger: 0.05 }, 0.2);
-    ScrollTrigger.batch(".record__row", { start: "top 94%", once: true, onEnter: (b) => gsap.from(b, { y: 18, duration: 0.6, ease: "expo.out", stagger: 0.08 }) });
-    gsap.from(".about__line", { y: 18, duration: 0.7, ease: "expo.out", scrollTrigger: { trigger: ".about__line", start: "top 90%", once: true } });
 
-    // How it works: each step's heading and words rise as the step arrives.
+    // How it works and Questions: the headings arrive; the steps, the folds and the form sit still (round 6:
+    // nothing that is read or typed into waits for an entrance).
     splitIn($("#how-title"));
-    $$(".stair").forEach((st) => {
-      gsap.from(st.children, { y: 18, duration: 0.7, ease: "expo.out", stagger: 0.08, scrollTrigger: { trigger: st, start: "top 88%", once: true } });
-    });
-
     splitIn($("#faq-title"));
-    // Questions: each band's question rises, its answer a beat after; the storefronts are pinned up.
-    $$(".band").forEach((b) => {
-      gsap.timeline({ scrollTrigger: { trigger: b, start: "top 88%", once: true } })
-        .from($(".band__q", b), { y: 22, duration: 0.7, ease: "expo.out" })
-        .from($(".band__a", b), { y: 18, duration: 0.7, ease: "expo.out" }, 0.09);
-    });
-    ScrollTrigger.batch(".storefronts li", { start: "top 94%", once: true, onEnter: (b) => gsap.from(b, { y: 50, rotation: (i) => (i % 2 ? 4 : -4), duration: 0.8, ease: "expo.out", stagger: 0.07 }) });
-
-    // Contact: the form is handed over, then its cells fill in.
-    gsap.timeline({ scrollTrigger: { trigger: ".coupon", start: "top 88%", once: true } })
-      .from(".coupon", { y: 70, rotation: -2.5, duration: 0.9, ease: "expo.out" })
-      .from(".coupon__right > :not(.hp):not(:empty)", { y: 14, duration: 0.5, ease: "expo.out", stagger: 0.06 }, 0.2)
-      .from(".coupon__left > *", { y: 14, duration: 0.6, ease: "expo.out", stagger: 0.06 }, 0.3);
 
     // Footer: the four blocks are set like wood type, rising from the baseline as the close arrives.
     gsap.from(".mark__block", { yPercent: 30, duration: 0.9, ease: "expo.out", stagger: 0.11, scrollTrigger: { trigger: ".mark", start: "top 94%", once: true } });
     gsap.from(".footer__grid > *, .footer__last", { y: 16, duration: 0.6, ease: "expo.out", stagger: 0.06, scrollTrigger: { trigger: ".footer__grid", start: "top 94%", once: true } });
 
     // Feedback under the hand.
-    $$(".button, .picker label, .menu__toggle, .bd-btn").forEach((c) => undo.push(pressFeedback(c)));
+    $$(".button, .menu__toggle, .bd-btn").forEach((c) => undo.push(pressFeedback(c)));
 
     return () => {
       undo.forEach((f) => f());

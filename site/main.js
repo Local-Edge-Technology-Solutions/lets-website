@@ -5,8 +5,6 @@ import { initMenu } from "./js/menu.js";
 import { initHero } from "./js/hero.js";
 import { initVoicemail } from "./js/voicemail.js";
 import { initAsk } from "./js/ask.js";
-import { initBusy } from "./js/busy.js";
-import { initCalculator } from "./js/calculator.js";
 import { initForm } from "./js/form.js";
 import { initWork } from "./js/work.js";
 import { initMotion } from "./js/motion.js";
@@ -19,8 +17,6 @@ safely("menu", initMenu);
 safely("hero", initHero);
 safely("voicemail", initVoicemail);
 safely("ask", initAsk);
-safely("busy", initBusy);
-safely("calculator", initCalculator);
 safely("form", initForm);
 safely("work", initWork);
 // Motion measures type, so it waits for the face (bounded), after the controls above are in place.

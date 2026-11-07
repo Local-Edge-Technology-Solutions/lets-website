@@ -105,7 +105,6 @@ p { text-wrap: pretty; }
 /* A two-tone ring, so keyboard focus shows on teal, black and white grounds alike. A state, not a resting shadow. */
 .button:focus-visible { outline: 3px solid var(--black); outline-offset: 3px; box-shadow: 0 0 0 3px var(--white); } /* taste-skill-ignore */
 .button[aria-disabled="true"] { cursor: progress; }
-[data-calc-send][aria-disabled="true"] { opacity: 0.55; cursor: not-allowed; }
 .field-black .button, .field-night .button, .field-deep .button { background: var(--teal); color: var(--black); }
 .button--quiet { background: transparent; color: inherit; border: 3px solid currentColor; }
 .field-deep .button--quiet { background: transparent; color: var(--white); }
@@ -128,10 +127,6 @@ p { text-wrap: pretty; }
 /* The Billing Day card: the app's own look (the .bd tokens), a link to the full preview below. */
 
 
-/* ---------- intro: the proposition, and the busywork list the headline's letters land in ---------- */
-
-/* the to-do list: an interface fragment, so it keeps its own small rules */
-
   [data-ui] .vm-list__top span { font-size: 0.8125rem; font-weight: 700; background: var(--ink); color: var(--white); padding: 0.1rem 0.4rem; flex: none; }
 
 /* ---------- voicemail: the live thing ---------- */
@@ -144,12 +139,9 @@ p { text-wrap: pretty; }
 [data-ui].vm-card { grid-column: 1 / span 7; padding: clamp(1.25rem, 2.4vw, 2.25rem); }
 [data-ui].vm-card .vm-card__top { display: flex; gap: 1rem; align-items: baseline; font-weight: 700; font-size: var(--step-small); color: var(--soft-on-dark); }
 [data-ui].vm-card .vm-card__top b { font-size: var(--step-body); color: var(--white); font-weight: 900; margin-right: auto; }
-[data-ui] .vm-wave { position: relative; display: flex; align-items: center; gap: 3px; height: 4.25rem; margin: 1.25rem 0 1.5rem; }
-[data-ui] .vm-wave i { flex: 1 1 0; height: calc(var(--a) * 1%); min-height: 8%; background: var(--teal); transform-origin: 50% 50%; }
-[data-ui] .vm-wave.is-quiet i { background: var(--deep); }
 [data-ui].vm-card .vm-card__transcript { font-size: var(--step-lead); line-height: 1.42; font-weight: 700; letter-spacing: -0.02em; color: var(--white); min-height: 7.2em; }
 [data-ui].vm-card mark { background: var(--teal); color: var(--black); padding: 0; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
-[data-ui].vm-card .is-typing mark, [data-ui].vm-card mark.is-plain { background: transparent; color: inherit; }
+[data-ui].vm-card mark.is-plain { background: transparent; color: inherit; }
 [data-ui].vm-card mark[data-field="phone"] { white-space: nowrap; }
 
 [data-ui].vm-list { grid-column: 8 / span 5; background: var(--white); color: var(--ink); padding: clamp(1.1rem, 2vw, 1.6rem); transform: rotate(1.2deg); transform-origin: 50% 0; }
@@ -166,65 +158,6 @@ p { text-wrap: pretty; }
 [data-ui].vm-list .vm-list__foot { margin-top: 0.9rem; font-weight: 700; font-size: 0.9375rem; }
 .vm-fly { position: fixed; top: 0; left: 0; z-index: 40; pointer-events: none; background: var(--teal); color: var(--black); font-weight: 900; padding: 0 0.12em; white-space: nowrap; transform-origin: 0 0; }
 
-/* ---------- what's eating your week: pick a problem, see the kind of thing we'd build ---------- */
-
-/* ---------- showcase ---------- */
-
-.picker label { position: relative; cursor: pointer; color: var(--ink); }
-.picker input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
-.picker span { display: inline-flex; align-items: center; min-height: 2.9rem; padding: 0 1rem; background: var(--white); color: var(--ink); font-weight: 700; transition: background-color var(--t-hover) ease, color var(--t-hover) ease, transform var(--t-press) var(--ease-out); }
-.picker input:checked + span { background: var(--teal); color: var(--ink); }
-.picker input:focus-visible + span { outline: 3px solid var(--white); outline-offset: 3px; }
-.picker label:active span { transform: scale(0.96); }
-@media (hover: hover) and (pointer: fine) { .picker label:hover input:not(:checked) + span { background: var(--surface); } }
-
-/* In the narrow slips the label sits above the title, so the title keeps the full width. */
-
-/* In a narrow receipt a row's value drops to its own line, right-aligned, rather than squeezing either side. */
-
-/* ---------- calculator ---------- */
-.calc { padding: var(--section) var(--margin); }
-.calc__head { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 1.5rem; align-items: end; }
-.calc__head h2 { grid-column: 1 / span 7; }
-.calc__head .statement { grid-column: 8 / span 5; }
-.calc__body { margin-top: clamp(2.5rem, 5vw, 4rem); display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 2rem; align-items: start; }
-.calc__static, .chores { grid-column: 1 / span 7; }
-.calc__static { display: grid; gap: 1.25rem; font-weight: 700; }
-.calc__how { max-width: 48ch; font-size: var(--step-body); }
-.calc__examples { display: grid; gap: 8px; }
-.calc__examples li { display: flex; justify-content: space-between; gap: 1rem; background: var(--white); padding: 0.85rem 1rem; }
-.chores__legend { font-weight: 700; margin-bottom: 1rem; max-width: 52ch; }
-.chores__error { font-weight: 900; background: var(--black); color: var(--white); padding: 0.75rem 1rem; margin-bottom: 1rem; max-width: 52ch; }
-.chores__error:empty { display: none; }
-.chore__mins input[aria-invalid="true"] { background: var(--black); color: var(--white); border-color: var(--black); outline: 3px solid var(--white); outline-offset: -6px; }
-.calc__result.is-blocked .calc__figure { opacity: 0.35; }
-.chores__list { display: grid; gap: 8px; }
-.chore { display: flex; align-items: stretch; gap: 8px; }
-.chore__pick { flex: 1 1 auto; display: flex; align-items: center; gap: 0.85rem; background: var(--white); color: var(--ink); padding: 0.8rem 1rem; font-weight: 700; line-height: 1.25; cursor: pointer; transition: background-color var(--t-hover) ease, color var(--t-hover) ease; }
-.chore__pick input { flex: none; width: 1.5rem; height: 1.5rem; margin: 0; accent-color: var(--black); cursor: pointer; }
-.chore__pick:has(input:checked) { background: var(--black); color: var(--teal); }
-.chore__pick:has(input:checked) input { accent-color: var(--teal); }
-.chore__pick:has(input:focus-visible) { outline: 3px solid var(--black); outline-offset: 2px; }
-.chore__mins { flex: none; display: flex; align-items: center; gap: 0.5rem; background: var(--white); padding: 0.4rem 0.9rem 0.4rem 0.6rem; font-weight: 700; font-size: var(--step-small); }
-.chore__mins input { width: 4.2rem; padding: 0.45rem 0.4rem; border: 2px solid var(--black); border-radius: 0; background: var(--white); color: var(--black); font-weight: 900; font-size: 1.0625rem; text-align: right; font-variant-numeric: tabular-nums; }
-.chore__mins input:focus-visible { outline: 3px solid var(--black); outline-offset: 2px; }
-.chore:has(.chore__pick input:not(:checked)) .chore__mins { color: var(--muted); }
-.calc__result { grid-column: 8 / span 5; position: sticky; top: 1.5rem; padding: clamp(1.5rem, 2.6vw, 2.5rem); display: grid; gap: 0.75rem; justify-items: start; }
-.calc__figure { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 0.75rem; color: var(--teal); line-height: 0.85; }
-.calc__hours { font-size: clamp(5rem, 2.5rem + 6vw, 8.5rem); font-weight: 900; letter-spacing: -0.05em; font-variant-numeric: tabular-nums; }
-.calc__unit { font-size: var(--step-lead); font-weight: 900; letter-spacing: -0.03em; text-transform: uppercase; }
-.calc__label { font-weight: 700; font-size: var(--step-lead); line-height: 1.2; max-width: 22ch; }
-.calc__note { font-weight: 900; color: var(--teal); }
-.calc__sum { color: var(--soft-on-dark); font-size: var(--step-small); font-variant-numeric: tabular-nums; }
-.calc__result .button { margin-top: 0.75rem; font-size: var(--step-body); min-height: 3.5rem; }
-
-/* odometer columns */
-.odo { display: inline-flex; }
-.odo__col { display: inline-block; position: relative; clip-path: inset(0); }
-.odo__col > .odo__size { visibility: hidden; }
-.odo__strip { position: absolute; left: 0; top: 0; width: 100%; text-align: center; }
-.odo__strip > span { display: block; }
-
 /* ---------- about: pinned title, type cards pass ---------- */
 .about { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); padding: var(--section) var(--margin); }
 .about__pin { grid-column: 1 / span 6; grid-row: 1; align-self: start; position: sticky; top: clamp(2rem, 14svh, 9rem); }
@@ -238,20 +171,9 @@ p { text-wrap: pretty; }
 .person__role { font-size: var(--step-small); font-weight: 700; color: var(--mid-on-dark); margin-top: 0.15rem; }
 .person__text { margin-top: 0.75rem; max-width: 34ch; text-wrap: pretty; }
 
-/* ---------- how it works ---------- */
-.how { padding: var(--section) var(--margin); }
-.stairs { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 3.5rem; }
-.stair { grid-column: var(--col) / -1; }
-.stair p { margin-top: 0.9rem; max-width: 34ch; font-size: var(--step-body); }
-.stair--last .stair__line { color: var(--teal-on-white); }
-.how__grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); }
-.how__grid .stairs { grid-column: 1 / -1; grid-row: 1; }
-
 /* ---------- faq: a band per question ---------- */
 .faq__head { min-height: 40svh; display: flex; align-items: flex-end; padding: 3rem var(--margin) 2rem; }
 .band { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); padding: 3.5rem var(--margin); }
-.band--a { background: var(--bg); color: var(--ink); }
-.band--b { background: var(--deep); color: var(--white); }
 .band__q { grid-column: 1 / span 5; font-size: var(--step-lead); line-height: 1.1; letter-spacing: -0.03em; font-weight: 900; }
 .band__a { grid-column: 7 / span 6; }
 .band__a p { max-width: 58ch; line-height: 1.5; }
@@ -332,9 +254,6 @@ p { text-wrap: pretty; }
   
   
   
-  .calc__head h2, .calc__head .statement { grid-column: 1 / -1; }
-  .calc__static, .chores { grid-column: 1 / -1; }
-  .calc__result { grid-column: 1 / -1; position: static; }
   
   
   
@@ -366,12 +285,6 @@ p { text-wrap: pretty; }
   
   
   
-  .chore__pick { padding: 0.7rem 0.8rem; gap: 0.7rem; }
-  .chore__mins { padding: 0.4rem 0.5rem; }
-  .chore__mins span { display: none; }
-  .chore__mins input { width: 3.6rem; }
-  .stairs { row-gap: 2.5rem; }
-  .stair__line { font-size: 8.4vw; line-height: 0.98; }
   .faq__head { min-height: 30svh; }
   .band { padding: 2rem 20px; }
   .storefronts li:nth-child(even) { margin-top: 1.5rem; }
@@ -392,12 +305,7 @@ p { text-wrap: pretty; }
 .gsap-press .button:active { transform: none; }
 
 /* ---------- polish round, 2026-11-05 (design critique fixes) ---------- */
-/* Every width: the picker's label sits inside its box, the week heading stays above the falling letters,
-   and the last step is a teal block (its heading black on teal, like the rest of the page). */
 
-#week-title { position: relative; z-index: 6; }
-.stair--last { background: var(--teal); padding: clamp(1.25rem, 3vw, 2.5rem); }
-.stair--last .stair__line { color: var(--black); }
 
 /* Desktop: fill the empty halves. */
 @media (min-width: 1001px) {
@@ -416,17 +324,15 @@ p { text-wrap: pretty; }
   
   /* Missed calls: the words travel beside the voicemail and the list. */
   
-  /* How it works: headings break evenly, with no word left alone. */
-  .stair__line { text-wrap: balance; }
 }
 /* Narrow desktop: the last step starts a column earlier and its heading steps down, so it stays on two lines. */
 
 /* Every width: big headings and captions break evenly, so no word is left alone on a line. */
-.head.split-target, .stair__line { text-wrap: balance; }
+.head.split-target { text-wrap: balance; }
 /* Questions, every width: the band is as tall as its word. */
 .faq__head { min-height: 0; padding-top: var(--section); }
 
-/* Tablet: the storefronts go three and two; the problems picker goes four and four; Missed calls runs full width. */
+/* Tablet: the storefronts go three and two. */
 @media (min-width: 641px) and (max-width: 1000px) {
   
   
@@ -439,7 +345,7 @@ p { text-wrap: pretty; }
   .storefronts li:nth-child(n+4) img { aspect-ratio: 6 / 5; }
 }
 
-/* Phone: the bios across the full width, the normal side margin, the pickers in even pairs. */
+/* Phone: the bios across the full width, the normal side margin. */
 @media (max-width: 640px) {
   
   
@@ -457,10 +363,6 @@ p { text-wrap: pretty; }
 
 /* One editorial grid: a text block beside a left block starts on column 7; its partner ends by 6. */
 
-.calc__head h2 { grid-column: 1 / span 6; }
-.calc__head .statement { grid-column: 7 / span 6; }
-.calc__static, .chores { grid-column: 1 / span 6; }
-.calc__result { grid-column: 7 / span 6; }
 .footer__links { grid-column: 1 / span 6; }
 .footer__contact { grid-column: 7 / span 6; }
 
@@ -469,10 +371,6 @@ p { text-wrap: pretty; }
 .coupon__title { font-size: var(--step-head); }
 
 /* ---------- Billing Day: the section ---------- */
-.work { padding: var(--section) var(--margin); background: var(--white); color: var(--black); }
-.work__head { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 1.5rem; align-items: end; }
-.work__title { grid-column: 1 / span 6; }
-.work__text { grid-column: 7 / span 6; font-size: var(--step-body); font-weight: 600; line-height: 1.45; max-width: 52ch; }
 
 /* ---------- Billing Day: the preview, in the app's own look (tokens from its globals.css and
    street.css, light only), scoped to .bd so nothing leaks either way. Flat grounds, no shadows, no
@@ -615,23 +513,13 @@ p { text-wrap: pretty; }
 .person--zeke { grid-column: 9 / span 4; margin-top: 0; }
 .person__name { margin-top: 0; }
 
-/* ---------- How it works: a visible heading, the steps in one column, the Monday slip beside ---------- */
-.how__title { margin-bottom: clamp(2rem, 4vw, 3.5rem); }
-.how__grid .stairs { grid-column: 1 / span 8; grid-row: 1; grid-template-columns: minmax(0, 1fr); row-gap: 2.5rem; }
-.how__grid .stair, .stair { grid-column: 1 / -1; padding-left: 0; margin-left: 0; }
-.stair__line { font-size: var(--step-lead); line-height: 1.1; letter-spacing: -0.03em; }
-.stair--last .stair__line { font-size: var(--step-lead); }
-
 @media (max-width: 1000px) {
-   .calc__head h2, .calc__head .statement, .calc__static, .chores, .calc__result,
-  .footer__links, .footer__contact, .work__title, .work__text { grid-column: 1 / -1; }
-  .how__grid .stairs { grid-column: 1 / -1; }
+  .footer__links, .footer__contact { grid-column: 1 / -1; }
   .about__photo { grid-column: 1 / span 6; }
   .person--ben { grid-column: 1 / span 6; grid-row: 2; }
   .person--zeke { grid-column: 7 / span 6; grid-row: 2; }
 }
 @media (max-width: 640px) {
-  .stair__line { font-size: var(--step-lead); }
   .about__photo { grid-column: 1 / span 10; }
   .person--ben, .person--zeke { grid-column: 1 / -1; grid-row: auto; }
 }
@@ -645,8 +533,6 @@ p { text-wrap: pretty; }
 .about__title { grid-column: 1 / span 6; }
 .about__line { grid-column: 7 / span 6; margin-top: 0; }
 @media (min-width: 1001px) {
-  .stair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: var(--gutter); align-items: baseline; }
-  .stair p { margin-top: 0; }
   .footer__links { grid-template-columns: repeat(5, max-content); }
 }
 @media (max-width: 1000px) {
@@ -655,8 +541,6 @@ p { text-wrap: pretty; }
 /* Narrow desktop (1001 to 1279): a big heading needs the full width to stay on two lines, so the
    heading rows stack, its words under it on the right-hand edge. */
 @media (min-width: 1001px) and (max-width: 1279px) {
-   .calc__head h2, .work__title, .about__title { grid-column: 1 / -1; }
-   .calc__head .statement, .work__text, .about__line { grid-column: 7 / span 6; }
 }
 /* About: the photo sits between the two bios, beside Zeke's (it is his), never beside Ben's. */
 .person--ben { grid-column: 1 / span 4; grid-row: 1; }
@@ -735,18 +619,8 @@ p { text-wrap: pretty; }
   .person--ben, .person--zeke { grid-column: 1 / -1; grid-row: auto; }
   .person--zeke .about__photo { width: 82%; }
 }
-/* How it works: each step is a row (its heading, then its words) on tablets too; on a phone, full width. */
-@media (min-width: 641px) {
-  .stair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: var(--gutter); align-items: baseline; }
-  .stair p { margin-top: 0; max-width: none; }
-}
-@media (max-width: 640px) { .stair p { max-width: none; } }
-/* The last step's teal block: its words on the same column as the rows above. */
-.stair--last { padding-inline: 0; }
-.stair--last .stair__line { padding-left: clamp(1rem, 2vw, 1.5rem); }
 /* What we build: the panel is solid enough that the photo's own menu type never competes with the heading. */
 
-.stair--last p { padding-right: clamp(1rem, 2vw, 1.5rem); }
 /* The Approved mark keeps its room in both states, so the preview never changes height. */
 .bd-lot-ok { display: block; visibility: hidden; }
 .bd.is-approved .bd-lot-ok { visibility: visible; }
@@ -757,7 +631,6 @@ p { text-wrap: pretty; }
   .page [data-ui] .vm-list__top span,
 .page [data-ui] .cb__name, .page [data-ui] .cb__urgency, .page [data-ui] .cb__town, .page [data-ui].vm-list .vm-list__foot { font-size: var(--step-small); }
 
-.page .calc__hours { font-size: var(--step-head); }
 /* The status line keeps two lines of room at every width (three where the Approve card is narrow), so
    approving never changes the preview's height between breakpoints either. */
 .bd-status { min-height: calc(2 * 1.45em); line-height: 1.45; }
@@ -767,10 +640,6 @@ p { text-wrap: pretty; }
 /* ---------- round 5, 2026-11-05: the third independent critique ---------- */
 /* Zeke's card on tablets and phones: his name, then his photo, then his words. */
 @media (max-width: 1000px) { .person--zeke .about__photo { margin-top: 1rem; } }
-/* Step headings in sentence case, like every other subheading on the page. */
-.stair__line { text-transform: none; letter-spacing: -0.03em; }
-/* The last step's words line up with its heading inside the teal block on a phone. */
-@media (max-width: 640px) { .stair--last p { padding-inline: clamp(1rem, 2vw, 1.5rem); } }
 /* The six example slips across the photo: each row's label, then its value under it, left-aligned, so no value
    drops alone to a ragged right-hand line. */
 
@@ -778,67 +647,9 @@ p { text-wrap: pretty; }
 
 /* ---------- v4, 2026-11-05: what we fix. The busy phone (Monday night) beside the four problems; it clears to
    Tuesday morning, handled. Then a missed call handled, up close. ---------- */
-.probs { padding: var(--section) var(--margin); }
-.probs__title { color: var(--teal); }
-.probs__intro { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 1.25rem; margin-top: clamp(1.5rem, 3vw, 2.5rem); align-items: end; }
-.probs__intro .statement { grid-column: 1 / span 6; max-width: 40ch; }
-.probs__why { grid-column: 7 / span 5; display: grid; gap: 0.75rem; max-width: 46ch; }
-.probs__src, .fix4__src { display: inline-block; font-size: var(--step-small); font-weight: 600; color: var(--mid-on-dark); text-decoration: underline; text-underline-offset: 0.2em; }
-.probs__body { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 3rem; align-items: start; margin-top: clamp(3rem, 6vw, 5rem); }
-
-.busy { grid-column: 1 / span 5; position: sticky; top: clamp(1rem, 6svh, 3.5rem); display: grid; justify-items: center; gap: 1.25rem; }
-.busy__controls { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0.75rem 1.25rem; }
-.busy__controls .button { font-size: var(--step-body); min-height: 3.5rem; padding: 0 1.4rem; }
-.busy__replay { background: none; border: 0; padding: 0.5rem 0.25rem; color: inherit; font-weight: 700; text-decoration: underline; text-underline-offset: 0.2em; cursor: pointer; }
-.busy__replay:focus-visible { outline: 3px solid var(--white); outline-offset: 3px; }
-/* A demo control is outlined and says it plays something; a solid button always means "talk to us". */
-.button--demo { gap: 0.7rem; }
-.button--demo::before { content: ""; flex: none; width: 0.7em; height: 0.8em; background: currentColor; clip-path: polygon(0 0, 100% 50%, 0 100%); }
-
-/* The phone: a flat black body, a screen inside. Interface type is the page's own face at small sizes. */
-.phone { position: relative; width: min(100%, 21rem); margin: 0; padding: 0.65rem; background: var(--black); border-radius: 2.6rem; color: var(--black); }
-.phone__screen { position: relative; display: grid; border-radius: 2.05rem; overflow: clip; background: #16201f; min-height: 34rem; }
-.phone__state { padding: 1.4rem 0.85rem 1.25rem; display: grid; align-content: start; gap: 0.55rem; }
-.phone__time { display: grid; justify-items: center; color: var(--white); margin-bottom: 0.6rem; }
-.phone__clock { font-size: clamp(3.25rem, 2.4rem + 2.6vw, 4.25rem); font-weight: 900; letter-spacing: -0.04em; line-height: 1; font-variant-numeric: tabular-nums; }
-.phone__day { font-size: var(--step-small); font-weight: 700; color: var(--mid-on-dark); margin-top: 0.3rem; }
-.phone__notes { display: grid; gap: 0.5rem; }
-.note { display: grid; gap: 0.1rem; background: var(--white); border-radius: 1rem; padding: 0.65rem 0.8rem 0.7rem; line-height: 1.3; }
-.note__app { font-size: 0.8125rem; font-weight: 700; color: var(--muted); }
-.note__title { font-size: var(--step-small); font-weight: 900; letter-spacing: -0.01em; }
-.note__text { font-size: var(--step-small); color: var(--muted); font-weight: 600; }
-.phone__state--after { background: var(--teal); align-content: center; }
-.phone__state--after .phone__time { color: var(--black); }
-.phone__state--after .phone__day { color: var(--deep); }
-.note--done { gap: 0.35rem; padding: 0.9rem 0.95rem 1rem; }
-.note--done .note__title { font-size: var(--step-body); }
-.note__list { display: grid; gap: 0.4rem; margin: 0.35rem 0 0.25rem; }
-.note__list li { position: relative; padding-left: 1.6rem; font-size: var(--step-small); font-weight: 700; text-wrap: balance; }
-.note__list li::before { content: ""; position: absolute; left: 0; top: 0.12em; width: 1.05rem; height: 1.05rem; background: var(--teal); }
-.note__list li::after { content: ""; position: absolute; left: 0.36rem; top: 0.22em; width: 0.32rem; height: 0.6rem; border: solid var(--black); border-width: 0 2.5px 2.5px 0; transform: rotate(45deg); }
-.phone__tag { position: absolute; top: 1.35rem; right: 1.55rem; font-size: 0.8125rem; font-weight: 700; background: var(--white); color: var(--black); padding: 0.1rem 0.45rem; z-index: 3; }
-/* With script, the two states share the screen and the button swaps them; without it, both are shown, one
-   under the other. */
-.js .phone__state { grid-area: 1 / 1; }
-.js .busy:not(.is-done) .phone__state--after { visibility: hidden; }
-.js .busy.is-done .phone__state--before { visibility: hidden; }
-
-/* The four problems: space between them, not rules. White names; teal only on the figures. */
-.fixes4 { grid-column: 7 / -1; display: grid; row-gap: clamp(2.25rem, 4vw, 3rem); }
-.fix4 { display: grid; gap: 0.6rem; justify-items: start; }
-.fix4__name { font-size: var(--step-lead); font-weight: 900; line-height: 1.1; letter-spacing: -0.03em; color: var(--white); }
-.fix4__how { max-width: 46ch; }
-.fix4__how .link { text-decoration: underline; text-underline-offset: 0.2em; font-weight: 700; }
-.fix4__stat { max-width: 52ch; font-size: var(--step-small); font-weight: 500; color: var(--soft-on-dark); }
-.fix4__stat b { font-size: var(--step-body); font-weight: 900; color: var(--teal); }
-.fix4__ask { margin-top: 0.15rem; font-weight: 900; color: var(--white); text-decoration: underline; text-decoration-thickness: 0.1em; text-underline-offset: 0.22em; transition: color var(--t-hover) ease; }
-.fix4__ask:focus-visible { outline: 3px solid var(--white); outline-offset: 3px; }
-@media (hover: hover) and (pointer: fine) { .fix4__ask:hover { color: var(--teal); } }
-
 /* A missed call handled, up close: the words stay beside the voicemail and its call-back list. */
 .vmrow { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 2rem; align-items: start; margin-top: clamp(4rem, 8vw, 7rem); }
 .vmrow__words { grid-column: 1 / span 5; display: grid; gap: 1.1rem; justify-items: start; position: sticky; top: 12svh; }
-.vmrow__title { font-size: var(--step-lead); font-weight: 900; line-height: 1.1; letter-spacing: -0.03em; }
 .vmrow__words p:not(.sr-only) { max-width: 40ch; }
 .vmrow .vm__stage { grid-column: 6 / -1; grid-row: 1; margin-top: 0; display: grid; grid-template-columns: minmax(0, 1fr); row-gap: 1rem; }
 .vmrow .vm__stage [data-ui].vm-card, .vmrow .vm__stage [data-ui].vm-list { grid-column: 1 / -1; margin-top: 0; }
@@ -853,42 +664,21 @@ p { text-wrap: pretty; }
 
 
 @media (max-width: 1000px) {
-  .probs__intro .statement, .probs__why { grid-column: 1 / -1; }
-  .busy { grid-column: 1 / -1; position: static; }
-  .fixes4 { grid-column: 1 / -1; }
   .vmrow__words { grid-column: 1 / -1; position: static; }
   .vmrow .vm__stage { grid-column: 1 / -1; grid-row: auto; }
 }
 @media (max-width: 640px) {
-  .phone { width: min(100%, 20rem); }
-  .phone__screen { min-height: 30rem; }
-  .phone__clock { font-size: 2.5rem; }
-  .busy__controls { width: 100%; }
-  .busy__controls .button { flex: 1 1 auto; }
   .vmrow [data-ui].vm-list { width: 100%; }
 }
 
 /* ---------- audit round 1, 2026-11-05: strict conversion, design and truth audits ---------- */
 /* Weight carries meaning again: running text at 400, headings and labels heavy. */
-.probs__why, .work__text, .coupon__facts li, .calc__how, .chores__legend, .vmrow__words p { font-weight: 400; }
+.coupon__facts li, .vmrow__words p { font-weight: 400; }
 /* On a phone the section heads step down so the page title stays the largest type. */
 @media (max-width: 640px) {
   :root { --step-head: 2rem; }
 }
-/* How it works: each step on the page grid (heading on the left half, words from column 7); the last step's
-   teal block runs to the page edges so its heading starts on the same line as the others. */
-.how__grid .stairs { grid-column: 1 / -1; }
-@media (min-width: 641px) {
-  .stair { grid-template-columns: repeat(12, minmax(0, 1fr)); }
-  .stair .stair__line { grid-column: 1 / span 6; }
-  .stair p { grid-column: 7 / span 5; }
-}
-.how__grid .stair--last { margin-inline: calc(-1 * var(--margin)); padding: clamp(1.5rem, 3vw, 2.5rem) var(--margin); }
-.stair--last .stair__line { padding-left: 0; }
-.stair--last p { padding-right: 0; }
-@media (max-width: 640px) { .stair--last p { padding-inline: 0; } }
 /* Questions: one ground for the whole section, space between the questions. */
-.band--a, .band--b { background: var(--deep); color: var(--white); }
 .band { padding-block: 2.25rem; }
 .faq .band:first-of-type { padding-top: 3rem; }
 .faq .band:last-child { padding-bottom: var(--section); }
@@ -917,18 +707,6 @@ p { text-wrap: pretty; }
 }
 /* Resting tilts: interface pieces sit square (their entrances still turn). */
 [data-ui].vm-list { transform: none; }
-/* Reduced motion: the phone shows Monday night and Tuesday morning one under the other (nothing waits hidden
-   behind a button), and its only control is the contact link. */
-@media (prefers-reduced-motion: reduce) {
-  .js .busy .phone__state { grid-area: auto; visibility: visible !important; }
-  .busy [data-busy-go], .busy [data-busy-back] { display: none !important; }
-  .busy [data-busy-talk][hidden] { display: inline-flex !important; }
-}
-/* Codex review, round 1: the sticky phone stays put only where the whole phone and its buttons fit (not on short
-   laptop screens, and not when both screens are shown). */
-@media (min-width: 1001px) and (max-height: 800px) { .busy { position: static; } }
-@media (prefers-reduced-motion: reduce) { .busy { position: static; } }
-
 /* ---------- round 2, 2026-11-05: strict audit round 2, Codex partner and adversary ---------- */
 /* No floating button: an ask sits at the end of each place a visitor might decide (the problems, how it works,
    the two of us, our work), the button and the free first talk beside it. */
@@ -941,8 +719,6 @@ p { text-wrap: pretty; }
 /* Hero: the picture fills to the right margin on wide screens; on a phone it is shown whole, not cut by the next
    section. */
 
-/* The problems: the survey figures in white; teal is kept for actions and the demos. */
-.fix4__stat b { color: var(--white); }
 
 /* A missed call handled. Desktop: the voicemail on the right, the words and then the call-back list on the left,
    so the details fly across the gutter and no corner is left empty. Phone: the card and the list stay folded until
@@ -953,7 +729,6 @@ p { text-wrap: pretty; }
   .vmrow .vm__stage [data-ui].vm-card { grid-column: 6 / -1; grid-row: 1 / span 2; }
   .vmrow .vm__stage [data-ui].vm-list { grid-column: 1 / span 5; grid-row: 2; width: 100%; justify-self: stretch; }
 }
-@media (max-width: 640px) and (prefers-reduced-motion: no-preference) { .vmrow[data-vm-ready]:not(.is-open) .vm__stage { display: none; } }
 
 /* About: with the record moved to Our work, Ben's words run full width on tablets and Zeke's card sets his photo
    beside his words, so neither column leaves a hole. */
@@ -967,41 +742,11 @@ p { text-wrap: pretty; }
 
 /* Our work: the brand's deep ground, the preview framed as a product screen in a black bezel (its own faces kept
    inside). On a phone the invoice detail and the repeated total stay out, so the preview stays compact. */
-.work { background: var(--deep); color: var(--white); }
-.work__text { color: var(--white); }
 .bd { border: clamp(6px, 0.8vw, 10px) solid var(--black); border-radius: clamp(14px, 1.6vw, 22px); }
-@container bd (max-width: 559px) {
-  .bd-inv, .bd-approve__total { display: none; }
-}
-/* Ben's work at the agency: the proof under the product. */
-.proof { margin-top: clamp(3.5rem, 7vw, 6rem); display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 1.5rem; }
-.proof__head { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 1rem; align-items: end; }
-.proof__title { grid-column: 1 / span 6; font-size: var(--step-lead); line-height: 1.1; letter-spacing: -0.03em; }
-.proof__intro { grid-column: 7 / span 6; max-width: 52ch; }
-.proof .record__list { grid-column: 1 / -1; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); }
-.proof .record__row { background: var(--black); padding: 1rem 1.15rem 1.15rem; }
-.proof__trial { grid-column: 1 / span 6; max-width: 52ch; }
-.proof .ask-row { grid-column: 1 / -1; margin-top: 0; }
-@media (max-width: 1000px) {
-  .proof__title, .proof__intro, .proof__trial { grid-column: 1 / -1; }
-  .proof .record__list { grid-template-columns: minmax(0, 1fr); gap: 0.5rem; }
-}
-
-/* Where does your week go? On a phone the unit stays beside each box ("min"), and the five unticked examples wait
-   behind one button (js/calculator.js shows them). */
-.chores__more { display: none; width: 100%; margin-top: 8px; font-size: var(--step-body); min-height: 3.5rem; }
-@media (max-width: 640px) {
-  .chore__mins > span { display: inline; font-size: 0.8125rem; }
-  .chore__mins .chore__wk { display: none; }
-  .chores:not(.is-all) .chore--more { display: none; }
-  .chores:not(.is-all) .chores__more { display: inline-flex; }
-}
-
 /* Questions: one deep field from the heading down; the photos carry no captions (their alt text describes them),
    sit level, and stay off phones. */
 .faq__head h2 { color: var(--teal); }
 .storefronts li:nth-child(even) { margin-top: 0; }
-@media (max-width: 640px) { .storefronts { display: none; } }
 
 /* Let's talk: email offered as well, its link plainly a link. */
 .coupon__alt { font-size: var(--step-small); color: var(--soft-on-dark); }
@@ -1100,4 +845,71 @@ p { text-wrap: pretty; }
   .jobs { grid-column: 7 / -1; grid-row: 1 / span 3; max-width: none; padding: clamp(1.25rem, 2.2vw, 2rem); }
   .jobs__top b { font-size: var(--step-lead); }
   .hero__sub { max-width: 30ch; }
+}
+
+/* ---------- round 6 (2026-11-06): the rest of the page, far less reading ----------
+   Five short sections under the hero: one example that plays itself, the two of us, three steps, the questions
+   as folds, the form with email first. Every fold is a native details/summary (works without script); nothing
+   that is read or typed into waits for an entrance. */
+.see { padding: var(--section) var(--margin); }
+.see__head { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 1.25rem; align-items: end; }
+.see__title { grid-column: 1 / span 6; color: var(--teal); }
+.see__lead { grid-column: 7 / span 6; max-width: 40ch; }
+.see .vmrow { margin-top: clamp(2rem, 4vw, 3.5rem); }
+.see .vmrow__words p:not(.sr-only) { font-size: var(--step-body); }
+.see > .ask-row { margin-top: clamp(2rem, 4vw, 3rem); }
+@media (max-width: 1000px) { .see__title, .see__lead { grid-column: 1 / -1; } }
+
+/* A fold: a plain, generous row with a plus that turns to a minus. */
+.fold > summary, .more > summary, .band > summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 0.7rem; min-height: 2.75rem; font-weight: 900; }
+.fold > summary::-webkit-details-marker, .more > summary::-webkit-details-marker, .band > summary::-webkit-details-marker { display: none; }
+.fold > summary::before, .more > summary::before { content: "+"; flex: none; display: grid; place-items: center; width: 1.6rem; height: 1.6rem; background: var(--teal); color: var(--black); font-weight: 900; line-height: 1; }
+.fold[open] > summary::before, .more[open] > summary::before { content: "\2212"; }
+.fold > summary:focus-visible, .more > summary:focus-visible, .band > summary:focus-visible { outline: 3px solid currentColor; outline-offset: 3px; }
+
+/* Ben & Zeke: the build evidence stays visible; the rest of Ben's words fold. */
+.person__proof { font-weight: 700; }
+.person__more { margin-top: 0.9rem; }
+.person__more > :not(summary) { margin-top: 0.75rem; }
+.person__more .record__list { margin-top: 0.75rem; }
+.about__ask { grid-column: 1 / -1; margin-top: clamp(2rem, 4vw, 3rem); }
+
+/* How it works: three still steps, then the product we built behind one fold. */
+.how { padding: var(--section) var(--margin); }
+.how__title { margin-bottom: clamp(1.75rem, 3.5vw, 3rem); }
+.steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); counter-reset: none; }
+.step { border-top: 6px solid var(--black); padding-top: 1rem; font-size: var(--step-body); line-height: 1.4; max-width: 34ch; }
+.step__head { display: block; font-size: var(--step-lead); line-height: 1.1; letter-spacing: -0.03em; margin-bottom: 0.4rem; }
+.built { margin-top: clamp(2rem, 4vw, 3rem); }
+.built > summary { font-size: var(--step-body); }
+.built .bd { margin-top: 1.25rem; }
+@media (max-width: 1000px) { .steps { grid-template-columns: minmax(0, 1fr); gap: 1.25rem; } .step { max-width: 46ch; } }
+
+/* Questions: one deep field; each question a row that opens its answer, word for word. */
+.faq { background: var(--deep); color: var(--white); }
+.faq details.band { display: block; padding: 1.1rem var(--margin); border-top: 2px solid rgb(255 255 255 / 0.18); }
+.faq details.band:first-of-type { padding-top: 1.1rem; }
+.faq details.band:last-child { padding-bottom: var(--section); }
+.band > summary.band__q { justify-content: space-between; font-size: var(--step-lead); line-height: 1.15; letter-spacing: -0.03em; }
+.band > summary.band__q::after { content: "+"; flex: none; display: grid; place-items: center; width: 1.8rem; height: 1.8rem; background: var(--teal); color: var(--black); font-size: 1.25rem; }
+.band[open] > summary.band__q::after { content: "\2212"; }
+.faq .band__a { margin-top: 0.9rem; }
+.faq .band__a p { max-width: 58ch; }
+.faq .storefronts { margin-top: 1.5rem; }
+
+/* Let's talk: email and the button first; the optional details behind one fold, which opens itself when a button
+   has already written the note (js/ask.js). */
+.more > summary { color: var(--white); font-size: var(--step-body); }
+.more > :not(summary) { margin-top: 10px; }
+/* Phones and tablets: the example's words, then the voicemail and the list, then Replay under them. */
+@media (max-width: 1000px) {
+  .see .vmrow__words { display: contents; }
+  .see .vmrow__words > p:not(.sr-only) { grid-column: 1 / -1; order: 1; }
+  .see .vmrow .vm__stage { order: 2; }
+  .see .vm__controls { grid-column: 1 / -1; order: 3; }
+}
+/* Phone: a smaller portrait and a shorter mark, so the page stays short. */
+@media (max-width: 640px) {
+  .person--zeke .about__photo { width: 64%; }
+  .mark { height: 15svh; min-height: 6rem; }
 }

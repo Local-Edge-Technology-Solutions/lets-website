@@ -71,5 +71,11 @@
   "licenseUrl": "https://unsplash.com/license",
   "creditRequired": false,
   "licenseCheckedOnPage": "2026-11-04"
+ },
+ {
+  "file": "src-images/zeke.jpg",
+  "used_as": "zeke",
+  "source": "Supplied by Zeke for the site by email to Ben, 2026-11-04 (his own headshot; metadata stripped)",
+  "creditRequired": false
  }
 ]

@@ -1,43 +1,48 @@
 @import "../styles.css";
-/* /examples/: three example jobs, each on its own ground with its own interface. Loaded after the site's
-   styles.css, so the tokens, type, buttons and folds are the site's own. Phone first. Flat grounds, no shadows. */
+/* /examples/, round 2: one demo player. A compact chooser, then the chosen example in a stage, with each
+   action and its result on one screen. Phone first. The site's own system (Chivo, black/teal/white/deep green,
+   flat grounds, no shadows). Without script, or if the script breaks, all three examples show one after another,
+   finished; the player only hides the other two once its script has started (.player.is-ready). */
 
-/* ---------- the top of the page ---------- */
-.ex-top { padding: 0 var(--margin) clamp(2.5rem, 6vw, 4.5rem); }
-.ex-top__title { margin-top: clamp(1.5rem, 7svh, 4.5rem); max-width: 14ch; }
-.ex-top__sub { margin-top: 1rem; font-size: var(--step-lead); font-weight: 700; line-height: 1.25; letter-spacing: -0.02em; max-width: 34ch; }
-.ex-jump { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 1.5rem; }
-.ex-jump a { display: inline-flex; align-items: center; min-height: 2.75rem; padding: 0 1rem; background: var(--black); color: var(--teal); font-weight: 900; text-decoration: none; }
-.ex-jump a:focus-visible { outline: 3px solid var(--black); outline-offset: 3px; box-shadow: 0 0 0 3px var(--white); } /* taste-skill-ignore */
-@media (hover: hover) and (pointer: fine) { .ex-jump a:hover { background: var(--white); color: var(--black); } }
+/* ---------- the top: what this is, the promise, the honesty line ---------- */
+.ex-top { padding: 0 var(--margin) 1.5rem; }
+.ex-top__title { margin-top: clamp(0.75rem, 4svh, 3rem); font-size: clamp(2.125rem, 1.2rem + 4.6vw, 5.25rem); font-weight: 900; line-height: 0.95; letter-spacing: -0.045em; text-transform: uppercase; max-width: 15ch; text-wrap: balance; }
+.ex-top__promise { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.9rem; font-size: var(--step-lead); font-weight: 900; letter-spacing: -0.02em; line-height: 1.15; }
+.ex-top__promise svg { width: 1.6rem; height: 1.6rem; flex: none; fill: none; stroke: var(--black); stroke-width: 3.5; }
+.ex-top__note { margin-top: 0.3rem; font-weight: 700; font-size: var(--step-body); }
 
-/* ---------- one example: its words, its interface, its ask ---------- */
-.ex { display: grid; grid-template-columns: minmax(0, 1fr); row-gap: 1.75rem; padding: var(--section) var(--margin); }
-.ex__num { font-weight: 900; font-size: var(--step-body); letter-spacing: 0.02em; }
-.ex__title { margin-top: 0.35rem; }
-.ex__lead { margin-top: 1rem; font-size: var(--step-lead); font-weight: 700; line-height: 1.25; letter-spacing: -0.02em; max-width: 30ch; }
-.ex__demo { min-width: 0; }
-.ex__ask { margin-top: 0; }
-.ex-fine { margin-top: 0.75rem; font-size: var(--step-small); font-weight: 700; }
+/* ---------- the player ---------- */
+.player { padding: 1.25rem var(--margin) clamp(2.5rem, 6vw, 4.5rem); display: grid; grid-template-columns: minmax(0, 1fr); row-gap: 1rem; }
+.chooser__list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+.pick { display: grid; align-content: start; gap: 0.15rem; min-height: 3.6rem; height: 100%; padding: 0.55rem 0.6rem 0.6rem; background: #1f1f1f; color: var(--white); text-decoration: none; border-top: 4px solid transparent; transition: background-color var(--t-hover) ease, color var(--t-hover) ease; }
+.pick__name { font-weight: 900; font-size: 1.0625rem; letter-spacing: -0.02em; line-height: 1.1; }
+.pick__sum { font-size: 0.8125rem; font-weight: 700; line-height: 1.25; color: var(--soft-on-dark); }
+.pick.is-on { background: var(--teal); color: var(--black); border-top-color: var(--white); }
+.pick.is-on .pick__sum { color: var(--black); }
+.pick:focus-visible { outline: 3px solid var(--teal); outline-offset: 3px; }
+@media (hover: hover) and (pointer: fine) { .pick:not(.is-on):hover { background: #2c2c2c; } }
 
-.ex--replies .ex__num, .ex--replies .ex__title { color: var(--teal); }
-.ex--replies .ex-fine { color: var(--soft-on-dark); }
-.ex--reminders .ex__num, .ex--reminders .ex__title { color: var(--teal); }
-.ex--reminders .ex-fine { color: var(--soft-on-dark); }
+.stage { display: grid; gap: 2.5rem; min-width: 0; }
+.player.is-ready .demo:not(.is-on) { display: none; }
+.demo { min-width: 0; scroll-margin-top: 0.5rem; }
+.demo__head { margin-bottom: 0.75rem; }
+.demo__title { font-size: var(--step-lead); font-weight: 900; letter-spacing: -0.03em; line-height: 1.1; color: var(--teal); }
+.demo__lead { margin-top: 0.2rem; color: var(--soft-on-dark); font-weight: 600; max-width: 46ch; line-height: 1.4; }
 
-@media (min-width: 1001px) {
-  .ex { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 2.5rem; align-items: start; }
-  .ex__words { grid-column: 1 / span 5; grid-row: 1; }
-  .ex__ask { grid-column: 1 / span 5; grid-row: 2; }
-  .ex__demo { grid-column: 7 / -1; grid-row: 1 / span 3; }
-  .ex__demo--pair { grid-column: 6 / -1; }
-}
+.player__act { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1rem; }
+.player__act .button { font-size: var(--step-body); min-height: 3.25rem; padding: 0 1.5rem; }
+.player__act .ex-btn--light { width: auto; flex: 0 0 auto; }
 
-/* small shared pieces */
+/* ---------- shared interface pieces ---------- */
+.app { background: var(--white); color: var(--black); padding: 0.9rem 0.9rem 1rem; }
+.app__bar { display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; }
+.app__bar b { font-size: 1.1875rem; font-weight: 900; letter-spacing: -0.02em; line-height: 1.15; }
+.app__sub { margin-top: 0.1rem; color: var(--muted); font-size: var(--step-small); font-weight: 700; }
 .ex-tag { flex: none; font-size: 0.8125rem; font-weight: 700; line-height: 1.4; background: var(--black); color: var(--white); padding: 0.05rem 0.45rem; }
-.ex-tag--teal { background: var(--teal); color: var(--black); }
+mark { background: var(--teal); color: var(--black); padding: 0 0.1em; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+
 .ex-btn {
-  display: flex; align-items: center; justify-content: center; width: 100%; min-height: 3.25rem; padding: 0.6rem 1rem;
+  display: flex; align-items: center; justify-content: center; gap: 0.5rem; width: 100%; min-height: 3rem; padding: 0.55rem 1rem;
   background: var(--black); color: var(--teal); border: 3px solid var(--black); border-radius: 0;
   font: inherit; font-size: var(--step-body); font-weight: 900; letter-spacing: -0.01em; line-height: 1.2; cursor: pointer;
   transition: transform var(--t-press) var(--ease-out), background-color var(--t-hover) ease, color var(--t-hover) ease;
@@ -45,182 +50,337 @@
 .ex-btn:active { transform: scale(0.97); }
 .ex-btn:focus-visible { outline: 3px solid var(--teal-on-white); outline-offset: 3px; }
 .ex-btn--quiet { background: transparent; color: var(--black); }
-.ex-btn--small { min-height: 2.75rem; font-size: var(--step-body); }
-.ex-btn[aria-disabled="true"] { opacity: 0.45; cursor: default; }
-@media (hover: hover) and (pointer: fine) {
-  .ex-btn:not([aria-disabled="true"]):hover { background: var(--teal); color: var(--black); }
-}
-.ex-status { min-height: calc(2 * 1.35em); margin-top: 0.5rem; font-size: var(--step-small); font-weight: 700; line-height: 1.35; color: var(--teal-on-white); }
-
-/* a phone, drawn flat: a bezel and a screen */
-.phone { width: min(100%, 24rem); background: #1e1e1e; padding: 10px; border-radius: 2.5rem; margin-inline: auto; }
-.phone__screen { background: var(--white); color: var(--black); border-radius: 1.9rem; padding: 1.1rem 1rem 1.2rem; overflow: clip; }
-.phone--light { background: var(--black); }
-@media (min-width: 1001px) { .ex--replies .phone { margin-inline: 0; } }
-
-.bubble { max-width: 88%; padding: 0.65rem 0.85rem; border-radius: 1.1rem 1.1rem 1.1rem 0.3rem; background: var(--surface-2); line-height: 1.4; font-size: 1rem; }
-.bubble--me { align-self: flex-end; border-radius: 1.1rem 1.1rem 0.3rem 1.1rem; background: var(--teal); font-weight: 700; }
-mark { background: var(--teal); color: var(--black); padding: 0 0.1em; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
-
-/* ---------- 1. replies drafted: the owner's inbox ---------- */
-.ib { font-size: 1rem; }
-.ib__bar { display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; }
-.ib__bar b { font-size: 1.5rem; font-weight: 900; letter-spacing: -0.03em; }
-.ib__who { color: var(--muted); font-size: var(--step-small); font-weight: 700; margin-top: 0.1rem; }
-.ib__list { display: grid; gap: 6px; margin-top: 0.85rem; }
-.ib__row {
-  display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "name via" "snip snip" "state state";
-  gap: 0.15rem 0.75rem; min-height: 2.75rem; padding: 0.65rem 0.8rem; background: var(--surface); color: var(--black);
-  text-decoration: none; line-height: 1.3;
-  transition: background-color var(--t-hover) ease, color var(--t-hover) ease;
-}
-.ib__row:focus-visible { outline: 3px solid var(--teal-on-white); outline-offset: 2px; }
-.ib__name { grid-area: name; font-weight: 900; }
-.ib__via { grid-area: via; justify-self: end; font-size: var(--step-small); font-weight: 700; color: var(--muted); }
-.ib__snip { grid-area: snip; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.ib__state { grid-area: state; justify-self: start; margin-top: 0.3rem; font-size: 0.8125rem; font-weight: 800; padding: 0.05rem 0.45rem; background: var(--black); color: var(--teal); }
-.ib__row.is-on { background: var(--black); color: var(--white); }
-.ib__row.is-on .ib__via { color: var(--soft-on-dark); }
-.ib__row.is-on .ib__state { background: var(--teal); color: var(--black); }
-.ib__row.is-done .ib__state { background: var(--teal); color: var(--black); }
-@media (hover: hover) and (pointer: fine) { .ib__row:not(.is-on):hover { background: var(--surface-2); } }
-
-.ib__thread { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 1.1rem; padding-top: 1rem; border-top: 2px solid var(--surface-2); }
-.ib__from { font-size: var(--step-small); font-weight: 700; color: var(--muted); }
-.draft { border: 3px solid var(--black); padding: 0.8rem 0.85rem 0.85rem; }
-.draft__label { font-size: var(--step-small); font-weight: 900; color: var(--teal-on-white); }
-.draft__text { margin-top: 0.3rem; font-size: 1.0625rem; line-height: 1.45; font-weight: 600; }
-.draft__src { margin-top: 0.55rem; font-size: var(--step-small); color: var(--muted); }
-.draft__src b { color: var(--black); }
-.draft__also { margin-top: 0.6rem; padding: 0.5rem 0.65rem; background: var(--surface); border-left: 4px solid var(--teal); font-size: var(--step-small); font-weight: 700; }
-.draft.is-approved { border-color: var(--teal-on-white); }
-.draft.is-approved .draft__label { color: var(--black); }
-.ib__act { margin-top: 0.9rem; }
-
-/* ---------- 2. quote drafted: an email in, a quote out ---------- */
-.mail { background: var(--black); color: var(--white); padding: 1rem 1.1rem 1.15rem; }
-.mail__top { display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; font-size: var(--step-small); }
-.mail__top b { font-size: var(--step-body); font-weight: 900; }
-.mail__subject { margin-top: 0.2rem; font-size: var(--step-small); font-weight: 700; color: var(--soft-on-dark); }
-.mail__body { margin-top: 0.7rem; font-size: 1.0625rem; line-height: 1.5; }
-.quote-arrow { display: flex; justify-content: center; padding: 0.35rem 0; }
-.quote-arrow svg { width: 24px; height: 48px; fill: none; stroke: var(--black); stroke-width: 3.5; stroke-linecap: square; }
-
-.sheet { background: var(--white); color: var(--black); padding: 1.15rem 1.15rem 1.25rem; border-top: 10px solid var(--black); }
-.sheet__head { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
-.sheet__title { font-size: clamp(2.25rem, 1.6rem + 2.5vw, 3.25rem); font-weight: 900; line-height: 0.9; letter-spacing: -0.05em; text-transform: uppercase; }
-.sheet__stamp { border: 3px solid var(--black); padding: 0.15rem 0.6rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.04em; font-size: var(--step-small); }
-.sheet__biz { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.6rem; font-weight: 900; }
-.sheet__for { margin-top: 0.15rem; font-size: var(--step-small); color: var(--muted); }
-.sheet__for b { color: var(--black); }
-.sheet__lines { width: 100%; margin-top: 1rem; border-collapse: collapse; font-size: 0.9688rem; font-variant-numeric: tabular-nums; }
-.sheet__lines th { padding: 0 0 0.4rem; text-align: left; font-size: 0.8125rem; font-weight: 700; color: var(--muted); }
-.sheet__lines td { padding: 0.55rem 0; border-top: 2px solid var(--surface-2); vertical-align: top; }
-.sheet__lines .r { text-align: right; padding-left: 0.6rem; white-space: nowrap; }
-.sheet__lines td:first-child { font-weight: 700; }
-.sheet__total { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-top: 0.3rem; padding-top: 0.6rem; border-top: 4px solid var(--black); font-weight: 900; }
-.sheet__total b { font-size: clamp(1.875rem, 1.5rem + 1.5vw, 2.5rem); letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
-.sheet__note { margin-top: 0.2rem; font-size: var(--step-small); color: var(--muted); }
-.sheet__check { display: inline-block; margin-top: 0.9rem; padding: 0.35rem 0.6rem; background: var(--teal); font-weight: 900; }
-.sheet.is-approved .sheet__stamp { background: var(--black); color: var(--teal); }
-.sheet__act { display: grid; gap: 8px; margin-top: 1rem; }
-.sheet__act .ex-status { margin-top: 0; }
-.ex--quote .ex-btn--quiet { color: var(--black); }
-@media (min-width: 641px) { .ex--quote .ex__demo { max-width: 34rem; } }
-
-/* ---------- 3. reminders ready: tomorrow's list and the customer's phone ---------- */
-.day { background: var(--white); color: var(--black); padding: 1.1rem 1.1rem 1.2rem; }
-.day__top { display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; }
-.day__top b { font-size: 1.5rem; font-weight: 900; letter-spacing: -0.03em; }
-.day__biz { color: var(--muted); font-size: var(--step-small); font-weight: 700; }
-.day__list { display: grid; margin-top: 0.8rem; }
-.appt { display: grid; grid-template-columns: 4.6rem minmax(0, 1fr) auto; grid-template-areas: "time who state" "time what state"; gap: 0.05rem 0.6rem; padding: 0.7rem 0; border-top: 2px solid var(--surface-2); line-height: 1.3; }
-.appt--open { background: var(--surface); padding: 0.8rem 0.75rem; border-top: 0; }
-.appt__time { grid-area: time; font-weight: 900; font-variant-numeric: tabular-nums; }
-.appt__who { grid-area: who; }
-.appt__what { grid-area: what; color: var(--muted); font-size: var(--step-small); }
-.appt__state { grid-area: state; align-self: start; justify-self: end; text-align: right; max-width: 7.5rem; font-size: 0.8125rem; font-weight: 800; line-height: 1.3; padding: 0.1rem 0.45rem; background: var(--teal); color: var(--black); }
-.appt__state--done { background: var(--surface-2); }
-.appt__state.is-drafted { background: var(--black); color: var(--teal); }
-.appt__state.is-sent { background: var(--white); color: var(--black); box-shadow: inset 0 0 0 2px var(--black); } /* taste-skill-ignore */
-.appt__state.is-callback { background: var(--black); color: var(--white); }
-.appt__draft { grid-column: 1 / -1; margin-top: 0.65rem; padding-left: 0.7rem; border-left: 4px solid var(--black); }
-.appt__label { font-size: var(--step-small); font-weight: 900; color: var(--teal-on-white); }
-.appt__text { margin-top: 0.2rem; font-size: 1rem; line-height: 1.45; }
-.day__act { margin-top: 1rem; }
-/* Each row: the time and its status on one line, then who and what at full width, so names never break. */
-.appt { grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "time state" "who who" "what what"; align-items: center; }
-.appt__state { align-self: center; max-width: none; }
-.appt__who { margin-top: 0.2rem; }
-
-.sms { display: flex; flex-direction: column; min-height: 26rem; font-size: 1rem; }
-.sms__bar { display: grid; justify-items: center; padding-bottom: 0.6rem; border-bottom: 2px solid var(--surface-2); line-height: 1.25; }
-.sms__bar b { font-weight: 900; }
-.sms__bar span { font-size: 0.8125rem; color: var(--muted); font-weight: 700; }
-.sms__thread { flex: 1; display: flex; flex-direction: column; gap: 0.55rem; padding-top: 0.9rem; }
-.sms__stamp { align-self: center; font-size: 0.8125rem; font-weight: 700; color: var(--muted); }
-.sms__wait { margin: auto 0; text-align: center; color: var(--muted); font-weight: 700; font-size: var(--step-small); }
-.sms__reply { margin-top: 1rem; padding-top: 0.8rem; border-top: 2px solid var(--surface-2); }
-.sms__you { font-size: var(--step-small); font-weight: 700; color: var(--muted); }
-.sms__btns { display: flex; gap: 8px; margin-top: 0.45rem; }
-.sms__btns .ex-btn { flex: 1 1 0; }
-
-.ex__demo--pair { display: grid; gap: 1.25rem; }
-@media (min-width: 641px) {
-  .ex__demo--pair { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); align-items: start; }
-  .ex__demo--pair .ex-fine { grid-column: 1 / -1; margin-top: 0; }
-}
-
-/* ---------- the end of the page ---------- */
-.ex-foot { display: grid; gap: 1.25rem; justify-items: start; padding: clamp(4rem, 8vw, 6rem) var(--margin) var(--margin); }
-.ex-foot > p:first-child { font-size: var(--step-lead); font-weight: 900; letter-spacing: -0.03em; line-height: 1.2; max-width: 26ch; }
-.ex-foot__small { margin-top: 2rem; font-size: var(--step-small); font-weight: 700; color: var(--soft-on-dark); }
-.ex-foot__small .link { color: var(--white); text-decoration-color: currentColor; }
-
-@media (max-width: 640px) {
-  .ex__lead, .ex-top__sub { font-size: 1.125rem; }
-  .ask-row.ex__ask .button { width: 100%; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .ex-btn, .ib__row { transition: none; }
-}
-
-/* ---------- Codex look review, round 1 (390px stills) ---------- */
-/* Tighter sections, so each example's interface leads. */
-.ex { padding-block: clamp(3rem, 7vw, 6rem); }
-/* Completed steps read as done, at full contrast; an answer not chosen steps back but stays legible. */
-.ex-btn[aria-disabled="true"] { opacity: 1; cursor: default; }
+.ex-btn--small { min-height: 2.75rem; }
+.ex-btn--light { background: var(--white); color: var(--black); border-color: var(--white); }
+.ex-btn--light:focus-visible { outline-color: var(--teal); }
+.ex-btn[aria-disabled="true"] { cursor: default; }
 .ex-btn.is-done { background: var(--surface); border-color: var(--surface); color: var(--black); }
-.ex-btn.is-done::before { content: "\2713"; margin-right: 0.5rem; color: var(--teal-on-white); font-weight: 900; }
+.ex-btn.is-done::before { content: "\2713"; color: var(--teal-on-white); font-weight: 900; }
 .ex-btn.is-chosen { background: var(--teal); border-color: var(--black); color: var(--black); }
 .ex-btn.is-off { background: transparent; border-color: var(--surface-2); color: var(--muted); }
-/* Which side is whose. */
-.ex-label { font-size: var(--step-small); font-weight: 900; color: var(--teal-on-white); margin-bottom: 0.2rem; }
-.ex-label--on-dark { color: var(--teal); margin-bottom: 0.5rem; }
-.ex-status--on-dark { color: var(--teal); }
-.ex-phone { min-width: 0; }
-.ex-phone .phone { margin-inline: 0; }
-/* The customer's phone: compact before the reminder arrives. */
-.sms { min-height: 0; }
-.sms__wait { padding: 2.5rem 0.5rem; }
-@media (min-width: 641px) { .sms { min-height: 22rem; } }
-.sms__result { margin-top: 0.7rem; display: inline-block; padding: 0.35rem 0.6rem; background: var(--black); color: var(--teal); font-weight: 900; font-size: var(--step-small); }
-/* The quote keeps the details asked for. */
-.sheet__sub { display: block; margin-top: 0.1rem; font-size: var(--step-small); font-weight: 400; color: var(--muted); }
-.sheet.is-approved .sheet__check { background: var(--black); color: var(--teal); }
-/* Replies on a phone: a flat app panel (no phone inside a phone), the waiting list compact, the reply right under it. */
-@media (max-width: 640px) {
-  .ex--replies .phone { width: 100%; padding: 0; background: none; border-radius: 0; }
-  .ex--replies .phone__screen { border-radius: 0; }
-  .ib__row { grid-template-areas: "name via"; align-items: center; padding-block: 0.55rem; }
-  .ib__snip { display: none; }
-  .ib__state { display: none; }
-  .ib__row.is-done { grid-template-areas: "name via" "state state"; }
-  .ib__row.is-done .ib__state { display: block; }
-  .ib__thread { margin-top: 0.9rem; padding-top: 0.9rem; }
+@media (hover: hover) and (pointer: fine) {
+  .ex-btn:not([aria-disabled="true"]):hover { background: var(--teal); color: var(--black); }
+  .ex-btn--light:not([aria-disabled="true"]):hover { border-color: var(--teal); }
 }
 
-/* ---------- the one opening per example (examples.js): parts hidden only while an example waits below the screen ---------- */
-.is-armed .draft, .is-armed .sheet__lines tbody tr, .is-armed .sheet__total, .is-armed [data-quote-check],
-.is-armed .appt__draft, .is-armed [data-appt-state] { opacity: 0; }
-.is-armed .mail__body mark { background: transparent; color: inherit; }
+.bubble { max-width: 86%; padding: 0.6rem 0.8rem; border-radius: 1.05rem 1.05rem 1.05rem 0.3rem; background: var(--surface-2); line-height: 1.4; font-size: 1rem; }
+.bubble--me { align-self: flex-end; border-radius: 1.05rem 1.05rem 0.3rem 1.05rem; background: var(--teal); }
+
+/* ---------- replies: the owner's inbox ---------- */
+.inbox { margin-top: 0.75rem; display: grid; gap: 0.9rem; }
+.inbox__list { display: grid; gap: 5px; }
+.ib-row {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "name state" "snip snip";
+  gap: 0.1rem 0.6rem; min-height: 2.75rem; padding: 0.5rem 0.7rem; background: var(--surface); color: var(--black);
+  text-decoration: none; line-height: 1.3; border-left: 4px solid transparent;
+}
+.ib-row:focus-visible { outline: 3px solid var(--teal-on-white); outline-offset: 2px; }
+.ib-row__name { grid-area: name; font-weight: 900; }
+.ib-row__via { display: none; }
+.ib-row__snip { grid-area: snip; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 0.9375rem; }
+.ib-row__state { grid-area: state; align-self: center; font-size: 0.75rem; font-weight: 800; padding: 0.05rem 0.4rem; background: var(--black); color: var(--teal); white-space: nowrap; }
+.ib-row.is-on { background: var(--black); color: var(--white); border-left-color: var(--teal); }
+.ib-row.is-on .ib-row__state { background: var(--teal); color: var(--black); }
+.ib-row.is-done .ib-row__state { background: var(--teal); color: var(--black); }
+@media (hover: hover) and (pointer: fine) { .ib-row:not(.is-on):hover { background: var(--surface-2); } }
+
+.inbox__threads { display: grid; gap: 1.25rem; min-width: 0; }
+.thread { display: flex; flex-direction: column; gap: 0.55rem; min-width: 0; }
+.thread__from { font-size: var(--step-small); font-weight: 700; color: var(--muted); }
+.draft { border: 3px solid var(--black); padding: 0.75rem 0.8rem 0.8rem; display: grid; gap: 0.45rem; }
+.draft__label { font-size: var(--step-small); font-weight: 900; color: var(--teal-on-white); }
+.draft__text { font-size: 1.0625rem; line-height: 1.45; font-weight: 600; }
+.draft__src { font-size: var(--step-small); color: var(--muted); font-weight: 700; }
+.draft__also { padding: 0.45rem 0.6rem; background: var(--surface); border-left: 4px solid var(--teal); font-size: var(--step-small); font-weight: 700; }
+.draft__btn { margin-top: 0.2rem; }
+.draft.is-approved { border-color: var(--teal-on-white); }
+.draft.is-approved .draft__label { color: var(--black); }
+
+/* ---------- quote: an order email in, a quote out ---------- */
+.quote { display: grid; gap: 0; min-width: 0; }
+.mail { background: var(--white); color: var(--black); padding: 0.85rem 0.9rem 0.95rem; border-left: 6px solid var(--teal); }
+.mail__top { display: flex; justify-content: space-between; align-items: baseline; gap: 0.75rem; }
+.mail__top b { font-weight: 900; }
+.mail__kind { font-size: var(--step-small); font-weight: 700; color: var(--muted); }
+.mail__subject { font-size: var(--step-small); font-weight: 700; color: var(--muted); }
+.mail__body { margin-top: 0.45rem; font-size: 1.0625rem; line-height: 1.55; }
+.mail__body mark::after, .num { display: inline-grid; place-items: center; min-width: 1.15rem; height: 1.15rem; padding: 0 0.2rem; background: var(--black); color: var(--teal); font-size: 0.6875rem; font-weight: 900; line-height: 1; font-variant-numeric: tabular-nums; }
+.mail__body mark::after { content: attr(data-n); display: inline; margin-left: 0.25rem; padding: 0.05em 0.3em; vertical-align: 0.12em; }
+.quote__arrow { display: flex; justify-content: center; padding: 0.3rem 0; }
+.quote__arrow svg { width: 2.25rem; height: 1.5rem; fill: none; stroke: var(--teal); stroke-width: 3.5; stroke-linecap: square; transform: rotate(90deg); }
+
+.sheet { background: var(--white); color: var(--black); padding: 0.9rem 0.9rem 1rem; border-top: 8px solid var(--black); }
+.sheet__head { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+.sheet__title { font-size: 2rem; font-weight: 900; line-height: 0.9; letter-spacing: -0.05em; text-transform: uppercase; }
+.sheet__stamp { border: 3px solid var(--black); padding: 0.1rem 0.55rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.05em; font-size: var(--step-small); }
+.sheet.is-approved .sheet__stamp { background: var(--black); color: var(--teal); }
+.sheet__biz { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.45rem; font-weight: 900; }
+.sheet__for { display: flex; flex-wrap: wrap; align-items: center; gap: 0.3rem; margin-top: 0.1rem; font-size: var(--step-small); color: var(--muted); }
+.sheet__for b { color: var(--black); }
+.sheet__when { display: inline-flex; align-items: center; gap: 0.3rem; }
+.lines { margin-top: 0.7rem; display: grid; }
+.line { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: start; gap: 0.55rem; padding: 0.55rem 0; border-top: 2px solid var(--surface-2); }
+.line .num { margin-top: 0.2rem; }
+.line__name { font-weight: 800; line-height: 1.3; }
+.line__sub, .line__qty { display: block; font-size: var(--step-small); font-weight: 400; color: var(--muted); }
+.line__qty { font-variant-numeric: tabular-nums; }
+.line__amt { font-weight: 800; font-variant-numeric: tabular-nums; }
+.sheet__total { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding-top: 0.5rem; border-top: 4px solid var(--black); font-weight: 900; }
+.sheet__total b { font-size: 2rem; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
+.sheet__note { font-size: var(--step-small); color: var(--muted); }
+.sheet__check { display: inline-block; margin-top: 0.6rem; padding: 0.3rem 0.55rem; background: var(--teal); font-weight: 900; }
+.sheet.is-approved .sheet__check { background: var(--black); color: var(--teal); }
+.sheet__act { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 0.75rem; }
+
+/* ---------- reminders: tomorrow's bookings and Jordan's phone ---------- */
+.rem { display: grid; gap: 0.9rem; min-width: 0; }
+.appt { margin-top: 0.75rem; display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "time state" "who who" "draft draft" "btn btn"; gap: 0.25rem 0.75rem; align-items: center; background: var(--surface); padding: 0.7rem 0.75rem 0.8rem; }
+.appt__time { grid-area: time; font-weight: 900; font-variant-numeric: tabular-nums; }
+.appt__state { grid-area: state; font-size: 0.8125rem; font-weight: 800; padding: 0.1rem 0.45rem; background: var(--teal); color: var(--black); }
+.appt__state.is-drafted { background: var(--black); color: var(--teal); }
+.appt__state.is-sent { background: var(--white); color: var(--black); outline: 2px solid var(--black); outline-offset: -2px; }
+.appt__state.is-callback { background: var(--black); color: var(--white); }
+.appt__who { grid-area: who; }
+.appt__draft { grid-area: draft; margin-top: 0.35rem; padding-left: 0.65rem; border-left: 4px solid var(--black); }
+.appt__label { font-size: var(--step-small); font-weight: 900; color: var(--teal-on-white); }
+.appt__text { margin-top: 0.15rem; font-size: 1rem; line-height: 1.45; }
+.appt .ex-btn { grid-area: btn; margin-top: 0.5rem; }
+.day__more { margin-top: 0.6rem; font-size: var(--step-small); font-weight: 700; color: var(--muted); }
+
+.phone { width: min(100%, 24rem); background: #2b2b2b; padding: 9px; border-radius: 2.3rem; margin-inline: auto; }
+.phone__screen { background: var(--white); color: var(--black); border-radius: 1.8rem; padding: 0.9rem 0.85rem 1rem; overflow: clip; }
+.sms { display: flex; flex-direction: column; }
+.sms__bar { display: grid; justify-items: center; padding-bottom: 0.5rem; border-bottom: 2px solid var(--surface-2); line-height: 1.25; }
+.sms__bar b { font-weight: 900; }
+.sms__bar span { font-size: 0.8125rem; color: var(--muted); font-weight: 700; }
+.sms__thread { display: flex; flex-direction: column; gap: 0.5rem; padding-top: 0.75rem; }
+.sms__stamp { align-self: center; font-size: 0.8125rem; font-weight: 700; color: var(--muted); }
+.sms__reply { margin-top: 0.8rem; padding-top: 0.7rem; border-top: 2px solid var(--surface-2); }
+.sms__you { font-size: var(--step-small); font-weight: 700; color: var(--muted); }
+.sms__btns { display: flex; gap: 8px; margin-top: 0.4rem; }
+.sms__btns .ex-btn { flex: 1 1 0; }
+
+/* ---------- trust and the end ---------- */
+.trust { padding: clamp(3rem, 7vw, 5.5rem) var(--margin); display: grid; gap: 1.25rem; }
+.trust__title { color: var(--teal); }
+.trust__list { display: grid; gap: 0.6rem; max-width: 46ch; }
+.trust__list li { position: relative; padding-left: 1.4rem; font-weight: 700; line-height: 1.4; }
+.trust__list li::before { content: ""; position: absolute; left: 0; top: 0.5em; width: 0.6rem; height: 0.6rem; background: var(--teal); }
+.trust__act { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.5rem; margin-top: 0.5rem; }
+.trust__act .button { font-size: var(--step-body); min-height: 3.25rem; padding: 0 1.5rem; }
+.trust__link { font-weight: 900; color: var(--white); text-decoration-color: currentColor; }
+.ex-foot { padding: 1.5rem var(--margin); font-size: var(--step-small); font-weight: 700; color: var(--soft-on-dark); }
+.ex-foot .link { color: var(--white); text-decoration-color: currentColor; }
+
+/* ---------- wider screens ---------- */
+@media (min-width: 641px) {
+  .phone { margin-inline: 0; }
+  .inbox { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.3fr); align-items: start; }
+  .ib-row__via { display: block; grid-area: via; font-size: 0.75rem; font-weight: 700; color: var(--muted); }
+  .ib-row { grid-template-areas: "name via" "snip snip" "state state"; }
+  .ib-row__state { justify-self: start; margin-top: 0.2rem; }
+  .ib-row.is-on .ib-row__via { color: var(--soft-on-dark); }
+  .rem { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); align-items: start; }
+  .app { padding: 1.1rem 1.2rem 1.25rem; }
+}
+@media (min-width: 901px) {
+  .quote { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1.15fr); align-items: start; }
+  .quote__arrow { padding: 2.5rem 0.75rem 0; }
+  .quote__arrow svg { transform: none; }
+}
+@media (min-width: 1001px) {
+  .ex-top { padding-bottom: 2rem; }
+  .player { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 1.25rem; padding-top: 2rem; align-items: start; }
+  .chooser { grid-column: 1 / span 3; grid-row: 1; position: sticky; top: 1.5rem; }
+  .chooser__list { grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .pick { min-height: 5.25rem; padding: 0.85rem 1rem; border-top: 0; border-left: 6px solid transparent; }
+  .pick.is-on { border-left-color: var(--white); }
+  .pick__name { font-size: var(--step-lead); }
+  .pick__sum { font-size: var(--step-small); }
+  .player__act { grid-column: 1 / span 3; grid-row: 2; align-self: start; flex-direction: column; align-items: stretch; }
+  .player__act .ex-btn--light, .player__act .button { width: 100%; }
+  .stage { grid-column: 4 / -1; grid-row: 1 / span 3; }
+  .trust { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); align-items: start; }
+  .trust__title { grid-column: 1 / span 6; }
+  .trust__list { grid-column: 7 / span 6; grid-row: 1 / span 2; }
+  .trust__act { grid-column: 1 / span 6; }
+}
+@media (max-width: 640px) {
+  .line { grid-template-columns: auto minmax(0, 1fr) auto; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ex-btn, .pick { transition: none; }
+}
+
+/* ---------- motion pieces (examples.js) ---------- */
+/* A flying copy of a detail, on its way from the email or the bookings card to its place. */
+.ex-fly { position: absolute; z-index: 40; pointer-events: none; padding: 0.05em 0.35em; background: var(--teal); color: var(--black); font-weight: 900; line-height: 1.3; white-space: nowrap; transform-origin: 0 50%; }
+/* Replies: until its opening plays, the drafted reply's facts wait unhighlighted (still fully readable). Only with
+   script and motion allowed; the script marks the inbox lit as soon as the opening starts or is skipped. */
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-replies]:not(.is-lit) .draft mark { background: transparent; }
+}
+
+/* ---------- round 2 stills, fixes: the chooser and its buttons travel together; a shorter top on wide screens;
+   a tighter quote sheet on phones ---------- */
+.player__side { display: contents; }
+.chooser { order: 0; }
+.stage { order: 1; }
+.player__act { order: 2; }
+@media (min-width: 1001px) {
+  .player__side { display: grid; gap: 1.25rem; grid-column: 1 / span 3; grid-row: 1; position: sticky; top: 1.5rem; align-self: start; }
+  .chooser { position: static; grid-column: auto; grid-row: auto; }
+  .player__act { grid-column: auto; grid-row: auto; }
+  .stage { grid-row: 1; }
+  .ex-top__title { max-width: 22ch; font-size: clamp(3rem, 1.5rem + 3vw, 4.75rem); }
+}
+@media (max-width: 640px) {
+  .sheet__title { font-size: 1.625rem; }
+  .line { padding: 0.45rem 0; }
+  .sheet__total b { font-size: 1.75rem; }
+  .sheet__act { margin-top: 0.6rem; }
+}
+/* Phones: Next and Let's talk side by side, the same height. */
+@media (max-width: 1000px) {
+  .player__act { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .player__act .ex-btn--light, .player__act .button { width: 100%; min-height: 3.25rem; padding: 0 0.75rem; font-size: var(--step-body); }
+}
+
+/* ---------- round 2 look review (Codex) and blind testers: value sooner on phones, the booking's status beside
+   Jordan's reply, quieter supporting type ---------- */
+/* Quieter labels: tags read as labels, not buttons. */
+.ex-tag { background: transparent; color: var(--muted); border: 1.5px solid currentColor; padding: 0 0.4rem; font-weight: 700; }
+.demo__lead { font-weight: 400; }
+.pick__sum { font-weight: 600; }
+.draft__src b { color: var(--black); }
+/* Reminders: the earlier exchange in one line; the owner's list beside the reply buttons, outside the phone. */
+.sms__earlier { align-self: center; text-align: center; font-size: 0.8125rem; font-weight: 700; color: var(--muted); }
+/* Desktop quote: the email sits level with the middle of the quote, so no hole opens under it. */
+/* Phones: a shorter top, the explanation left to the interface, the three conversations as a compact row. */
+@media (max-width: 640px) {
+  .ex-top { padding-bottom: 1.1rem; }
+  .ex-top__title { font-size: 1.875rem; }
+  .ex-top__promise { font-size: 1.1875rem; margin-top: 0.6rem; }
+  .ex-top__promise svg { width: 1.3rem; height: 1.3rem; }
+  .ex-top__note { font-size: 0.9375rem; }
+  .demo__head { margin-bottom: 0.5rem; }
+  .inbox__list { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px; }
+  .ib-row { grid-template-areas: "name" "state"; grid-template-columns: minmax(0, 1fr); padding: 0.45rem 0.5rem; border-left: 0; border-top: 4px solid transparent; }
+  .ib-row.is-on { border-top-color: var(--teal); }
+  .ib-row__name { font-size: 0.9375rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ib-row__snip { display: none; }
+  .ib-row__state { justify-self: start; font-size: 0.6875rem; }
+  .mail { padding: 0.7rem 0.8rem 0.8rem; }
+  .mail__body { font-size: 1rem; line-height: 1.5; }
+}
+
+/* The narrowest phones and enlarged text: the chooser wraps rather than overflowing; tags and states may wrap. */
+.chooser__list { grid-template-columns: repeat(auto-fit, minmax(5.5rem, 1fr)); }
+@media (max-width: 380px) { .pick { padding: 0.45rem 0.4rem 0.5rem; } .pick__name { font-size: 0.9375rem; } }
+.ib-row__state { white-space: normal; }
+@media (min-width: 1001px) { .chooser__list { grid-template-columns: minmax(0, 1fr); } }
+/* Enlarged text: bars and the player's two buttons wrap instead of spilling. */
+.app__bar { flex-wrap: wrap; }
+.app__bar b { min-width: 0; overflow-wrap: anywhere; }
+@media (max-width: 1000px) { .player__act { grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr)); } }
+@media (max-width: 640px) { .inbox__list { grid-template-columns: repeat(auto-fit, minmax(min(100%, 5.5rem), 1fr)); } }
+.mail__top, .sheet__head, .sheet__biz { flex-wrap: wrap; }
+.trust__title, .ex-top__title { overflow-wrap: anywhere; hyphens: manual; }
+.quote > * { min-width: 0; }
+.mail__body, .mail__top { overflow-wrap: anywhere; }
+.line__name { min-width: 0; overflow-wrap: anywhere; }
+.sheet__total { flex-wrap: wrap; }
+.sheet__act { grid-template-columns: repeat(auto-fit, minmax(min(100%, 8rem), 1fr)); }
+
+/* ---------- round 3: the motion is the payoff; approval reads as a win; a two-line phone headline ---------- */
+.ex-fly { line-height: 1.35; }
+.ex-fly--chip { font-size: 0.9375rem; max-width: min(72vw, 18rem); overflow: hidden; text-overflow: ellipsis; box-shadow: 0 0 0 2px var(--black); } /* taste-skill-ignore */
+.ex-fly--bubble { white-space: normal; background: var(--surface-2); color: var(--black); font-weight: 400; font-size: 1rem; line-height: 1.4; padding: 0.6rem 0.8rem; border-radius: 1.05rem 1.05rem 1.05rem 0.3rem; transform-origin: 50% 50%; }
+.ex-btn, .pick, .ib-row { -webkit-tap-highlight-color: transparent; }
+/* Done reads as done: strong, not greyed out. */
+.ex-btn.is-done { background: var(--black); border-color: var(--black); color: var(--teal); }
+.ex-btn.is-done::before { color: var(--teal); }
+/* Next is the quiet one; Let's talk leads. */
+.ex-btn--light { background: transparent; color: var(--white); border-color: var(--white); }
+@media (hover: hover) and (pointer: fine) { .ex-btn--light:not([aria-disabled="true"]):hover { background: var(--white); color: var(--black); border-color: var(--white); } }
+/* An approved reply becomes the reply in the thread. */
+.draft.is-approved { align-self: flex-end; max-width: 92%; background: var(--teal); border-color: var(--teal); border-radius: 1.05rem 1.05rem 0.3rem 1.05rem; }
+.draft.is-approved .draft__label { color: var(--black); }
+.draft.is-approved mark { background: transparent; font-weight: 800; }
+.draft.is-approved .draft__src { display: none; }
+.draft.is-approved .draft__also { background: var(--white); }
+/* Reminder sent: the owner's card folds to one line. */
+.day.is-sent .appt__text { display: none; }
+/* The top: two lines on a phone; on wide screens the promise sits beside the headline, so no half is empty. */
+@media (max-width: 640px) { .ex-top__title { font-size: 2rem; max-width: none; } .demo__lead { font-size: 0.9375rem; } }
+@media (min-width: 1001px) {
+  .ex-top { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); align-items: end; }
+  .ex-top .nav { grid-column: 1 / -1; }
+  .ex-top__title { grid-column: 1 / span 7; }
+  .ex-top__side { grid-column: 8 / -1; padding-bottom: 0.4rem; }
+  .ex-top__promise { margin-top: 0; }
+}
+.day.is-sent .day__more, .day.is-sent .app__sub { display: none; }
+/* After Jordan answers: the business result, on the owner's side, under the phone. */
+.rem__outcome { width: min(100%, 24rem); padding: 0.65rem 0.85rem; background: var(--white); color: var(--black); font-weight: 700; border-left: 6px solid var(--teal); }
+.rem__outcome b { font-weight: 900; }
+.rem__outcome.is-callback { border-left-color: var(--black); }
+@media (min-width: 641px) { .rem__outcome { grid-column: 2; } }
+
+/* ---------- round 4 (critic, round 3): the sent reply reads as a message; the price list fills the email's
+   column; a real photo; one consistent "Approve and send" ---------- */
+.draft.is-approved mark { padding: 0; }
+.draft.is-approved .draft__btn { min-height: 0; padding: 0; margin-top: 0; background: none; border: 0; color: var(--black); justify-content: flex-end; font-size: var(--step-small); }
+.draft.is-approved .draft__btn::before { color: var(--black); }
+.prices { display: none; }
+@media (min-width: 901px) {
+  .quote { grid-template-columns: minmax(0, 1fr) auto minmax(0, 1.15fr); grid-template-rows: auto 1fr; align-items: start; }
+  .mail { grid-column: 1; grid-row: 1; }
+  .quote__arrow { grid-column: 2; grid-row: 1 / span 2; align-self: center; }
+  .sheet { grid-column: 3; grid-row: 1 / span 2; }
+  .prices { display: block; grid-column: 1; grid-row: 2; margin-top: 10px; background: #1f1f1f; color: var(--white); padding: 0.85rem 0.9rem 0.9rem; }
+  .prices__top b { font-weight: 900; color: var(--teal); font-size: var(--step-small); }
+  .prices__list { margin-top: 0.4rem; display: grid; }
+  .prices__list li { display: flex; justify-content: space-between; gap: 1rem; padding: 0.35rem 0; border-top: 1px solid #333; font-size: var(--step-small); font-weight: 600; font-variant-numeric: tabular-nums; }
+}
+.trust__photo { margin: 0; width: min(60%, 16rem); }
+.trust__photo img { width: 100%; height: auto; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 20%; background: var(--photo-ground); }
+.trust__photo figcaption { margin-top: 0.4rem; font-size: var(--step-small); font-weight: 700; color: var(--soft-on-dark); }
+@media (min-width: 1001px) {
+  .trust { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+  .trust__title { grid-column: 1 / span 7; grid-row: 1; }
+  .trust__photo { grid-column: 1 / span 3; grid-row: 2 / span 2; width: auto; }
+  .trust__list { grid-column: 8 / -1; grid-row: 1 / span 2; }
+  .trust__act { grid-column: 4 / span 4; grid-row: 3; align-self: end; }
+}
+
+/* ---------- round 5 (critic, round 4): the first action on the first phone screen; the price list on phones too;
+   phone buttons that never wrap; a phone that reads as a phone ---------- */
+.ex-fly--chip { box-shadow: none; border: 2px solid var(--black); }
+.rem__outcome.is-callback { border-left-color: var(--teal); }
+@media (max-width: 640px) {
+  .pick { min-height: 0; padding: 0.5rem 0.55rem; }
+  .pick__sum { display: none; }
+  .ib-row__state { display: none; }
+  .ib-row.is-done .ib-row__state { display: block; }
+  .sheet__act { grid-template-columns: minmax(0, 1fr); }
+}
+/* Phones: the price list as one compact strip between the email and the quote. */
+@media (max-width: 900px) {
+  .prices { display: block; margin-top: 8px; background: #1f1f1f; color: var(--white); padding: 0.55rem 0.75rem 0.6rem; }
+  .prices__top b { font-weight: 900; color: var(--teal); font-size: 0.8125rem; }
+  .prices__list { display: flex; flex-wrap: wrap; gap: 0.15rem 0.9rem; margin-top: 0.2rem; }
+  .prices__list li { display: inline-flex; gap: 0.35rem; font-size: 0.8125rem; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .prices__list li span:last-child { color: var(--teal); }
+}
+/* Jordan's phone: phone proportions, with the speaker slot at the top. */
+.phone__screen::before { content: ""; display: block; width: 3.25rem; height: 0.35rem; margin: 0 auto 0.6rem; border-radius: 1rem; background: var(--surface-2); }
+.sms { min-height: 24rem; }
+@media (min-width: 641px) { .rem .phone { width: min(100%, 26rem); } }
+/* Desktop trust band: the photo beside the promises, the buttons under them. */
+@media (min-width: 1001px) {
+  .trust__title { grid-column: 1 / -1; grid-row: 1; }
+  .trust__photo { grid-column: 1 / span 3; grid-row: 2 / span 2; }
+  .trust__list { grid-column: 4 / span 6; grid-row: 2; }
+  .trust__act { grid-column: 4 / span 6; grid-row: 3; align-self: start; }
+}

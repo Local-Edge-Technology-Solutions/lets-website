@@ -334,8 +334,7 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
 /* Reduced motion, or a run settled early: the windows change colour at once. */
 .bd-street.is-settling .st-win, .bd-street.is-settling .st-halo, .bd-street.is-settling .st-halo-line { transition: none !important; }
 
-/* The Approve card comes straight after the street, so on a phone the windows that answer the button are just
-   above it; on wide screens the invoice sits on the left. */
+/* Review, then approve: the invoice comes first (above the Approve card on a phone, on the left on wide screens). */
 .bd-lower { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.25rem; margin-top: 0.75rem; }
 .bd-inv { background: var(--bd-card); border-radius: 6px; padding: clamp(1rem, 2vw, 1.5rem) clamp(1rem, 2.2vw, 1.75rem); }
 .bd-inv__head { display: grid; grid-template-columns: 56px minmax(0, 1fr); align-items: center; gap: 0.25rem 1rem; }
@@ -422,9 +421,9 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
 /* A cell waiting for its detail: a filled slot the size of its words, never an empty box. */
 .cb [data-cell].is-pending { color: transparent; background: var(--mid-on-dark); }
 .vm-list__foot { margin-top: 0.75rem; font-weight: 700; font-size: var(--step-small); }
-/* Details leave the transcript from its edge and travel only outside it (js/voicemail.js). */
+/* A detail fills its own slot in place: a teal chip the exact size of the slot wipes across it (js/voicemail.js). */
 .vm-flight { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
-.vm-fly { position: absolute; top: 0; left: 0; background: var(--teal); color: var(--black); font-weight: 900; padding: 0 0.12em; white-space: nowrap; transform-origin: 0 0; }
+.vm-fly { position: absolute; overflow: hidden; background: var(--teal); color: var(--black); }
 .vm__controls { display: flex; flex-wrap: wrap; gap: 10px; }
 .vm__controls .button { font-size: var(--step-body); min-height: 3.5rem; padding: 0 1.4rem; flex: 1 1 auto; }
 .vm__note { font-size: var(--step-small); color: var(--soft-on-dark); max-width: 60ch; }
@@ -514,9 +513,7 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
 
 /* ---------- questions ---------- */
 .faq { display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; align-items: start; padding: var(--section) var(--margin); }
-.faq__title { color: var(--teal); }
-.faq__alt { font-weight: 700; margin-bottom: clamp(1rem, 2vw, 1.75rem); overflow-wrap: anywhere; }
-.faq__alt .link { color: var(--white); text-decoration-color: currentColor; }
+.faq__title { color: var(--teal); margin-bottom: clamp(1rem, 2vw, 1.75rem); }
 .faq .band { display: block; padding: 1rem 1.1rem; background: var(--deep-2); }
 .band > summary.band__q { justify-content: space-between; font-size: var(--step-lead); line-height: 1.15; letter-spacing: -0.03em; }
 .band > summary.band__q::after { content: "+"; flex: none; display: grid; place-items: center; width: 1.8rem; height: 1.8rem; background: var(--teal); color: var(--black); font-size: 1.25rem; }
@@ -638,7 +635,8 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
   .cue__title { grid-column: 1 / span 6; font-size: var(--step-lead); }
   .cue__link { grid-column: 7 / -1; grid-row: 1; justify-self: end; }
   .cue__people { grid-column: 1 / -1; }
-  .work__head, .see__head { align-items: end; }
+  .see__head { align-items: end; }
+  .work__head { align-items: start; }
   .work__title, .see__title { grid-column: 1 / span 6; }
   .work__side, .see__lead { grid-column: 7 / -1; max-width: 40ch; }
   .vm > * { grid-column: 1 / -1; }
@@ -648,30 +646,44 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
   /* the arrow sits on the seam between the voicemail and the list, pointing the way the details travel */
   .vm__arrow { display: block; position: absolute; z-index: 2; left: 50%; top: 50%; width: 3rem; height: 3rem; margin: -1.5rem 0 0 -1.5rem; padding: 0.55rem; background: var(--teal); stroke: var(--black); }
   .vm__line { grid-row: 1; } .vm__stage { grid-row: 2; }
-  .vm__controls { grid-column: 1 / span 6; grid-row: 3; } /* Replay right under the voicemail it replays */
+  /* under the voicemail: Let's talk, and Replay beside it once the example has run; the note under the list */
+  .vm__controls { grid-column: 1 / span 4; grid-row: 3; align-self: center; justify-self: start; }
+  .vm > .ask-row { grid-column: 5 / span 2; grid-row: 3; align-self: center; margin-top: 0; }
+  .vm__controls[hidden] ~ .ask-row { grid-column: 1 / span 6; }
   .vm__note { grid-column: 7 / -1; grid-row: 3; align-self: center; }
-  .vm > .ask-row { grid-column: 1 / span 6; grid-row: 4; margin-top: 0; }
+  .see { padding-bottom: clamp(3rem, 5vw, 4.5rem); }
+  .tries { margin-top: clamp(2rem, 3.5vw, 3rem); }
   .about__intro { align-items: center; margin-top: 1.5rem; }
   .about__care { grid-column: 1 / span 6; }
   .about__intro .ask-row { grid-column: 7 / -1; }
   .person { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: var(--gutter); }
   .person__frame { max-width: none; }
-  .contact { padding-top: var(--section); }
-  /* the form card: the title and its words beside the form, both ending together; the three promises run across */
+  .contact { padding-block: clamp(1rem, 3vw, 3rem); }
+  /* the form card: the title, its words and the one promise beside the form, both columns ending together */
   .coupon { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 1rem; padding: clamp(1.75rem, 3.4vw, 3rem); align-items: start; }
   .coupon__left { display: contents; }
   .coupon__title { grid-column: 1 / span 6; grid-row: 1; }
   .coupon__title br { display: inline; }
-  .coupon__text { grid-column: 1 / span 6; grid-row: 2; align-self: end; font-size: var(--step-lead); max-width: 26ch; margin-bottom: 0; }
-  .coupon__right { display: flex; flex-direction: column; grid-column: 7 / -1; grid-row: 1 / span 2; align-self: stretch; gap: 10px; }
+  .coupon__text { grid-column: 1 / span 6; grid-row: 2; font-size: var(--step-lead); max-width: 26ch; margin-bottom: 0; }
+  .coupon__facts { grid-column: 1 / span 6; grid-row: 3; align-self: end; margin-top: 0; font-size: var(--step-body); }
+  .coupon__right { display: flex; flex-direction: column; grid-column: 7 / -1; grid-row: 1 / span 3; align-self: stretch; gap: 10px; }
   .coupon__privacy { margin-top: auto; }
-  .coupon__facts { grid-column: 1 / -1; grid-row: 3; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); max-width: none; margin-top: 1.5rem; }
   /* desktop tiles: the drawing, the job, and Try it on one row each, three across */
   .try { grid-template-columns: 2.25rem minmax(0, 1fr) auto; grid-template-areas: "glyph from go" "glyph to go"; align-content: center; gap: 0.15rem 1rem; padding: 1.1rem 1.25rem; min-height: 5.5rem; }
   .try__go { margin-top: 0; }
+  .how { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); }
+  .how__title { grid-column: 1 / span 8; grid-row: 1; }
+  .how > .ask-row { grid-column: 9 / -1; grid-row: 1; align-self: start; justify-content: flex-end; margin-top: 0; }
+  .steps { grid-column: 1 / -1; grid-row: 2; }
+  /* the businesses: the heading is fitted to the full width ("FOR SMALL BUSINESSES" measures 11.29em), the line
+     runs wide under it */
+  .biz__title { font-size: calc((100vw - 2 * var(--margin)) / 11.4); line-height: 0.92; }
+  @supports (width: 1cqi) { .biz__title { font-size: calc((100cqi - 2 * var(--margin)) / 11.4); } }
+  .biz__line { max-width: 62ch; }
+  /* Questions, set as large as Ben & Zeke */
+  .faq__title { font-size: var(--step-display); line-height: 0.88; letter-spacing: -0.05em; }
   .faq { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 6px; align-items: stretch; }
-  .faq__title { grid-column: 1 / span 1; grid-row: 1; margin-bottom: clamp(1rem, 2vw, 1.75rem); }
-  .faq__alt { grid-column: 2; grid-row: 1; align-self: end; justify-self: end; font-size: var(--step-lead); }
+  .faq__title { grid-column: 1 / -1; }
   .footer__links { grid-column: 1 / span 6; display: grid; grid-template-columns: repeat(3, max-content); column-gap: 2.5rem; row-gap: 0; }
   .footer__contact { grid-column: 7 / -1; }
 }
@@ -684,6 +696,21 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
    breakpoint blocks, because it narrows their row layout. */
 @container (min-width: 24rem) and (max-width: 38.5rem) {
   .lane__in { flex-direction: column; align-items: flex-start; gap: 0.25rem; padding-inline: 0.6rem; }
+}
+
+/* Phone Ben & Zeke: the two portraits side by side, each with its name under it; then Ben's lines and Zeke's lines
+   run the full width below the pair (each person box and its words box step aside, so their parts share one grid). */
+@media (max-width: 640px) {
+  .people { row-gap: 0; }
+  .person, .person__words { display: contents; }
+  .person--ben .person__frame { grid-column: 1; grid-row: 1; }
+  .person--zeke .person__frame { grid-column: 2; grid-row: 1; }
+  .person--ben .person__name { grid-column: 1; grid-row: 2; }
+  .person--zeke .person__name { grid-column: 2; grid-row: 2; }
+  .person__name { margin-top: 0.75rem; }
+  .person__words > :not(.person__name) { grid-column: 1 / -1; margin-top: 0.75rem; }
+  .person__words > .person__role { margin-top: 1.75rem; }
+  .person__text { max-width: none; }
 }
 
 /* Phone tiles, narrowest first: by default (also the fallback where container queries are missing) everything
@@ -722,6 +749,9 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
    its hyphens and the billing total scales to its card. Never at ordinary text sizes (320 is 20em). */
 @container (max-width: 16em) {
   .people, .cue__people { grid-template-columns: minmax(0, 1fr); }
+  .people .person, .people .person__words { display: grid; }
+  .people .person__frame, .people .person__name, .people .person__words > * { grid-column: auto; grid-row: auto; }
+  .people .person__words > .person__role { margin-top: -0.5rem; }
   .cue__person { grid-template-columns: minmax(0, 1fr); align-items: start; }
   .vm-card mark[data-field="phone"] { white-space: normal; }
   .coupon { padding-inline: 0.75rem; }

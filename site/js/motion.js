@@ -1,61 +1,13 @@
-// The motion layer. Recipes adapted from Animaxxing (registrationSlip, pressFeedback) with the taste skill's
-// rules winning: no overshoot, nothing hidden without script, reduced motion gets the finished page.
-// The hero's one example runs in js/hero.js. Everything here is built inside one gsap.matchMedia()
-// run and torn down with it when the motion preference or the width class changes.
-import { gsap, ScrollTrigger, SplitText, calm, $, $$, fontsReady } from "./env.js";
+// The motion layer outside the three moments (the hero's signature in js/hero.js, the voicemail in
+// js/voicemail.js, the Billing Day approval in js/work.js): press feedback under the hand, and landing a visit
+// that opens on a fragment. Nothing on the page moves because it scrolled. The press recipe is adapted from
+// Animaxxing (pressFeedback) with the taste skill's rules winning: no overshoot, reduced motion gets none of it.
+import { gsap } from "./env.js";
 
 // Has the visitor started moving the page themselves? Listened for from the moment this module loads (before
 // the font wait), so a fragment is never re-landed over their own scrolling.
 let moved = false;
 ["wheel", "touchstart", "keydown", "pointerdown"].forEach((t) => addEventListener(t, () => { moved = true; }, { once: true, passive: true }));
-
-// ---- Animaxxing registrationSlip, adapted: a second impression in another ink lands out of register behind a
-// heading, then slips true under it and is removed. The heading never moves.
-function registrationSlip(heading, ink, { x = 14, y = 6, duration = 0.7, lines: given } = {}) {
-  const tl = gsap.timeline();
-  if (calm() || !heading) return tl;
-  const copy = document.createElement("div");
-  copy.className = heading.className;
-  const lines = given && given.length ? given : [...heading.querySelectorAll(":scope > .line")];
-  (lines.length ? lines : [heading]).forEach((ln) => {
-    const row = document.createElement("div");
-    row.className = "impression-line";
-    row.dataset.t = ln.textContent.replace(/\s+/g, " ").trim();
-    copy.append(row);
-  });
-  copy.setAttribute("aria-hidden", "true");
-  copy.style.fontWeight = getComputedStyle(heading).fontWeight;
-  const parent = heading.parentElement;
-  const parentPos = parent.style.position;
-  if (getComputedStyle(parent).position === "static") parent.style.position = "relative";
-  const box = heading.getBoundingClientRect();
-  const origin = parent.getBoundingClientRect();
-  Object.assign(copy.style, {
-    position: "absolute", left: `${box.left - origin.left}px`, top: `${box.top - origin.top}px`, width: `${box.width}px`,
-    margin: "0", color: ink, pointerEvents: "none", zIndex: "0", animation: "none",
-  });
-  const saved = [heading.style.position, heading.style.zIndex];
-  const cs = getComputedStyle(heading);
-  if (cs.position === "static") heading.style.position = "relative";
-  if (cs.zIndex === "auto") heading.style.zIndex = "1";
-  parent.append(copy);
-  let done = false;
-  const restore = () => {
-    if (done) return;
-    done = true;
-    liveSlips.delete(stop);
-    copy.remove(); [heading.style.position, heading.style.zIndex] = saved; parent.style.position = parentPos;
-  };
-  // A slip still running when the motion layer is torn down (motion turned off mid-slip) is stopped and removed.
-  const stop = () => { tl.kill(); restore(); };
-  liveSlips.add(stop);
-  tl.fromTo(copy, { x, y }, { x: x * 0.35, y: -y * 0.3, duration: duration * 0.55, ease: "power2.out" })
-    .to(copy, { x: 0, y: 0, duration: duration * 0.45, ease: "expo.out" })
-    .call(restore);
-  tl.eventCallback("onInterrupt", restore);
-  return tl;
-}
-const liveSlips = new Set();
 
 // ---- Animaxxing pressFeedback, adapted: squash on press and an ink ripple from the press point. Release eases
 // out without the recipe's elastic spring. Returns a remover for its listeners and styles.
@@ -101,91 +53,27 @@ export function pressFeedback(control, { squash = 0.95, ink = 0.28 } = {}) {
 }
 
 export function initMotion() {
+  // Built inside one gsap.matchMedia() run and torn down with it when the motion preference changes.
   const mm = gsap.matchMedia();
   mm.add({ motion: "(prefers-reduced-motion: no-preference)" }, (ctx) => {
     if (!ctx.conditions.motion) return;
     document.documentElement.classList.add("gsap-press");
-    const undo = [];
-    // Entrances only move, at every width: nothing ever waits invisible (or masked) for a scroll that a
-    // visitor, a jump to #contact or a screenshot might skip past (critique cap, 2026-11-05).
-
-    // The hero's headline never moves (round 5: the offer is readable from the first frame); js/hero.js runs
-    // its one example.
-
-    // Headings are never moved or hidden; where marked, a second impression slips into register as each
-    // arrives. Called section by section so every
-    // ScrollTrigger is created in page order.
-    const splits = [];
-    // A heading already on screen while the page is still settling (a visit that opens on #about, say) gets no
-    // echo: its copy would be measured before the fonts, the split and the pin had settled, and could land
-    // over the words below (critique, 2026-11-05). Echoes start once the page has loaded and settled.
-    let settled = false;
-    let disposed = false;
-    let settleTimer = 0;
-    let onLoad = null;
-    const loaded = document.readyState === "complete" ? null : new Promise((r) => { onLoad = r; addEventListener("load", r, { once: true }); });
-    Promise.all([loaded, document.fonts?.ready]).then(() => { if (!disposed) settleTimer = setTimeout(() => { settled = true; }, 700); });
-    undo.push(() => { disposed = true; clearTimeout(settleTimer); if (onLoad) removeEventListener("load", onLoad); });
-    const splitIn = (el) => {
-      if (!el) return;
-      let slipped = false;
-      splits.push(SplitText.create(el, {
-        type: "lines", autoSplit: true,
-        // The heading itself never moves (a moving line was clipped by the page edge or crossed what followed,
-        // Codex 2026-11-05); where marked, its second impression slips into register as it arrives.
-        onSplit(self) {
-          return gsap.timeline({ scrollTrigger: { trigger: el, start: "top 92%", once: true } })
-            .call(() => {
-              if (!el.dataset.slip || slipped) return;
-              slipped = true;
-              if (settled) registrationSlip(el, el.dataset.slip, { lines: self.lines });
-            });
-        },
-      }));
-    };
-
-    // See one job happen: the heading arrives (the example runs itself, js/voicemail.js).
-    splitIn($("#see-title"));
-
-    // About: the photo settles in its frame; the bios rise beside it.
-    splitIn($("#about-title"));
-    gsap.timeline({ scrollTrigger: { trigger: ".about__people", start: "top 85%", once: true } })
-      .from(".about__photo img", { scale: 1.12, duration: 1.4, ease: "expo.out", clearProps: "transform" }, 0)
-      .from(".person > *", { y: 18, duration: 0.6, ease: "expo.out", stagger: 0.05 }, 0.2);
-
-    // How it works and Questions: the headings arrive; the steps, the folds and the form sit still (round 6:
-    // nothing that is read or typed into waits for an entrance).
-    splitIn($("#how-title"));
-    splitIn($("#faq-title"));
-
-    // Footer: the four blocks are set like wood type, rising from the baseline as the close arrives.
-    gsap.from(".mark__block", { yPercent: 30, duration: 0.9, ease: "expo.out", stagger: 0.11, scrollTrigger: { trigger: ".mark", start: "top 94%", once: true } });
-    gsap.from(".footer__grid > *, .footer__last", { y: 16, duration: 0.6, ease: "expo.out", stagger: 0.06, scrollTrigger: { trigger: ".footer__grid", start: "top 94%", once: true } });
-
-    // Feedback under the hand.
-    $$(".button, .menu__toggle, .bd-btn").forEach((c) => undo.push(pressFeedback(c)));
-
+    const undo = [...document.querySelectorAll(".button, .menu__toggle, .bd-btn")].map((c) => pressFeedback(c));
     return () => {
       undo.forEach((f) => f());
-      [...liveSlips].forEach((f) => f());
-      splits.forEach((s) => s.revert());
       document.documentElement.classList.remove("gsap-press");
     };
   });
 
-  // A visit that opens on a fragment (#contact, #work): split headings and late fonts can move it after the
-  // browser has already jumped, so once measurements settle, land on the fragment again, unless the
-  // visitor has started scrolling themselves (Codex review, 2026-11-05).
-  const refresh = () => {
-    ScrollTrigger.refresh();
+  // A visit that opens on a fragment (#contact, #work): late fonts and images can move it after the browser has
+  // already jumped, so once the page has loaded, land on the fragment again, unless the visitor has started
+  // scrolling themselves (Codex review, 2026-11-05).
+  const land = () => {
     const target = location.hash.length > 1 && document.getElementById(decodeURIComponent(location.hash.slice(1)));
     if (target && !moved) target.scrollIntoView({ block: "start" });
   };
-  if (document.readyState === "complete") refresh();
-  else addEventListener("load", refresh, { once: true });
-  // If the face arrived after the bounded wait, measure the letters again in the real face.
-  document.fonts?.ready.then(refresh);
+  if (document.readyState === "complete") land();
+  else addEventListener("load", land, { once: true });
+  document.fonts?.ready.then(land);
   return mm;
 }
-
-export { fontsReady };

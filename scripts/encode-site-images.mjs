@@ -20,7 +20,6 @@ const jobs = {
   hero: ["laptop-notes.jpg", [480, 720, 960], { left: 900, top: 0, width: 1800, height: 2400 }],
   showcase: ["cafe-counter.jpg", [720, 1200, 1800]],
   intro: ["tablet-till.jpg", [480, 854]],
-  alley: ["printers-alley.jpg", [400, 640]],
   boutique: ["boutique.jpg", [400, 640]],
   salon: ["salon.jpg", [400, 640]],
   bakery: ["bakery.jpg", [400, 640]],

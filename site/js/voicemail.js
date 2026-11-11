@@ -1,100 +1,119 @@
 // See one job happen: a sample voicemail becomes a line on the call-back list. A scripted illustration with an
 // invented caller: no audio, no recording. The transcript and the finished row are in the HTML, so without script,
-// or with reduced motion, the finished example is all there is. With motion, the row starts empty and, once the
-// example is on screen, each detail is picked out of the transcript and flies into its place on the row, once
-// (about two seconds), then rests. Replay runs it again; only a replay is announced.
-import { gsap, calm, $, $$ } from "./env.js";
+// or with reduced motion, the finished example is all there is, and the row stays finished until the run starts.
+// With motion, once the example is properly on screen (about two seconds, once): each detail lights in the
+// transcript, a copy of it slides out from under the voicemail's edge (below it on a phone, beside it on a wide
+// screen) and lands in its slot on the row. The copies travel only outside the voicemail, clipped to that side, so
+// they never cross the transcript's words; a slot waiting for its detail shows its shape, never an empty box.
+// Replay runs it again; only a replay is announced. A missing part means no run at all (the finished example stays),
+// and a failure mid-run lands the finished example.
+import { gsap, calm, $ } from "./env.js";
 
 const FIELDS = ["name", "phone", "need", "urgency", "town"];
 
 export function initVoicemail() {
   const root = $("[data-vm]");
   if (!root || calm() || !("IntersectionObserver" in window)) return;
+  const stage = $("[data-vm-stage]", root);
+  const card = $(".vm-card", root);
   const controls = $("[data-vm-controls]", root);
   const replay = $("[data-vm-replay]", root);
   const status = $("[data-vm-status]", root);
   const transcript = $("[data-vm-transcript]", root);
   const row = $("[data-vm-rows] .cb", root);
-  if (!controls || !replay || !status || !transcript || !row) return;
+  if (!stage || !card || !controls || !replay || !status || !transcript || !row) return;
   const marks = FIELDS.map((f) => $(`mark[data-field="${f}"]`, transcript));
   const cells = FIELDS.map((f) => $(`[data-cell="${f}"]`, row));
   if (marks.some((m) => !m) || cells.some((c) => !c)) return;
 
   let run = null;
-  const flights = new Set();
-  const copies = new Set();
+  let layer = null;
 
-  const arm = () => {
-    marks.forEach((m) => m.classList.add("is-plain"));
-    cells.forEach((c) => gsap.set(c, { opacity: 0 }));
-  };
   // Land everything at once: the finished example, nothing left in the air.
   const land = () => {
-    run?.kill();
-    run = null;
-    flights.forEach((t) => t.kill());
-    flights.clear();
-    copies.forEach((c) => c.remove());
-    copies.clear();
+    if (run) { const t = run; run = null; t.kill(); }
+    layer?.remove();
+    layer = null;
     marks.forEach((m) => m.classList.remove("is-plain"));
-    cells.forEach((c) => gsap.set(c, { clearProps: "opacity" }));
+    cells.forEach((c) => c.classList.remove("is-pending"));
     replay.removeAttribute("aria-disabled");
   };
 
-  // A copy of the marked words travels from the transcript to its cell, shrinking to the cell's size.
-  const fly = (mark, cell) => {
+  // Which side of the voicemail the list is on decides where the copies come out and what clips them.
+  const geometry = () => {
+    const s = stage.getBoundingClientRect();
+    const c = card.getBoundingClientRect();
+    const l = row.getBoundingClientRect();
+    const below = l.top >= c.bottom - 1;
+    return { s, c, below };
+  };
+
+  const fly = (k, g) => {
+    const mark = marks[k];
+    const cell = cells[k];
     const from = mark.getClientRects()[0] || mark.getBoundingClientRect();
     const to = cell.getBoundingClientRect();
+    const ms = getComputedStyle(mark);
     const copy = document.createElement("span");
     copy.className = "vm-fly";
-    copy.setAttribute("aria-hidden", "true");
     copy.textContent = mark.textContent;
-    const ms = getComputedStyle(mark);
-    Object.assign(copy.style, { fontSize: ms.fontSize, lineHeight: `${from.height}px`, letterSpacing: ms.letterSpacing, left: `${from.left}px`, top: `${from.top}px` });
-    document.body.append(copy);
-    copies.add(copy);
+    Object.assign(copy.style, { fontSize: ms.fontSize, lineHeight: `${from.height}px`, letterSpacing: ms.letterSpacing });
+    layer.append(copy);
+    // A long phrase starts scaled to fit the voicemail's width, so it never runs off the page.
+    const s0 = Math.min(1, (g.c.width - 8) / copy.offsetWidth);
+    const w = copy.offsetWidth * s0;
+    const h = copy.offsetHeight * s0;
+    // Start tucked under the voicemail's edge, level with (or in line with) the word it came from.
+    const x0 = g.below ? Math.max(g.c.left, Math.min(from.left, g.c.right - w)) - g.s.left : g.c.right - w - g.s.left;
+    const y0 = g.below ? g.c.bottom - h - g.s.top : from.top - g.s.top;
     const s = Math.min(1, parseFloat(getComputedStyle(cell).fontSize) / parseFloat(ms.fontSize));
-    const t = gsap.timeline({ onComplete: () => { copy.remove(); copies.delete(copy); flights.delete(t); } })
-      .to(copy, { y: -10, duration: 0.14, ease: "power2.out" })
-      .to(copy, { x: to.left - from.left, y: to.top - from.top, scale: s, duration: 0.5, ease: "power3.inOut" })
-      .to(cell, { opacity: 1, duration: 0.18, ease: "none" }, "-=0.08")
-      .to(copy, { autoAlpha: 0, duration: 0.14, ease: "none" }, "<");
-    flights.add(t);
+    gsap.set(copy, { x: x0, y: y0, scale: s0 });
+    return gsap.timeline()
+      .to(copy, g.below ? { y: y0 + h + 6, duration: 0.18, ease: "power2.out" } : { x: x0 + w + 6, duration: 0.18, ease: "power2.out" })
+      .to(copy, { x: to.left - g.s.left, y: to.top - g.s.top, scale: s, duration: 0.45, ease: "power3.inOut" })
+      .call(() => cell.classList.remove("is-pending"))
+      .to(copy, { autoAlpha: 0, duration: 0.12, ease: "none" });
   };
 
   const play = (announce) => {
     land();
-    arm();
+    const g = geometry();
+    layer = document.createElement("div");
+    layer.className = "vm-flight";
+    layer.setAttribute("aria-hidden", "true");
+    // Clip the copies to the list's side of the voicemail.
+    layer.style.clipPath = g.below ? `inset(${Math.round(g.c.bottom - g.s.top)}px 0 0 0)` : `inset(0 0 0 ${Math.round(g.c.right - g.s.left)}px)`;
+    stage.append(layer);
+    marks.forEach((m) => m.classList.add("is-plain"));
+    cells.forEach((c) => c.classList.add("is-pending"));
     replay.setAttribute("aria-disabled", "true");
     status.textContent = "";
-    const tl = gsap.timeline();
+    const tl = gsap.timeline({ onComplete: () => { land(); if (announce) status.textContent = "Example finished: Dana Reyes, change Friday’s order to 3 dozen, today, added to the call-back list."; } });
     run = tl;
     FIELDS.forEach((f, k) => {
-      tl.call(() => {
-        marks[k].classList.remove("is-plain");
-        fly(marks[k], cells[k]);
-      }, null, 0.2 + k * 0.3);
+      tl.call(() => marks[k].classList.remove("is-plain"), undefined, 0.2 + k * 0.3);
+      tl.add(fly(k, g), 0.2 + k * 0.3);
     });
-    tl.call(() => {
-      land();
-      if (announce) status.textContent = "Example finished: Dana Reyes, change Friday’s order to 3 dozen, today, added to the call-back list.";
-    }, null, 0.2 + FIELDS.length * 0.3 + 0.8);
+    tl.to({}, { duration: 0.3 });
   };
 
-  replay.addEventListener("click", () => { if (!run) play(true); });
+  // Any failure mid-way lands the finished example instead of leaving it half done.
+  const start = (announce) => {
+    try { play(announce); } catch (error) { land(); console.error("LETS: voicemail run stopped", error); }
+  };
+
+  replay.addEventListener("click", () => { if (!run) start(true); });
   controls.hidden = false;
 
-  // The row starts empty and fills once, the first time the example is properly on screen.
-  arm();
+  // The row stays finished until the example is properly on screen, then fills once.
   const io = new IntersectionObserver((entries) => {
     if (!entries.some((e) => e.isIntersecting)) return;
     io.disconnect();
-    play(false);
+    start(false);
   }, { threshold: 0.5 });
-  // Watch the list itself: the stage is display: contents on wide screens, and such a box never intersects.
-  io.observe($(".vm-list", root) || root);
+  io.observe(stage);
 
   // Reduced motion switched on, or the layout changed width class mid-run: show the finished example now.
   matchMedia("(prefers-reduced-motion: reduce)").addEventListener("change", (e) => { if (e.matches) { io.disconnect(); land(); controls.hidden = true; } });
-  ["(max-width: 640px)", "(max-width: 1000px)"].forEach((q) => matchMedia(q).addEventListener("change", () => { if (run) land(); }));
+  ["(min-width: 641px)", "(min-width: 1001px)"].forEach((q) => matchMedia(q).addEventListener("change", () => { if (run) land(); }));
 }

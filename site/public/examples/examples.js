@@ -2,8 +2,9 @@
 // /examples/: one demo player. Nothing here makes a request or sends anything; every button changes this page only.
 // Without script, or if this file fails before the end, all three examples show one after another, finished (the
 // player only hides the others once .is-ready is set, at the very end of a clean start).
-// A plain deferred script served as it is (no GSAP, no module chunk shared with the front page), so the front
-// page's files are unchanged by it. Motion: Web Animations. One cause-and-effect movement per example, and it is
+// A plain script served as it is (no GSAP, no module chunk shared with the front page), so the front page's files
+// are unchanged by it. It loads in the head, without defer, only so it can name the chosen tab before the first
+// paint; everything else waits for the page to be read (start(), at the end). Motion: Web Animations. One cause-and-effect movement per example, and it is
 // the payoff: details carried from the email fill the quote's lines; the reminder itself travels into Jordan's
 // phone; an approved reply becomes the message in the thread. Nothing ever approves on its own.
 
@@ -409,6 +410,8 @@ function initPlayer(parts) {
   if (!player || picks.length !== 3 || demos.length !== 3 || !next) return;
   const ORDER = demos.map((d) => d.dataset.demo);
   const NAME = Object.fromEntries(picks.map((p) => [p.dataset.pick, $(".pick__name", p).textContent]));
+  // Every Let's talk on the page carries the example being shown to the form (the front page reads ?topic=).
+  const talks = $$("[data-talk]");
   let current = null;
   let stopWatching = () => {};
 
@@ -426,6 +429,7 @@ function initPlayer(parts) {
       if (here) p.setAttribute("aria-current", "true"); else p.removeAttribute("aria-current");
     });
     demos.forEach((d) => d.classList.toggle("is-on", d.dataset.demo === name));
+    talks.forEach((a) => a.setAttribute("href", `/?topic=${name}#contact`));
     const after = ORDER[(ORDER.indexOf(name) + 1) % ORDER.length];
     next.textContent = `Next: ${NAME[after]}`;
     next.dataset.go = after;
@@ -469,21 +473,37 @@ function initPlayer(parts) {
 const safely = (name, fn) => {
   try { return fn(); } catch (error) { console.error(`LETS examples: ${name} did not start`, error); return null; }
 };
-// Untouched copies of the three examples as written (their finished states), put back if anything fails to start.
-const roots = $$("[data-replies], [data-quote], [data-reminders]");
-const originals = roots.map((r) => r.cloneNode(true));
-const parts = {
-  replies: safely("replies", initReplies),
-  quote: safely("quote", initQuote),
-  reminders: safely("reminders", initReminders),
-};
-// Only if all three and the player start does the player take over; otherwise the three examples go back to exactly
-// what the page says without script, one after another, finished.
-const started = parts.replies && parts.quote && parts.reminders && safely("player", () => initPlayer(parts));
-if (!started) {
-  settle();
-  $("[data-player]")?.classList.remove("is-ready");
-  roots.forEach((r, k) => r.replaceWith(originals[k]));
-  $("[data-replies]")?.classList.add("is-lit");
+function start() {
+  // Untouched copies of the three examples as written (their finished states), put back if anything fails to start.
+  const roots = $$("[data-replies], [data-quote], [data-reminders]");
+  const originals = roots.map((r) => r.cloneNode(true));
+  const parts = {
+    replies: safely("replies", initReplies),
+    quote: safely("quote", initQuote),
+    reminders: safely("reminders", initReminders),
+  };
+  // Only if all three and the player start does the player take over; otherwise the three examples go back to
+  // exactly what the page says without script, one after another, finished.
+  const started = parts.replies && parts.quote && parts.reminders && safely("player", () => initPlayer(parts));
+  if (!started) {
+    settle();
+    const player = $("[data-player]");
+    player?.classList.remove("is-ready");
+    // All three show, so no tab is chosen, and every Let's talk goes back to the plain form link.
+    player?.classList.add("is-fallback");
+    delete document.documentElement.dataset.exPick;
+    $$("[data-talk]").forEach((a) => a.setAttribute("href", "/#contact"));
+    roots.forEach((r, k) => r.replaceWith(originals[k]));
+    $("[data-replies]")?.classList.add("is-lit");
+  }
 }
+
+// First paint: this file runs in the head, before the page body exists, and names the example the player will open
+// (the address's #replies, #quote or #reminders, otherwise Replies, as show() decides), so the stylesheet can show
+// that tab chosen from the very first frame, never grey and then filling in. The player itself starts once the page
+// is read.
+const firstPick = location.hash.slice(1);
+document.documentElement.dataset.exPick = ["replies", "quote", "reminders"].includes(firstPick) ? firstPick : "replies";
+if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start, { once: true });
+else start();
 })();

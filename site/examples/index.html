@@ -22,7 +22,7 @@
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <script>document.documentElement.classList.add('js')</script>
 <link rel="stylesheet" href="./examples.css">
-<script defer src="/examples/examples.js"></script>
+<script src="/examples/examples.js"></script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to the examples</a>
@@ -31,19 +31,18 @@
 <header class="ex-top field-teal">
   <nav class="nav" aria-label="Main">
     <a class="wordmark" href="/" aria-label="LETS, front page">LETS</a>
-    <a class="button button--small" href="/#contact">Let’s talk</a>
+    <a class="button button--small" href="/#contact" data-talk>Let’s talk</a>
   </nav>
   <h1 class="ex-top__title">Try custom AI on three jobs</h1>
   <div class="ex-top__side">
   <p class="ex-top__promise"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 12.5 L10 18 L20 6"></path></svg>You check it before it goes.</p>
-  <p class="ex-top__note">Examples for small businesses. Nothing here is really sent.</p>
+  <p class="ex-top__note">Examples only. Nothing here is really sent.</p>
   </div>
 </header>
 
 <main id="main">
 <section class="player field-black" aria-label="Three examples" data-player>
 
-  <div class="player__side">
   <nav class="chooser" aria-label="Choose an example">
     <ul class="chooser__list" role="list">
       <li><a class="pick" href="#replies" data-pick="replies"><span class="pick__name">Replies</span><span class="pick__sum">Dental office</span></a></li>
@@ -51,12 +50,6 @@
       <li><a class="pick" href="#reminders" data-pick="reminders"><span class="pick__name">Reminders</span><span class="pick__sum">Pet groomer</span></a></li>
     </ul>
   </nav>
-
-  <div class="player__act">
-    <button class="ex-btn ex-btn--light" type="button" data-next hidden>Next example</button>
-    <a class="button" href="/#contact">Let’s talk</a>
-  </div>
-  </div>
 
   <div class="stage" data-stage>
 
@@ -220,24 +213,38 @@
     </section>
 
   </div>
+
+  <!-- After the stage in the markup, so the keyboard reaches them after the example, where they show. -->
+  <div class="player__act">
+    <button class="ex-btn ex-btn--light" type="button" data-next hidden>Next example</button>
+    <a class="button" href="/#contact" data-talk>Let’s talk</a>
+  </div>
 </section>
 
 <section class="trust field-deep" aria-labelledby="trust-title">
   <h2 class="head trust__title" id="trust-title">By Ben and Zeke in Nashville</h2>
-  <figure class="trust__photo">
-    <picture>
-      <source type="image/avif" sizes="(max-width: 640px) 60vw, 25vw" srcset="../assets/img/zeke-480.avif 480w, ../assets/img/zeke-800.avif 800w">
-      <img src="../assets/img/zeke-480.webp" sizes="(max-width: 640px) 60vw, 25vw" srcset="../assets/img/zeke-480.webp 480w, ../assets/img/zeke-800.webp 800w" width="1024" height="1280" loading="lazy" decoding="async" alt="Zeke, smiling, in a navy blazer and white shirt">
-    </picture>
-    <figcaption>Zeke</figcaption>
-  </figure>
+  <div class="trust__people">
+    <figure class="trust__photo">
+      <!-- Ben's headshot does not exist yet. When it does, swap this panel for a <picture> like Zeke's below
+           (ben-480/ben-800 in avif and webp, 4:5, the same sizes, an alt describing Ben) and keep the caption. -->
+      <div class="trust__ben" aria-hidden="true"><span>BEN</span></div>
+      <figcaption>Ben</figcaption>
+    </figure>
+    <figure class="trust__photo">
+      <picture>
+        <source type="image/avif" sizes="(max-width: 640px) 46vw, (max-width: 1000px) 17rem, 24vw" srcset="../assets/img/zeke-480.avif 480w, ../assets/img/zeke-800.avif 800w">
+        <img src="../assets/img/zeke-480.webp" sizes="(max-width: 640px) 46vw, (max-width: 1000px) 17rem, 24vw" srcset="../assets/img/zeke-480.webp 480w, ../assets/img/zeke-800.webp 800w" width="1024" height="1280" loading="lazy" decoding="async" alt="Zeke, smiling, in a navy blazer and white shirt">
+      </picture>
+      <figcaption>Zeke</figcaption>
+    </figure>
+  </div>
   <ul class="trust__list">
     <li>The first talk is free.</li>
     <li>We look after what we build, for a monthly cost.</li>
     <li>Your data stays yours; we don’t look through it or use it for anything else.</li>
   </ul>
   <div class="trust__act">
-    <a class="button" href="/#contact">Let’s talk</a>
+    <a class="button" href="/#contact" data-talk>Let’s talk</a>
     <a class="link trust__link" href="/#about">Meet Ben and Zeke</a>
   </div>
 </section>

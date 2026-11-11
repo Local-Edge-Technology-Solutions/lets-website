@@ -1,10 +1,17 @@
-/* LETS, the black-and-teal Poster (direction "Loud and flat", seed 1835467897, palette taken from the old
-   live site's teal). Tokens first; everything below references them. */
+/* LETS, the black-and-teal Poster. Round 8 (2026-11-11, 8b fixes): one clean sheet. Tokens, base, shared pieces, then one
+   rule set per component (phone first), then one block per breakpoint, then motion states. Nothing below
+   overrides an earlier rule for the same thing; a superseded rule is deleted, not stacked.
+   Shared with /examples/ (examples.css imports this file): the tokens, .button, .button--small, .field-*, .head,
+   .link, .nav, .page, .skip, .sr-only, .wordmark, .nowrap, .num. /thanks/ and /404 use .solo, .display,
+   .statement and .lead.
+   Older browsers (Safari before 16): every container-unit (cqi) size has an ordinary value first and the cqi value
+   only inside @supports (width: 1cqi); svh has a vh value first; overflow: clip has overflow: hidden first. */
 @import "@fontsource-variable/chivo/wght.css";
 /* Billing Day's own faces, used only inside its preview (.bd); never preloaded. */
 @import "@fontsource-variable/dm-sans/wght.css";
 @import "@fontsource-variable/manrope/wght.css";
 
+/* ---------- tokens ---------- */
 :root {
   /* the four inks */
   --teal: #2ee6cf;
@@ -19,6 +26,9 @@
   --soft-on-dark: #d6d6d6;
   --mid-on-dark: #c9c9c9;
   --photo-ground: #1b1b1b;
+  --tile: #1c1c1c;
+  --wire: #4a4a4a;
+  --deep-2: #0b4d47;
   --scrim: rgb(0 0 0 / 0.64);
   --mask-cut: #000;
 
@@ -30,17 +40,18 @@
 
   --font: "Chivo Variable", "Chivo", "Helvetica Neue", Arial, sans-serif;
 
-  /* five sizes: small, body, lead, head, display */
+  /* the type scale: small, body, lead, title (a two-line section name), head, display */
   --step-small: clamp(0.875rem, 0.84rem + 0.1vw, 0.9375rem);
   --step-body: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
   --step-lead: clamp(1.25rem, 1rem + 1vw, 1.875rem);
-  --step-head: clamp(2.5rem, 1.2rem + 5vw, 5.5rem);
+  --step-title: clamp(1.875rem, 1rem + 3.4vw, 4.25rem);
+  --step-head: 2.25rem;
   /* display is fitted: "LET'S AUTOMATE" measures 7.704em in Chivo 900 at -0.05em, so it spans the content box */
-  --step-display: calc((100cqi - 2 * var(--margin)) / 7.74);
+  --step-display: calc((100vw - 2 * var(--margin)) / 7.74);
 
   --margin: clamp(1rem, 1.7vw, 1.5rem);
   --gutter: clamp(0.75rem, 1.4vw, 1.25rem);
-  --section: clamp(5.5rem, 11vw, 10rem);
+  --section: clamp(4rem, 9vw, 8rem);
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --t-press: 140ms;
@@ -48,10 +59,10 @@
   --t-ui: 240ms;
 }
 
-/* reset */
+/* ---------- base ---------- */
 *, *::before, *::after { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; overflow-x: clip; }
-body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font); font-size: var(--step-body); line-height: 1.5; letter-spacing: -0.01em; font-kerning: normal; -webkit-font-smoothing: antialiased; overflow-x: clip; }
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; overflow-x: hidden; overflow-x: clip; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font); font-size: var(--step-body); line-height: 1.5; letter-spacing: -0.01em; font-kerning: normal; -webkit-font-smoothing: antialiased; overflow-x: hidden; overflow-x: clip; }
 h1, h2, h3, p, figure, ul, ol, dl, dd, fieldset { margin: 0; }
 ul, ol { padding: 0; list-style: none; }
 fieldset { border: 0; padding: 0; min-width: 0; }
@@ -64,24 +75,20 @@ a { color: inherit; }
 :target { scroll-margin-top: 1rem; }
 ::selection { background: var(--accent); color: var(--accent-ink); }
 :focus-visible { outline: 3px solid currentColor; outline-offset: 3px; }
+p { text-wrap: pretty; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .nowrap { white-space: nowrap; }
 .hp { display: none; }
-@media (max-width: 640px) { .only-wide { display: none; } }
-
 .skip { position: absolute; z-index: 50; left: var(--margin); top: var(--margin); padding: 0.75rem 1rem; background: var(--black); color: var(--teal); font-weight: 900; text-decoration: none; transform: translateY(-200%); }
 .skip:focus { transform: none; }
-
-.page { container-type: inline-size; overflow-x: clip; }
+.page { container-type: inline-size; overflow-x: hidden; overflow-x: clip; }
 
 /* type */
-h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; }
+h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap: break-word; }
 .display { font-size: var(--step-display); line-height: 0.88; letter-spacing: -0.05em; text-transform: uppercase; }
-.head { font-size: var(--step-head); line-height: 0.92; letter-spacing: -0.045em; text-transform: uppercase; }
+.head { font-size: var(--step-head); line-height: 0.92; letter-spacing: -0.045em; text-transform: uppercase; text-wrap: balance; }
 .lead { font-size: var(--step-lead); line-height: 1.3; max-width: 38ch; text-wrap: pretty; }
-.statement { font-size: var(--step-lead); line-height: 1.25; font-weight: 700; letter-spacing: -0.02em; max-width: 34ch; text-wrap: pretty; }
-p { text-wrap: pretty; }
-.split-target { text-wrap: wrap; }
+.statement { font-size: 1.125rem; line-height: 1.25; font-weight: 700; letter-spacing: -0.02em; max-width: 34ch; text-wrap: pretty; }
 
 /* fields: one ground, one ink each */
 .field-teal { background: var(--teal); color: var(--black); }
@@ -89,9 +96,7 @@ p { text-wrap: pretty; }
 .field-black { background: var(--black); color: var(--white); }
 .field-deep { background: var(--deep); color: var(--white); }
 
-.grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); }
-
-/* controls */
+/* ---------- controls ---------- */
 .button {
   display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem;
   min-height: 4rem; padding: 0 2rem;
@@ -106,277 +111,135 @@ p { text-wrap: pretty; }
 .button:focus-visible { outline: 3px solid var(--black); outline-offset: 3px; box-shadow: 0 0 0 3px var(--white); } /* taste-skill-ignore */
 .button[aria-disabled="true"] { cursor: progress; }
 .field-black .button, .field-night .button, .field-deep .button { background: var(--teal); color: var(--black); }
-.button--quiet { background: transparent; color: inherit; border: 3px solid currentColor; }
-.field-deep .button--quiet { background: transparent; color: var(--white); }
+.button--quiet, .field-deep .button--quiet { background: transparent; color: inherit; border: 3px solid currentColor; }
 .link { text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 0.2em; text-decoration-thickness: 0.1em; transition: text-decoration-color var(--t-hover) ease; }
-@media (hover: hover) and (pointer: fine) {
-  .button:hover { background: var(--white); color: var(--black); }
-  .field-black .button:hover, .field-night .button:hover, .field-deep .button:hover { background: var(--white); color: var(--black); }
-  .button--quiet:hover, .field-deep .button--quiet:hover { background: var(--white); color: var(--black); border-color: var(--white); }
-  .link:hover { text-decoration-color: currentColor; }
-}
-
-/* ---------- hero ---------- */
-.hero { position: relative; min-height: max(40rem, 100svh); padding: 0 var(--margin); overflow: clip; display: flex; flex-direction: column; }
-.nav { position: relative; z-index: 10; display: flex; align-items: center; justify-content: space-between; gap: var(--gutter); padding-block: var(--margin); font-weight: 700; }
-.wordmark { font-weight: 900; font-size: var(--step-lead); letter-spacing: -0.06em; text-decoration: none; line-height: 1; }
-.nav__links { display: flex; gap: clamp(1rem, 2.6vw, 2.5rem); }
-.nav__links a { text-decoration-thickness: 0.12em; }
-.menu { display: none; }
-
-/* The Billing Day card: the app's own look (the .bd tokens), a link to the full preview below. */
-
-
-  [data-ui] .vm-list__top span { font-size: 0.8125rem; font-weight: 700; background: var(--ink); color: var(--white); padding: 0.1rem 0.4rem; flex: none; }
-
-/* ---------- voicemail: the live thing ---------- */
-.voicemail { padding: var(--section) var(--margin); background: var(--deep); color: var(--white); }
-
-.vm__controls { display: flex; flex-wrap: wrap; gap: 10px; }
-.vm__controls .button { font-size: var(--step-body); min-height: 3.5rem; padding: 0 1.4rem; }
-.vm__stage { margin-top: clamp(2.5rem, 5vw, 4rem); display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 2rem; align-items: start; }
-
-[data-ui].vm-card { grid-column: 1 / span 7; padding: clamp(1.25rem, 2.4vw, 2.25rem); }
-[data-ui].vm-card .vm-card__top { display: flex; gap: 1rem; align-items: baseline; font-weight: 700; font-size: var(--step-small); color: var(--soft-on-dark); }
-[data-ui].vm-card .vm-card__top b { font-size: var(--step-body); color: var(--white); font-weight: 900; margin-right: auto; }
-[data-ui].vm-card .vm-card__transcript { font-size: var(--step-lead); line-height: 1.42; font-weight: 700; letter-spacing: -0.02em; color: var(--white); min-height: 7.2em; }
-[data-ui].vm-card mark { background: var(--teal); color: var(--black); padding: 0; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
-[data-ui].vm-card mark.is-plain { background: transparent; color: inherit; }
-[data-ui].vm-card mark[data-field="phone"] { white-space: nowrap; }
-
-[data-ui].vm-list { grid-column: 8 / span 5; background: var(--white); color: var(--ink); padding: clamp(1.1rem, 2vw, 1.6rem); transform: rotate(1.2deg); transform-origin: 50% 0; }
-[data-ui].vm-list .vm-list__top { display: flex; justify-content: space-between; align-items: baseline; gap: 0.75rem; margin-bottom: 0.9rem; }
-[data-ui].vm-list .vm-list__top b { font-weight: 900; font-size: var(--step-body); line-height: 1.15; }
-[data-ui].vm-list .vm-list__rows { display: grid; gap: 8px; min-height: 6.5rem; }
-[data-ui].vm-list .vm-list__rows:empty::before { content: "Waiting for the first call."; color: var(--muted); font-weight: 700; padding: 0.8rem 0; }
-[data-ui] .cb { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "name urgency" "need phone" "town phone"; gap: 0.1rem 1rem; background: var(--surface); padding: 0.75rem 0.85rem; line-height: 1.3; }
-[data-ui] .cb__name { grid-area: name; font-weight: 900; font-size: 1.0625rem; }
-[data-ui] .cb__urgency { grid-area: urgency; justify-self: end; align-self: start; font-weight: 900; font-size: 0.875rem; background: var(--teal); padding: 0.1rem 0.45rem; }
-[data-ui] .cb__need { grid-area: need; font-weight: 700; }
-[data-ui] .cb__town { grid-area: town; color: var(--muted); font-weight: 700; font-size: 0.9375rem; }
-[data-ui] .cb__phone { grid-area: phone; justify-self: end; align-self: end; font-variant-numeric: tabular-nums; font-weight: 700; }
-[data-ui].vm-list .vm-list__foot { margin-top: 0.9rem; font-weight: 700; font-size: 0.9375rem; }
-.vm-fly { position: fixed; top: 0; left: 0; z-index: 40; pointer-events: none; background: var(--teal); color: var(--black); font-weight: 900; padding: 0 0.12em; white-space: nowrap; transform-origin: 0 0; }
-
-/* ---------- about: pinned title, type cards pass ---------- */
-.about { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); padding: var(--section) var(--margin); }
-.about__pin { grid-column: 1 / span 6; grid-row: 1; align-self: start; position: sticky; top: clamp(2rem, 14svh, 9rem); }
-.about__title { color: var(--white); }
-.about__line { margin-top: 1.5rem; font-size: var(--step-lead); font-weight: 700; }
-.about__people { grid-column: 7 / -1; grid-row: 1; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 12svh; padding-top: 4rem; }
-.person--ben { grid-column: 1 / span 4; }
-.person--zeke { grid-column: 3 / span 4; }
-.person__photo { width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; }
-.person__name { font-size: var(--step-lead); font-weight: 900; letter-spacing: -0.03em; margin-top: 1.25rem; }
-.person__role { font-size: var(--step-small); font-weight: 700; color: var(--mid-on-dark); margin-top: 0.15rem; }
-.person__text { margin-top: 0.75rem; max-width: 34ch; text-wrap: pretty; }
-
-/* ---------- faq: a band per question ---------- */
-.faq__head { min-height: 40svh; display: flex; align-items: flex-end; padding: 3rem var(--margin) 2rem; }
-.band { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); padding: 3.5rem var(--margin); }
-.band__q { grid-column: 1 / span 5; font-size: var(--step-lead); line-height: 1.1; letter-spacing: -0.03em; font-weight: 900; }
-.band__a { grid-column: 7 / span 6; }
-.band__a p { max-width: 58ch; line-height: 1.5; }
-.storefronts { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--gutter); margin-top: 3rem; }
-.storefronts figure { margin: 0; }
-.storefronts img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; background: var(--photo-ground); }
-.storefronts li:nth-child(even) { margin-top: 2.5rem; }
-.storefronts figcaption { margin-top: 0.6rem; font-size: var(--step-small); font-weight: 700; }
-
-/* ---------- contact: clip-out coupon ---------- */
-.contact { padding: var(--section) var(--margin); }
-.coupon { --notch: 28px; position: relative; display: grid; grid-template-columns: 46fr 54fr; width: calc(100% * 10 / 12); margin-inline: auto; background: var(--black); color: var(--white); }
-.coupon__left { padding: clamp(1.75rem, 3.4vw, 3rem); display: flex; flex-direction: column; justify-content: flex-start; gap: 1.5rem; }
-.coupon__title { font-size: clamp(2.75rem, 0.5rem + 8vw, 8rem); color: var(--teal); }
-.coupon__text { font-size: var(--step-lead); font-weight: 700; line-height: 1.25; max-width: 28ch; }
-.coupon__facts { display: grid; gap: 0.9rem; max-width: 40ch; }
-.coupon__facts li { padding-left: 1.4rem; position: relative; font-weight: 600; line-height: 1.4; color: var(--soft-on-dark); }
-.coupon__facts li::before { content: ""; position: absolute; left: 0; top: 0.5em; width: 0.6rem; height: 0.6rem; background: var(--teal); }
-.coupon__right { padding: clamp(1.75rem, 3.4vw, 3rem); display: grid; gap: 10px; align-content: start; }
-.cell { display: grid; gap: 0.2rem; background: var(--white); color: var(--ink); padding: 0.6rem 0.9rem 0.5rem; cursor: text; transition: background-color var(--t-hover) ease; }
-.cell:focus-within { background: var(--surface); outline: 3px solid var(--teal); outline-offset: 0; }
-.cell__label { font-size: var(--step-body); font-weight: 700; line-height: 1.2; }
-.cell__label em { font-style: normal; color: var(--muted); }
-.cell input, .cell textarea { width: 100%; border: 0; background: transparent; padding: 0.15rem 0; font-size: 1.0625rem; resize: vertical; outline: none; }
-.cell textarea { min-height: 6rem; line-height: 1.4; }
-.cell input::placeholder, .cell textarea::placeholder { color: var(--muted); opacity: 1; }
-.cell__help { font-size: var(--step-small); color: var(--soft-on-dark); margin: 0 0 0.5rem; }
-.cell-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.coupon__submit { width: 100%; margin-top: 0.4rem; background: var(--teal); color: var(--black); }
-.coupon__status { font-size: var(--step-body); font-weight: 700; color: var(--white); }
-.coupon__status:empty { display: none; }
-.coupon__status a { color: var(--teal); }
-.coupon__status.is-ok { color: var(--teal); }
-.coupon__privacy { font-size: var(--step-small); color: var(--soft-on-dark); }
-
-/* ---------- footer: the mark built large ---------- */
-.footer { padding: clamp(4rem, 8vw, 7rem) var(--margin) var(--margin); }
-.mark { display: flex; gap: 4px; align-items: flex-end; height: 34svh; min-height: 12rem; overflow: clip; }
-/* Each block is a flat colour; the letter inside scales evenly (never stretched) and sits on the baseline,
-   cut out in the footer's black. */
-.mark__block { flex: 1 1 0; min-width: 0; height: calc(var(--h) * 1%); background: var(--teal); }
-.mark__block--white { background: var(--white); }
-.mark__block svg { width: 100%; height: 100%; max-width: none; }
-.mark__block text { font-family: var(--font); font-weight: 900; font-size: 100px; fill: var(--mask-cut); }
-.footer__grid { margin-top: 3.5rem; row-gap: 2rem; }
-.footer__links { grid-column: 1 / span 7; display: grid; grid-template-columns: repeat(4, max-content); gap: 0.75rem 3rem; font-weight: 700; }
-.footer__contact { grid-column: 8 / span 5; display: grid; gap: 0.6rem; }
-.footer__last { margin-top: 2.5rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; font-weight: 700; }
-
-/* ---------- single pages: thanks and not found ---------- */
-.solo { min-height: 100svh; display: flex; flex-direction: column; padding: 0 var(--margin) var(--margin); }
-.solo .nav { padding-block: var(--margin); }
-.solo__title { margin-top: clamp(3rem, 14svh, 9rem); }
-.solo__body { margin-top: clamp(1.5rem, 4svh, 2.5rem); display: grid; gap: 2rem; justify-items: start; }
-.solo__foot { margin-top: auto; padding-top: 4rem; font-weight: 700; font-size: var(--step-small); }
-
-/* ---------- tablet ---------- */
-@media (max-width: 1000px) {
-  .nav__links { display: none; }
-  .menu { display: block; position: static; margin-left: auto; }
-  .menu__toggle { list-style: none; display: inline-flex; align-items: center; min-height: 2.75rem; padding: 0 1.1rem; font-weight: 900; cursor: pointer; border: 3px solid currentColor; }
-  .menu__toggle::-webkit-details-marker { display: none; }
-  .menu__toggle:focus-visible { outline: 3px solid var(--black); outline-offset: 3px; box-shadow: 0 0 0 3px var(--white); } /* taste-skill-ignore */
-  .menu[open] .menu__toggle { background: var(--black); color: var(--teal); border-color: var(--black); }
-  .menu:not([open]) .menu__panel { display: none; }
-  .menu__panel { position: absolute; top: 100%; left: calc(-1 * var(--margin)); right: calc(-1 * var(--margin)); padding: 1.25rem var(--margin) 1.75rem; }
-  .menu__links { display: grid; gap: 0.25rem; }
-  .menu__links a { display: block; padding: 0.55rem 0; font-size: var(--step-lead); font-weight: 900; letter-spacing: -0.03em; text-decoration: none; }
-  .menu__links a:focus-visible { outline-offset: 0; }
-  .hero { height: auto; min-height: 0; }
-  
-  
-  
-  
-  
-  [data-ui].vm-card { grid-column: 1 / -1; }
-  [data-ui].vm-list { grid-column: 3 / -1; margin-top: -1rem; }
-  
-  
-  
-  
-  
-  
-  .band__q { grid-column: 1 / span 12; }
-  .band__a { grid-column: 1 / span 12; margin-top: 1rem; }
-  .storefronts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .storefronts li:last-child { grid-column: 1 / -1; justify-self: center; width: calc((100% - var(--gutter)) / 2); }
-  .coupon { width: 100%; }
-  .footer__links, .footer__contact { grid-column: 1 / -1; }
-}
-
-/* ---------- phone ---------- */
-@media (max-width: 640px) {
-  .nav { gap: 0.5rem; }
-  .menu { margin-left: auto; }
-  
-  
-  .vm__controls { width: 100%; }
-  
-  
-  .vm__controls .button { flex: 1 1 auto; }
-  [data-ui].vm-list { grid-column: 1 / -1; margin-top: 0; transform: rotate(0.8deg); }
-  [data-ui].vm-card .vm-card__transcript { min-height: 0; }
-  
-  
-  
-  
-  
-  
-  
-  
-  .faq__head { min-height: 30svh; }
-  .band { padding: 2rem 20px; }
-  .storefronts li:nth-child(even) { margin-top: 1.5rem; }
-  .contact { padding-inline: 12px; }
-  .coupon { grid-template-columns: 1fr; }
-  .coupon__left { padding: 1.5rem 1.25rem; }
-  .coupon__right { padding: 1.5rem 1.25rem; }
-  .cell-pair { grid-template-columns: 1fr; }
-  .mark { height: 22svh; min-height: 8rem; }
-  .footer__links { grid-template-columns: repeat(2, max-content); }
-}
-
-[data-ripple] { background: currentColor; }
-.impression-line { display: block; white-space: nowrap; }
-.impression-line::before { content: attr(data-t); }
 /* GSAP owns the press transform when the motion layer runs; CSS keeps colour only, so nothing lags the squash. */
 .gsap-press .button { transition-property: background-color, color; }
 .gsap-press .button:active { transform: none; }
+[data-ripple] { background: currentColor; }
 
-/* ---------- polish round, 2026-11-05 (design critique fixes) ---------- */
+/* An "Example" label: one per illustration. */
+.tag { flex: none; font-size: 0.9375rem; font-weight: 800; line-height: 1.35; background: var(--white); color: var(--black); padding: 0.1rem 0.55rem; }
+.tag--teal { background: var(--teal); }
 
+/* A drawn object: 24-unit line glyphs that take the text colour. */
+.glyph { width: 1.5rem; height: 1.5rem; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
-/* Desktop: fill the empty halves. */
-@media (min-width: 1001px) {
-  /* Missed calls: the words on the left, the voicemail and the call-back list beside them. */
-  
-  
-  
-  
-  /* How it works: the steps go down the left two-thirds; the Monday slip stays in view on the right. */
-  
-  /* Pickers: even rows, so no chip is left alone on a line. */
-  
-  
-  
-  
-  
-  /* Missed calls: the words travel beside the voicemail and the list. */
-  
-}
-/* Narrow desktop: the last step starts a column earlier and its heading steps down, so it stays on two lines. */
+/* An ask: one button. (The free first talk is said in the hero, the form and the cost answer only.) */
+.ask-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.5rem; }
+.ask-row .button { width: 100%; font-size: var(--step-body); min-height: 3.5rem; padding: 0 1.6rem; }
 
-/* Every width: big headings and captions break evenly, so no word is left alone on a line. */
-.head.split-target { text-wrap: balance; }
-/* Questions, every width: the band is as tall as its word. */
-.faq__head { min-height: 0; padding-top: var(--section); }
+/* A fold: a plain, generous row with a plus that turns to a minus. */
+.fold > summary, .more > summary, .band > summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 0.7rem; min-height: 2.75rem; font-weight: 900; }
+.fold > summary::-webkit-details-marker, .more > summary::-webkit-details-marker, .band > summary::-webkit-details-marker { display: none; }
+.fold > summary::before, .more > summary::before { content: "+"; flex: none; display: grid; place-items: center; width: 1.6rem; height: 1.6rem; background: var(--teal); color: var(--black); font-weight: 900; line-height: 1; }
+.fold[open] > summary::before, .more[open] > summary::before { content: "\2212"; }
+.fold > summary:focus-visible, .more > summary:focus-visible, .band > summary:focus-visible { outline: 3px solid currentColor; outline-offset: 3px; }
 
-/* Tablet: the storefronts go three and two. */
-@media (min-width: 641px) and (max-width: 1000px) {
-  
-  
-  
-  
-  .storefronts { grid-template-columns: repeat(6, minmax(0, 1fr)); }
-  .storefronts li { grid-column: span 2; }
-  .storefronts li:nth-child(n+4) { grid-column: span 3; }
-  .storefronts li:last-child { justify-self: stretch; width: auto; }
-  .storefronts li:nth-child(n+4) img { aspect-ratio: 6 / 5; }
-}
+/* Ben's typographic portrait: a teal field with his name set in the display face. A headshot replaces it later. */
+.ben-mark { display: flex; align-items: flex-end; background: var(--teal); color: var(--black); font-weight: 900; text-transform: uppercase; line-height: 0.74; letter-spacing: -0.06em; overflow: hidden; overflow: clip; user-select: none; }
 
-/* Phone: the bios across the full width, the normal side margin. */
-@media (max-width: 640px) {
-  
-  
-  
-  .person__text { max-width: none; }
-  .contact { padding-inline: var(--margin); }
-  .band { padding-inline: var(--margin); }
-  .storefronts li:last-child { width: 100%; }
-  .storefronts li:last-child img { aspect-ratio: 3 / 2; }
-}
+/* ---------- nav and menu ---------- */
+.nav { position: relative; z-index: 10; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem; padding-block: var(--margin); font-weight: 700; }
+.wordmark { font-weight: 900; font-size: var(--step-lead); letter-spacing: -0.06em; text-decoration: none; line-height: 1; }
+.nav__links { display: none; gap: clamp(1rem, 2.2vw, 2.25rem); }
+.nav__links a { text-decoration-thickness: 0.12em; }
+.menu { display: block; margin-left: auto; }
+.menu__toggle { list-style: none; display: inline-flex; align-items: center; min-height: 2.75rem; padding: 0 1.1rem; font-weight: 900; cursor: pointer; border: 3px solid currentColor; }
+.menu__toggle::-webkit-details-marker { display: none; }
+.menu__toggle:focus-visible { outline: 3px solid var(--black); outline-offset: 3px; box-shadow: 0 0 0 3px var(--white); } /* taste-skill-ignore */
+.menu[open] .menu__toggle { background: var(--black); color: var(--teal); border-color: var(--black); }
+.menu:not([open]) .menu__panel { display: none; }
+.menu__panel { position: absolute; top: 100%; left: calc(-1 * var(--margin)); right: calc(-1 * var(--margin)); padding: 1.25rem var(--margin) 1.75rem; }
+.menu__links { display: grid; gap: 0.25rem; }
+.menu__links a { display: block; padding: 0.55rem 0; font-size: var(--step-lead); font-weight: 900; letter-spacing: -0.03em; text-decoration: none; }
+.menu__links a:focus-visible { outline-offset: 0; }
 
-/* ---------- round 3, 2026-11-05: real work first, nothing resting on text, one grid ---------- */
+/* ---------- hero ---------- */
+.hero { position: relative; padding: 0 var(--margin) 2rem; overflow: hidden; overflow: clip; display: flex; flex-direction: column; }
+.hero__title { --fit: 7.75; font-size: min(calc((100vw - 2 * var(--margin)) / var(--fit)), 17vh, 8.75rem); line-height: 0.92; word-spacing: 0.1em; margin-top: 0.25rem; }
+.hero__l { display: block; white-space: nowrap; }
+.hero__box { display: inline-block; line-height: 0.8; background: var(--black); color: var(--teal); padding: 0.07em 0.07em 0.03em; margin-top: 0.06em; }
+.hero__body { display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem; }
+.hero__copy { display: grid; gap: 0.5rem; }
+.hero__sub { font-size: 1.25rem; line-height: 1.25; font-weight: 800; letter-spacing: -0.02em; max-width: 26ch; }
+.hero__who { font-size: var(--step-body); font-weight: 700; line-height: 1.3; }
+.hero__act { display: grid; gap: 0.5rem; }
+.hero__act .button { width: 100%; min-height: 3.5rem; }
+.hero__free { font-weight: 900; font-size: var(--step-body); line-height: 1.3; }
+.hero__lead { font-size: 1.125rem; font-weight: 600; max-width: 32ch; }
 
-/* Slips: the dashed tear line is gone (a decorative line in every screenshot); the title keeps its room. */
+/* The signature: four everyday inputs run into one LETS node and come out as four finished pieces of work.
+   Every word is text and readable in every frame; only the drawing moves (js/hero.js). */
+.sig { --in: 6.5rem; --wirelen: 1.35rem; --node: 1.75rem; --row: 3.6rem; container-type: inline-size; background: var(--black); color: var(--white); padding: 0.875rem 0.875rem 1rem; }
+.sig__top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.5rem 1rem; }
+.sig__top b { font-size: 1.0625rem; font-weight: 900; color: var(--teal); letter-spacing: -0.02em; }
+.sig__board { position: relative; margin-top: 0.75rem; }
+.sig__lanes { display: grid; gap: 0.5rem; }
+.lane { position: relative; display: grid; grid-template-columns: var(--in) calc(2 * var(--wirelen) + var(--node)) minmax(0, 1fr); min-height: var(--row); }
+.lane__in { display: flex; flex-direction: column; justify-content: center; gap: 0.25rem; padding: 0.4rem 0.35rem; background: var(--tile); transition: background-color 200ms ease, box-shadow 200ms ease; }
+/* an input that has just sent its work lights up (js/hero.js; gone once the figure rests) */
+.lane__in.is-sent { background: #12302d; box-shadow: inset 0 0 0 2px var(--teal); } /* taste-skill-ignore */
+.lane__in .glyph { width: 1.25rem; height: 1.25rem; color: var(--teal); }
+.lane__from { font-size: 0.8125rem; font-weight: 800; line-height: 1.1; letter-spacing: -0.03em; overflow-wrap: break-word; }
+.glyph__stamp { stroke-width: 1.6; }
+/* The wire runs under the node; its packet travels the whole wire, so it passes into the node and out again. */
+.wire { position: relative; overflow: hidden; overflow: clip; }
+/* the packet rides above the node, so it is seen passing through it */
+.wire__run { z-index: 3; }
+.wire::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 3px; margin-top: -1.5px; background: var(--teal); }
+.wire__run { position: absolute; inset: 0; display: flex; align-items: center; visibility: hidden; }
+/* the packet: a white core with a teal glow, so it reads on the black wire and on the teal node alike */
+.wire__run b { flex: none; width: 0.625rem; height: 0.625rem; margin-left: -0.625rem; background: var(--white); box-shadow: 0 0 0 2px rgb(46 230 207 / 0.55), 0 0 14px 4px rgb(46 230 207 / 0.9); } /* taste-skill-ignore */
+.wire__run::before { content: ""; position: absolute; top: 50%; right: 100%; width: 100%; height: 3px; margin-top: -1.5px; background: var(--teal); }
+.sig__node { position: absolute; top: 0; bottom: 0; left: calc(var(--in) + var(--wirelen)); width: var(--node); z-index: 2; display: grid; place-items: center; background: var(--teal); color: var(--black); }
+.sig__node span { writing-mode: vertical-rl; transform: rotate(180deg); font-weight: 900; font-size: calc(var(--node) * 0.78); line-height: 1; letter-spacing: -0.04em; }
+/* An outcome, finished: a small piece of real work, on teal. */
+.out { position: relative; isolation: isolate; display: grid; grid-template-columns: 1.5rem minmax(0, 1fr); align-items: center; gap: 0.45rem; padding: 0.4rem 0.55rem; color: var(--black); font-weight: 800; font-size: 0.875rem; line-height: 1.15; }
+/* the outcome's ground is its own layer, so a shaped card (a reply bubble, a folded reminder) never clips its tag */
+.out::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--teal); box-shadow: inset 0 0 0 2px var(--teal); } /* taste-skill-ignore */
+.out__deco { display: grid; place-items: center; }
+.out__deco .glyph { width: 1.35rem; height: 1.35rem; }
+.out__label { min-width: 0; overflow-wrap: break-word; }
+.out__tag { position: absolute; top: -0.6rem; right: 0.4rem; z-index: 1; font-size: 0.75rem; font-weight: 800; line-height: 1; padding: 0.2rem 0.35rem; background: var(--black); color: var(--teal); box-shadow: inset 0 0 0 1.5px var(--teal); white-space: nowrap; } /* taste-skill-ignore */
+.out--reply { padding-bottom: 0.85rem; }
+.out--reply::before { clip-path: polygon(0 0, 100% 0, 100% calc(100% - 0.45rem), 1.6rem calc(100% - 0.45rem), 0.9rem 100%, 0.9rem calc(100% - 0.45rem), 0 calc(100% - 0.45rem)); }
+.out--remind::before { clip-path: polygon(0 0, 100% 0, 100% calc(100% - 0.7rem), calc(100% - 0.7rem) 100%, 0 100%); }
+.out__type { display: grid; gap: 3px; width: 1.3rem; }
+.out__type i { display: block; height: 3px; background: currentColor; }
+.out__type i:nth-child(2) { width: 70%; }
+.out__type .out__caret { width: 2px; height: 0.8rem; margin-top: -0.55rem; margin-left: 75%; }
+.glyph--bars rect { fill: currentColor; stroke: none; transform-box: fill-box; transform-origin: 50% 100%; }
+.glyph--bell { transform-origin: 50% 10%; }
+/* the fill layer js/hero.js lays over an outcome while it builds (decorative; the label underneath is the text) */
+.out__fill { position: absolute; inset: 0; z-index: 1; margin: 0; }
+.sig__check { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.75rem; font-weight: 900; font-size: 1.0625rem; letter-spacing: -0.02em; }
+.sig__check svg { width: 1.5rem; height: 1.5rem; flex: none; fill: none; stroke: var(--teal); stroke-width: 3.5; stroke-dasharray: 30; }
 
-/* One editorial grid: a text block beside a left block starts on column 7; its partner ends by 6. */
+/* ---------- the two people, at a glance ---------- */
+.cue { padding: 1.5rem var(--margin); display: grid; gap: 1rem; }
+.cue__title { font-size: var(--step-body); font-weight: 900; color: var(--teal); letter-spacing: -0.02em; }
+.cue__people { display: grid; gap: 0.75rem; }
+.cue__person { display: grid; grid-template-columns: 4.5rem minmax(0, 1fr); align-items: center; gap: 0.9rem; }
+.cue__img { width: 4.5rem; height: 5.625rem; object-fit: cover; object-position: 50% 20%; background: var(--photo-ground); }
+.ben-mark.cue__img { background: var(--teal); font-size: 2.05rem; padding: 0 0 0.3rem 0.2rem; }
+.cue__who { display: grid; gap: 0.1rem; line-height: 1.25; }
+.cue__who b { font-size: var(--step-lead); letter-spacing: -0.03em; }
+.cue__who span { font-size: var(--step-small); font-weight: 700; color: var(--soft-on-dark); }
+.cue__link { justify-self: start; display: inline-flex; align-items: center; min-height: 2.75rem; font-weight: 900; color: var(--teal); text-decoration-color: currentColor; }
 
-.footer__links { grid-column: 1 / span 6; }
-.footer__contact { grid-column: 7 / span 6; }
+/* ---------- Billing Day: something we built ---------- */
+.work { padding: var(--section) var(--margin); }
+.work__head { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.25rem; }
+.work__side { display: grid; gap: 0.9rem; align-content: start; }
+.work__lead { font-size: var(--step-lead); font-weight: 800; line-height: 1.2; letter-spacing: -0.02em; max-width: 34ch; }
+.work__fact { position: relative; padding-left: 1.4rem; font-weight: 700; line-height: 1.4; }
+.work__fact::before { content: ""; position: absolute; left: 0; top: 0.45em; width: 0.6rem; height: 0.6rem; background: var(--teal); }
 
-/* Five sizes: the odd ones fold into the scale. */
-
-.coupon__title { font-size: var(--step-head); }
-
-/* ---------- Billing Day: the section ---------- */
-
-/* ---------- Billing Day: the preview, in the app's own look (tokens from its globals.css and
-   street.css, light only), scoped to .bd so nothing leaks either way. Flat grounds, no shadows, no
-   gradients, no hairlines (2px rules only where a rule means something). ---------- */
+/* The Billing Day preview, in the app's own look (tokens from its globals.css and street.css, light only),
+   scoped to .bd so nothing leaks either way; framed as a product screen in a black bezel. */
 .bd {
-  --bd-paper: #f4f7fa; --bd-card: #ffffff; --bd-ink: #222a38; --bd-muted: #4f5a6b; --bd-rule: #d6dfe8;
+  --bd-paper: #f4f7fa; --bd-card: #ffffff; --bd-ink: #222a38; --bd-muted: #4f5a6b;
   --bd-ledger: #145e6c; --bd-ledger-hover: #0f4c58; --bd-ledger-soft: #e2eff1; --bd-marker: #e7b04b;
   --st-line: #222a38; --st-ground: #222a38; --st-sky: #c4daec; --st-wall: #ffffff; --st-wall2: #dde6ef;
   --st-brick: #a0412b; --st-brickl: #d98e6f; --st-teal: #145e6c; --st-leaf: #6fa9b2; --st-stem: #145e6c;
@@ -384,37 +247,37 @@ p { text-wrap: pretty; }
   --st-glow: rgb(231 176 75 / 0.75); --st-glass: #bcd3e4; --st-hill1: #9fc0da; --st-hill2: #b2cde3;
   --st-cloud: #e6eff7; --st-sw: 1.5px;
   container: bd / inline-size;
-  margin-top: clamp(2.5rem, 5vw, 4rem);
+  margin-top: clamp(1.75rem, 4vw, 3rem);
   padding: clamp(1rem, 2.2vw, 2rem);
   background: var(--bd-paper); color: var(--bd-ink);
-  font-family: "DM Sans Variable", "Helvetica Neue", Arial, sans-serif; font-size: 1.0625rem; line-height: 1.45;
-  letter-spacing: 0;
+  border: clamp(6px, 0.8vw, 10px) solid var(--black); border-radius: clamp(14px, 1.6vw, 22px);
+  font-family: "DM Sans Variable", "Helvetica Neue", Arial, sans-serif; font-size: var(--step-body); line-height: 1.45; letter-spacing: 0;
 }
 .bd .num { font-family: "Manrope Variable", "DM Sans Variable", system-ui, sans-serif; font-variant-numeric: tabular-nums lining-nums; }
 .bd p { text-wrap: pretty; }
 
 .bd-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1.25rem; }
-.bd-brand { display: inline-flex; align-items: center; gap: 0.6rem; font-size: 1.25rem; font-weight: 700; letter-spacing: -0.01em; }
+.bd-brand { display: inline-flex; align-items: center; gap: 0.6rem; font-size: var(--step-body); font-weight: 700; letter-spacing: -0.01em; }
 .bd .brand-mark { width: 30px; height: 30px; flex: none; }
 .bd .brand-mark * { stroke: var(--bd-ink); stroke-width: 2px; fill: none; stroke-linejoin: round; stroke-linecap: round; }
 .bd .brand-mark .b-roof { fill: var(--bd-ledger); }
 .bd .brand-mark .b-win { fill: var(--bd-marker); }
-.bd-practice { color: var(--bd-muted); font-size: 1rem; }
-.bd-chip { margin-left: auto; font-size: var(--step-small); font-weight: 600; color: var(--bd-ledger); background: var(--bd-ledger-soft); padding: 0.3rem 0.7rem; border-radius: 4px; }
+.bd-practice { color: var(--bd-muted); font-size: var(--step-small); }
+.bd-chip { font-size: 1rem; font-weight: 700; color: var(--bd-ledger); background: var(--bd-ledger-soft); padding: 0.3rem 0.7rem; border-radius: 4px; }
 
-.bd-tabs { display: flex; gap: 0.25rem 1.75rem; margin-top: 0.75rem; border-bottom: 2px solid var(--bd-rule); color: var(--bd-muted); font-size: 1rem; overflow: clip; }
+.bd-tabs { display: none; gap: 0.25rem 1.75rem; margin-top: 0.75rem; color: var(--bd-muted); font-size: var(--step-small); overflow: hidden; overflow: clip; }
 .bd-tabs li { position: relative; padding: 0.6rem 0.1rem 0.7rem; white-space: nowrap; }
 .bd-tabs li.is-on { color: var(--bd-ink); font-weight: 700; }
-.bd-tabs li.is-on::after { content: ""; position: absolute; left: 0; right: 0; bottom: -2px; height: 3px; background: var(--bd-ledger); }
+.bd-tabs li.is-on::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--bd-ledger); }
 
-.bd-mast { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 1rem 2rem; margin-top: clamp(1.25rem, 2.5vw, 2rem); }
-.bd-title { font-size: clamp(1.875rem, 1.2rem + 2.2vw, 3.25rem); font-weight: 700; line-height: 1.05; letter-spacing: -0.03em; }
-.bd-fig { text-align: right; }
- .bd-fig__sub { color: var(--bd-muted); font-size: 1rem; }
-.bd-fig__big { font-size: clamp(2rem, 1.3rem + 2vw, 3.25rem); font-weight: 700; letter-spacing: -0.025em; line-height: 1.05; }
+.bd-mast { display: grid; grid-template-columns: minmax(0, 1fr); align-items: end; gap: 1rem 2rem; margin-top: 0.75rem; }
+.bd-title { font-size: 1.5rem; font-weight: 700; line-height: 1.05; letter-spacing: -0.03em; }
+.bd-fig__big { font-size: clamp(2rem, 1.3rem + 2vw, 3.125rem); font-weight: 700; letter-spacing: -0.025em; line-height: 1.05; }
+.bd-fig__sub { color: var(--bd-muted); font-size: var(--step-small); }
+.bd.is-approved .bd-fig__sub { color: var(--bd-ledger); font-weight: 700; }
 
-.bd-round { margin-top: clamp(1.25rem, 2.5vw, 2rem); }
-.bd-round__title { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.75rem; }
+.bd-round { margin-top: 0.75rem; }
+.bd-round__title { font-size: var(--step-body); font-weight: 700; margin-bottom: 0.75rem; }
 
 /* The drawings (street.css, scoped). */
 .bd .st-ill { display: block; overflow: visible; }
@@ -437,499 +300,454 @@ p { text-wrap: pretty; }
 .bd .st-ill .st-win { fill: var(--st-win); transition: fill 0.5s ease; }
 .bd .st-ill.st-lit .st-win { fill: var(--st-sun); }
 .bd .st-ill .st-halo > :not(.st-win), .bd .st-ill .st-halo-line > :not(.st-win) { display: none; }
-.bd .st-ill .st-halo .st-win { fill: none; stroke: var(--st-glow); stroke-width: calc(var(--st-sw) * 5); }
+/* Lit (hours in) is gold; only an approved month adds a wide band of light round each window. */
+.bd .st-ill .st-halo .st-win { fill: none; stroke: var(--st-glow); stroke-width: calc(var(--st-sw) * 8); }
 .bd .st-ill .st-halo-line .st-win { fill: none; }
-/* Lit (hours in) is gold; only an approved month adds the glow around each window. */
+.bd .st-halo, .bd .st-halo-line { transition: opacity 0.4s ease; }
 .bd:not(.is-approved) .st-halo, .bd:not(.is-approved) .st-halo-line { display: none; }
 
 .bd .st-tile { position: relative; display: inline-block; flex: none; width: 56px; height: 56px; overflow: hidden; background: var(--st-sky); border-bottom: 2px solid var(--st-ground); border-radius: 4px 4px 0 0; --st-sw: 1.25px; }
 .bd .st-tile > .st-ill { position: absolute; left: 0; right: 0; bottom: -1px; width: 100%; height: auto; aspect-ratio: 1; }
 
 .bd .st-street-wrap { container: st-street / inline-size; }
-.bd .st-street { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.25rem 0; margin: 0; padding: 0; list-style: none; }
+.bd .st-street { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.75rem 0; margin: 0; padding: 0; list-style: none; }
 .bd .st-place { display: flex; flex-direction: column; min-width: 0; }
-.bd .st-lot { position: relative; overflow: hidden; aspect-ratio: 3 / 2; background: var(--st-sky); border-bottom: 2px solid var(--st-ground); }
-.bd .st-lot > .st-lot-bldg { position: absolute; left: 4%; width: 92%; bottom: -1px; height: auto; aspect-ratio: 320 / 150; }
+.bd .st-lot { position: relative; overflow: hidden; aspect-ratio: 1; background: var(--st-sky); border-bottom: 2px solid var(--st-ground); }
+.bd .st-lot > .st-lot-bldg { position: absolute; left: -10%; width: 120%; bottom: -1px; height: auto; aspect-ratio: 320 / 150; }
 .bd .st-hills { position: absolute; left: -1px; bottom: 0; width: calc(100% + 2px); height: 58%; display: block; }
 .bd .st-sunmoon { position: absolute; top: 9%; left: 9%; width: 16%; height: auto; aspect-ratio: 1; }
 .bd .st-sunmoon .st-sun { fill: var(--st-sun); }
 .bd .st-cloud { position: absolute; top: 6%; left: 30%; width: 38%; height: auto; aspect-ratio: 96 / 30; }
 .bd .st-cloud path { fill: var(--st-cloud); }
-.bd .st-info { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0 0.75rem; padding: 0.6rem 0.75rem 0 0.15rem; }
-.bd-lot-name { font-size: 1rem; font-weight: 700; line-height: 1.3; }
-.bd-lot-amt { margin-left: auto; font-size: 1.0625rem; font-weight: 700; }
-@container bd (min-width: 560px) { .bd .st-street { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-@container bd (min-width: 940px) { .bd .st-street { grid-template-columns: repeat(6, minmax(0, 1fr)); } .bd .st-lot { aspect-ratio: 4 / 3; } }
+.bd .st-info { display: flex; flex-direction: column; align-items: flex-start; gap: 0.1rem; padding: 0.6rem 0.25rem 0 0.15rem; max-width: 100%; overflow-wrap: break-word; }
+.bd-lot-name { font-size: var(--step-small); font-weight: 700; line-height: 1.3; }
+.bd-lot-amt { font-size: var(--step-body); font-weight: 700; }
+/* Each lot says Approved once the month is approved; the line keeps its room in both states. */
+.bd-lot-ok { display: none; margin-top: 0.15rem; font-size: var(--step-small); font-weight: 700; color: var(--bd-ledger); visibility: hidden; }
+.bd.is-approved .bd-lot-ok { visibility: visible; }
 
 /* The approval moment (Billing Day's billing.css, ported): only while .is-arriving is on. */
 .bd-street.is-arriving .st-lot { border-bottom-color: transparent; }
 .bd-street.is-arriving .st-lot::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--st-ground); transform: scaleX(var(--ground, 0)); transform-origin: left center; }
 .bd-street.is-arriving .st-lot:not(.is-warm) .st-ill .st-win { fill: var(--st-win); }
-.bd .st-halo, .bd .st-halo-line { transition: opacity 0.4s ease; }
 .bd-street.is-arriving .st-lot:not(.is-warm) .st-halo, .bd-street.is-arriving .st-lot:not(.is-warm) .st-halo-line { opacity: 0; }
+/* Reduced motion, or a run settled early: the windows change colour at once. */
+.bd-street.is-settling .st-win, .bd-street.is-settling .st-halo, .bd-street.is-settling .st-halo-line { transition: none !important; }
 
-.bd-lower { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.25rem; margin-top: clamp(1.25rem, 2.5vw, 2rem); }
-@container bd (min-width: 760px) { .bd-lower { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: stretch; } }
-
+/* The Approve card comes straight after the street, so on a phone the windows that answer the button are just
+   above it; on wide screens the invoice sits on the left. */
+.bd-lower { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.25rem; margin-top: 0.75rem; }
 .bd-inv { background: var(--bd-card); border-radius: 6px; padding: clamp(1rem, 2vw, 1.5rem) clamp(1rem, 2.2vw, 1.75rem); }
-.bd-inv__head { display: grid; grid-template-columns: 56px minmax(0, 1fr) auto; align-items: center; gap: 0.25rem 1rem; }
-.bd-inv__name { font-size: 1.25rem; font-weight: 700; line-height: 1.2; }
-.bd-inv__sub { color: var(--bd-muted); font-size: 1rem; }
-.bd-inv__amt { font-size: 1.625rem; font-weight: 700; letter-spacing: -0.02em; }
-.bd-inv__lines { margin-top: 1rem; padding-top: 0.9rem; border-top: 2px solid var(--bd-rule); display: grid; gap: 0.4rem; }
-.bd-inv__lines div { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; }
+.bd-inv__head { display: grid; grid-template-columns: 56px minmax(0, 1fr); align-items: center; gap: 0.25rem 1rem; }
+.bd-inv__name { font-size: var(--step-body); font-weight: 700; line-height: 1.2; }
+.bd-inv__sub { color: var(--bd-muted); font-size: var(--step-small); }
+.bd-inv__amt { grid-column: 1 / -1; font-size: var(--step-lead); font-weight: 700; letter-spacing: -0.02em; }
+.bd-inv__lines { margin-top: 1rem; padding: 0.8rem 0.9rem; background: var(--bd-paper); border-radius: 4px; display: grid; gap: 0.4rem; }
+.bd-inv__lines div { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0 1rem; }
 .bd-inv__lines dd { margin: 0; font-weight: 500; white-space: nowrap; }
-.bd-inv__hours { margin-top: 0.6rem; color: var(--bd-muted); font-size: 1rem; }
+.bd-inv__hours { margin-top: 0.6rem; color: var(--bd-muted); font-size: var(--step-small); }
 
-.bd-approve { background: var(--bd-card); border: 2px solid var(--bd-ink); border-radius: 6px; padding: clamp(1rem, 2vw, 1.5rem); display: grid; align-content: start; gap: 0.4rem; }
-.bd-approve__title { font-size: 1.375rem; font-weight: 700; }
-.bd-approve__total { font-size: 1.75rem; font-weight: 700; letter-spacing: -0.02em; }
+/* The Approve card's own width decides whether its button may wrap, so its height is held wherever the card is
+   narrow: the preview never changes height when the month is approved. */
+.bd-approve { container: bdap / inline-size; background: var(--bd-card); border: 2px solid var(--bd-ink); border-radius: 6px; padding: clamp(1rem, 2vw, 1.5rem); display: grid; align-content: start; gap: 0.4rem; }
+.bd-approve__title { font-size: var(--step-body); font-weight: 700; }
+.bd-approve__total { font-size: var(--step-lead); font-weight: 700; letter-spacing: -0.02em; }
 .bd-btn {
   margin-top: 0.6rem; width: 100%; min-height: 3.5rem; padding: 0.75rem 1rem; border: 2px solid var(--bd-ink); border-radius: 5px;
-  background: var(--bd-ledger); color: #ffffff; font: inherit; font-size: 1.125rem; font-weight: 700; letter-spacing: 0; cursor: pointer;
+  background: var(--bd-ledger); color: #ffffff; font: inherit; font-size: var(--step-body); font-weight: 700; letter-spacing: 0; cursor: pointer;
   transition: background-color var(--t-hover) ease;
 }
 .bd-btn:focus-visible { outline: 3px solid var(--bd-ledger); outline-offset: 3px; }
-@media (hover: hover) and (pointer: fine) { .bd-btn:hover { background: var(--bd-ledger-hover); } }
-.bd-status { color: var(--bd-muted); font-size: 1rem; margin-top: 0.35rem; }
+.bd-status { color: var(--bd-muted); font-size: var(--step-small); margin-top: 0.35rem; line-height: 1.45; min-height: calc(2 * 1.45em); }
 .bd.is-approved .bd-status { color: var(--bd-ledger); font-weight: 600; }
 .bd-foot { margin-top: 1rem; color: var(--bd-muted); font-size: var(--step-small); }
 
-@container bd (max-width: 559px) {
-  .bd-mast { grid-template-columns: minmax(0, 1fr); }
-  .bd-fig { text-align: left; }
-  .bd-chip { margin-left: 0; }
-  .bd-inv__head { grid-template-columns: 56px minmax(0, 1fr); }
-  .bd-inv__amt { grid-column: 1 / -1; }
-}
-
-/* ---------- About: one heading, the photo, two bios side by side ---------- */
-.about__pin { grid-column: 1 / -1; position: static; }
-.about__people { grid-column: 1 / -1; grid-row: 2; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 2.5rem; padding-top: clamp(2.5rem, 5vw, 4rem); align-items: start; }
-.about__photo { grid-column: 1 / span 4; margin: 0; overflow: clip; }
-.about__photo picture { display: block; }
-.about__photo .person__photo { width: 100%; height: auto; aspect-ratio: 4 / 5; max-height: 70svh; object-fit: cover; object-position: 50% 20%; }
-.person--ben { grid-column: 5 / span 4; margin-top: 0; }
-.person--zeke { grid-column: 9 / span 4; margin-top: 0; }
-.person__name { margin-top: 0; }
-
-@media (max-width: 1000px) {
-  .footer__links, .footer__contact { grid-column: 1 / -1; }
-  .about__photo { grid-column: 1 / span 6; }
-  .person--ben { grid-column: 1 / span 6; grid-row: 2; }
-  .person--zeke { grid-column: 7 / span 6; grid-row: 2; }
-}
-@media (max-width: 640px) {
-  .about__photo { grid-column: 1 / span 10; }
-  .person--ben, .person--zeke { grid-column: 1 / -1; grid-row: auto; }
-}
-
-/* Round 3, after the first look: lot labels stack (name, then amount); About's line sits on the right of
-   its heading; each step is a row (its heading, then its words beside it) so the column has no hole;
-   five footer links in one row. */
-.bd .st-info { flex-direction: column; align-items: flex-start; gap: 0.1rem; }
-.bd-lot-amt { margin-left: 0; }
-.about__pin { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 1.5rem; align-items: end; }
-.about__title { grid-column: 1 / span 6; }
-.about__line { grid-column: 7 / span 6; margin-top: 0; }
-@media (min-width: 1001px) {
-  .footer__links { grid-template-columns: repeat(5, max-content); }
-}
-@media (max-width: 1000px) {
-  .about__title, .about__line { grid-column: 1 / -1; }
-}
-/* Narrow desktop (1001 to 1279): a big heading needs the full width to stay on two lines, so the
-   heading rows stack, its words under it on the right-hand edge. */
-@media (min-width: 1001px) and (max-width: 1279px) {
-}
-/* About: the photo sits between the two bios, beside Zeke's (it is his), never beside Ben's. */
-.person--ben { grid-column: 1 / span 4; grid-row: 1; }
-.about__photo { grid-column: 5 / span 4; grid-row: 1; }
-.person--zeke { grid-column: 9 / span 4; grid-row: 1; }
-@media (max-width: 1000px) {
-  .person--ben, .person--zeke { grid-column: 1 / -1; grid-row: auto; }
-  .about__photo { grid-column: 1 / span 7; grid-row: auto; }
-}
-@media (max-width: 640px) { .about__photo { grid-column: 1 / span 10; } }
-/* Footer links wrap instead of running into the address at narrow desktop widths. */
-.footer__links { display: flex; flex-wrap: wrap; gap: 0.75rem 2.5rem; }
-/* Short laptop screens (1440x700): a tighter nav row, so the offer and its button fit on the first screen. */
-@media (min-width: 1001px) and (max-height: 820px) {
-  .hero .nav { padding-block: 0.875rem; }
-}
-/* The Approve card comes straight after the street (in the page's order too), so on a phone the windows
-   that answer the button are just above it; on wide screens the invoice stays on the left. */
-@container bd (min-width: 760px) {
-  .bd-inv { grid-column: 1; grid-row: 1; }
-  .bd-approve { grid-column: 2; grid-row: 1; }
-}
-/* Approved: a wider band of light round each window, so approved reads differently from only lit. */
-.bd .st-ill .st-halo .st-win { stroke-width: calc(var(--st-sw) * 8); }
-/* Codex code review, round 1. */
-/* The preview never changes height when it is approved: the button keeps room for two lines and the status
-   line for three where the preview is narrow. */
-@container bd (max-width: 559px) {
-  .bd-btn { min-height: calc(2 * 1.45em + 1.5rem + 4px); line-height: 1.45; }
-  .bd-status { min-height: calc(3 * 1.45em); }
-}
-/* Reduced motion, or a run settled early: the windows change colour at once. */
-.bd-street.is-settling .st-win, .bd-street.is-settling .st-halo, .bd-street.is-settling .st-halo-line { transition: none !important; }
-@media (prefers-reduced-motion: reduce) {
-  .bd .st-ill .st-win, .bd .st-halo, .bd .st-halo-line, .bd-btn { transition: none; }
-}
-/* Tablet and below: the intro stacks (words, the list, then the photo), like every other paired row. */
-
-/* The narrowest phones (320): the four tabs keep to one line. */
-@container bd (max-width: 360px) { .bd-tabs { gap: 0.25rem 0.9rem; font-size: 0.9375rem; } }
-/* Codex re-review: the Approve card's own width decides whether its button may wrap, so its height is held
-   wherever the card is narrow (phones, and tablets where it sits beside the invoice). */
-.bd-approve { container: bdap / inline-size; }
 @container bdap (max-width: 460px) {
   .bd-btn { min-height: calc(2 * 1.45em + 1.5rem + 4px); line-height: 1.45; }
   .bd-status { min-height: calc(3 * 1.45em); }
 }
-
-/* ---------- round 4, 2026-11-05: the second independent critique ---------- */
-/* No label above the preview's figure: the figure, then its words. */
-.bd.is-approved .bd-fig__sub { color: var(--bd-ledger); font-weight: 700; }
-/* Each lot says Approved once the month is approved (the windows glow too). */
-.bd-lot-ok { display: none; margin-top: 0.15rem; font-size: var(--step-small); font-weight: 700; color: var(--bd-ledger); }
-.bd.is-approved .bd-lot-ok { display: block; }
-/* The preview's type on the page's own scale: small, body, lead, and one figure size. */
-.bd { font-size: var(--step-body); }
-.bd-practice, .bd-tabs, .bd-fig__sub, .bd-inv__sub, .bd-inv__hours, .bd-status, .bd-foot, .bd-lot-name { font-size: var(--step-small); }
-.bd-brand, .bd-round__title, .bd-inv__name, .bd-approve__title, .bd-lot-amt, .bd-btn { font-size: var(--step-body); }
-.bd-inv__amt, .bd-approve__total { font-size: var(--step-lead); }
-.bd-title, .bd-fig__big { font-size: clamp(2rem, 1.3rem + 2vw, 3.125rem); }
-/* About: Ben's words, then Zeke's card with his own photo above his name; never a photo beside the wrong name. */
-.about__people > .about__photo { display: none; }
-.person--ben { grid-column: 1 / span 4; grid-row: 1; }
-.person--zeke { grid-column: 5 / span 8; grid-row: 1; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--gutter); align-content: start; }
-.person--zeke .about__photo { display: block; grid-column: 1; grid-row: 1 / span 6; margin: 0; overflow: clip; }
-.person--zeke .about__photo .person__photo { width: 100%; height: auto; aspect-ratio: 4 / 5; max-height: 62svh; object-fit: cover; object-position: 50% 20%; }
-.person--zeke > :not(.about__photo) { grid-column: 2; }
-@media (max-width: 1000px) {
-  .person--ben { grid-column: 1 / span 6; grid-row: 1; }
-  .person--zeke { grid-column: 7 / span 6; grid-row: 1; grid-template-columns: minmax(0, 1fr); }
-  .person--zeke .about__photo { grid-row: auto; margin-bottom: 1.25rem; }
-  .person--zeke > :not(.about__photo) { grid-column: 1; }
-  .person__text { max-width: none; }
-}
-@media (max-width: 640px) {
-  .person--ben, .person--zeke { grid-column: 1 / -1; grid-row: auto; }
-  .person--zeke .about__photo { width: 82%; }
-}
-/* What we build: the panel is solid enough that the photo's own menu type never competes with the heading. */
-
-/* The Approved mark keeps its room in both states, so the preview never changes height. */
-.bd-lot-ok { display: block; visibility: hidden; }
-.bd.is-approved .bd-lot-ok { visibility: visible; }
-/* The problem names are headings in sentence case, not small capitals over the text (they read as kickers). */
-
-/* Six sizes on the whole page: small (15), body (19), lead (30), the preview's figure, head (88), display.
-   The small interface pieces (slips, chips, the call-back list) all take the small size. */
-  .page [data-ui] .vm-list__top span,
-.page [data-ui] .cb__name, .page [data-ui] .cb__urgency, .page [data-ui] .cb__town, .page [data-ui].vm-list .vm-list__foot { font-size: var(--step-small); }
-
-/* The status line keeps two lines of room at every width (three where the Approve card is narrow), so
-   approving never changes the preview's height between breakpoints either. */
-.bd-status { min-height: calc(2 * 1.45em); line-height: 1.45; }
-@container bdap (max-width: 460px) { .bd-status { min-height: calc(3 * 1.45em); } }
 @container bdap (max-width: 300px) { .bd-status { min-height: calc(4 * 1.45em); } }
+@container bd (min-width: 560px) {
+  .bd-chip { margin-left: auto; }
+  .bd-tabs { display: flex; }
+  .bd-mast { grid-template-columns: minmax(0, 1fr) auto; margin-top: clamp(1.25rem, 2.5vw, 2rem); }
+  .bd-title { font-size: clamp(2rem, 1.3rem + 2vw, 3.125rem); }
+  .bd-fig { text-align: right; }
+  .bd-round, .bd-lower { margin-top: clamp(1.25rem, 2.5vw, 2rem); }
+  .bd .st-street { gap: 1.25rem 0; }
+  .bd .st-info { padding-right: 0.75rem; }
+  .bd .st-lot { aspect-ratio: 3 / 2; }
+  .bd .st-lot > .st-lot-bldg { left: 4%; width: 92%; }
+  .bd-lot-ok { display: block; }
+  .bd-inv__head { grid-template-columns: 56px minmax(0, 1fr) auto; }
+  .bd-inv__amt { grid-column: auto; }
+}
+@container bd (min-width: 760px) {
+  .bd-lower { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); align-items: stretch; }
+  .bd-inv { grid-column: 1; grid-row: 1; }
+  .bd-approve { grid-column: 2; grid-row: 1; }
+}
+/* enlarged text in a narrow preview: a lot's long name may break inside its lot rather than run past it */
+@container bd (max-width: 14em) { .bd .st-info { overflow-wrap: anywhere; } }
+@container bd (min-width: 940px) {
+  .bd .st-street { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .bd .st-lot { aspect-ratio: 4 / 3; }
+}
 
-/* ---------- round 5, 2026-11-05: the third independent critique ---------- */
-/* Zeke's card on tablets and phones: his name, then his photo, then his words. */
-@media (max-width: 1000px) { .person--zeke .about__photo { margin-top: 1rem; } }
-/* The six example slips across the photo: each row's label, then its value under it, left-aligned, so no value
-   drops alone to a ragged right-hand line. */
+/* ---------- See one job happen: the voicemail ---------- */
+.see { padding: var(--section) var(--margin); }
+.see__head { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.25rem; }
+.see__title { color: var(--teal); }
+.vm { margin-top: clamp(1.75rem, 4vw, 3rem); display: grid; gap: 1rem; }
+.vm__line { font-weight: 700; font-size: var(--step-body); }
+.vm__stage { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.75rem; align-items: center; }
+.vm-card { background: var(--black); color: var(--white); padding: 1rem 1.1rem 1.2rem; }
+.vm-card__top { display: flex; flex-wrap: wrap; gap: 0.25rem 0.9rem; align-items: center; font-weight: 700; font-size: var(--step-small); color: var(--soft-on-dark); margin-bottom: 0.6rem; }
+.vm-card__top b { font-size: var(--step-body); color: var(--white); font-weight: 900; margin-right: auto; }
+.vm-card__transcript { font-size: 1.25rem; line-height: 1.42; font-weight: 700; letter-spacing: -0.02em; }
+.vm-card mark { background: var(--teal); color: var(--black); padding: 0; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.vm-card mark.is-plain { background: transparent; color: inherit; }
+.vm-card mark[data-field="phone"] { white-space: nowrap; }
+.vm__arrow { display: none; width: 100%; fill: none; stroke: var(--teal); stroke-width: 3.5; stroke-linecap: square; }
+.vm-list { background: var(--white); color: var(--ink); padding: 1rem 1.1rem; }
+.vm-list__top { margin-bottom: 0.75rem; }
+.vm-list__top b { font-weight: 900; font-size: var(--step-body); line-height: 1.15; }
+.vm-list__rows { display: grid; gap: 8px; }
+.cb { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "name urgency" "need phone" "town phone"; gap: 0.15rem 1rem; background: var(--surface); padding: 0.75rem 0.85rem; line-height: 1.3; }
+.cb__name { grid-area: name; font-weight: 900; font-size: var(--step-body); }
+.cb__urgency { grid-area: urgency; justify-self: end; align-self: start; font-weight: 900; font-size: var(--step-small); background: var(--teal); padding: 0.1rem 0.45rem; }
+.cb__need { grid-area: need; font-weight: 700; }
+.cb__town { grid-area: town; color: var(--muted); font-weight: 700; font-size: var(--step-small); }
+.cb__phone { grid-area: phone; justify-self: end; align-self: end; font-variant-numeric: tabular-nums; font-weight: 700; }
+/* A cell waiting for its detail: a filled slot the size of its words, never an empty box. */
+.cb [data-cell].is-pending { color: transparent; background: var(--mid-on-dark); }
+.vm-list__foot { margin-top: 0.75rem; font-weight: 700; font-size: var(--step-small); }
+/* Details leave the transcript from its edge and travel only outside it (js/voicemail.js). */
+.vm-flight { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+.vm-fly { position: absolute; top: 0; left: 0; background: var(--teal); color: var(--black); font-weight: 900; padding: 0 0.12em; white-space: nowrap; transform-origin: 0 0; }
+.vm__controls { display: flex; flex-wrap: wrap; gap: 10px; }
+.vm__controls .button { font-size: var(--step-body); min-height: 3.5rem; padding: 0 1.4rem; flex: 1 1 auto; }
+.vm__note { font-size: var(--step-small); color: var(--soft-on-dark); max-width: 60ch; }
+.vm > .ask-row { margin-top: 0.75rem; }
 
-/* Tablet: with the rows stacked the slips are taller, so the last row no longer bleeds below the section edge. */
+/* Three more examples, each opening on /examples/. */
+.tries { margin-top: clamp(2.5rem, 5vw, 4rem); }
+.tries__top { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; }
+.tries__top b { font-size: var(--step-lead); font-weight: 900; letter-spacing: -0.03em; }
+.tries__list { display: grid; gap: 8px; }
+.try { display: grid; grid-template-columns: 2.25rem minmax(0, 1fr) auto; grid-template-areas: "glyph from go" "glyph to go"; align-items: center; gap: 0.15rem 0.75rem; min-height: 4.5rem; padding: 0.75rem 1rem; background: var(--black); color: var(--white); text-decoration: none; transition: transform var(--t-hover) var(--ease-out), background-color var(--t-hover) ease; }
+.try__glyph { grid-area: glyph; width: 2rem; height: 2rem; color: var(--teal); }
+.try__from { grid-area: from; font-weight: 700; font-size: var(--step-small); color: var(--soft-on-dark); }
+.try__to { grid-area: to; justify-self: start; font-weight: 900; font-size: var(--step-body); background: var(--teal); color: var(--black); padding: 0.1rem 0.45rem; }
+.try__go { grid-area: go; font-weight: 900; color: var(--teal); text-decoration: underline; text-underline-offset: 0.2em; text-decoration-thickness: 0.1em; white-space: nowrap; }
+.try:focus-visible { outline: 3px solid var(--teal); outline-offset: 3px; }
+.tries__list > li { container-type: inline-size; }
 
-/* ---------- v4, 2026-11-05: what we fix. The busy phone (Monday night) beside the four problems; it clears to
-   Tuesday morning, handled. Then a missed call handled, up close. ---------- */
-/* A missed call handled, up close: the words stay beside the voicemail and its call-back list. */
-.vmrow { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 2rem; align-items: start; margin-top: clamp(4rem, 8vw, 7rem); }
-.vmrow__words { grid-column: 1 / span 5; display: grid; gap: 1.1rem; justify-items: start; position: sticky; top: 12svh; }
-.vmrow__words p:not(.sr-only) { max-width: 40ch; }
-.vmrow .vm__stage { grid-column: 6 / -1; grid-row: 1; margin-top: 0; display: grid; grid-template-columns: minmax(0, 1fr); row-gap: 1rem; }
-.vmrow .vm__stage [data-ui].vm-card, .vmrow .vm__stage [data-ui].vm-list { grid-column: 1 / -1; margin-top: 0; }
-.vmrow [data-ui].vm-list { width: min(100%, 30rem); justify-self: end; transform: none; }
-.vm-card__tag { font-size: 0.8125rem; font-weight: 700; background: var(--teal); color: var(--black); padding: 0.1rem 0.4rem; }
-
-/* Ben's record (under Billing Day): three things his tools do, each on its own ground (no rules). */
+/* ---------- Ben & Zeke ---------- */
+.about { padding: var(--section) var(--margin); }
+.about__title { color: var(--white); white-space: nowrap; }
+.about__intro { display: grid; gap: 1rem; margin-top: 1.25rem; }
+/* The two people side by side at every width: the same 4:5 frame each, names and lines under each. */
+.people { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2.5rem var(--gutter); margin-top: clamp(2rem, 5vw, 4rem); }
+.person { display: grid; gap: 1rem; align-content: start; }
+/* Both portraits sit in the same 4:5 frame, so Ben's headshot drops into his later. */
+.person__frame { container-type: inline-size; width: 100%; aspect-ratio: 4 / 5; margin: 0; overflow: hidden; overflow: clip; background: var(--photo-ground); }
+.person__frame .ben-mark { width: 100%; height: 100%; font-size: 4.25rem; line-height: 0.8; padding: 0 0 0.6rem 0.5rem; }
+.person__photo { width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; }
+.person__words { display: grid; gap: 0.75rem; align-content: start; }
+.person__name { font-size: var(--step-lead); font-weight: 900; letter-spacing: -0.03em; line-height: 1.1; }
+.person__role { margin-top: -0.5rem; font-size: var(--step-small); font-weight: 900; line-height: 1.3; color: var(--teal); }
+.person__text { max-width: 46ch; font-size: var(--step-small); line-height: 1.5; }
+.person__proof { font-weight: 700; }
+.person__more > :not(summary) { margin-top: 0.75rem; }
 .record__list { display: grid; gap: 0.5rem; }
 .record__row { background: var(--photo-ground); padding: 0.8rem 1rem 0.9rem; line-height: 1.35; }
 .record__when { display: block; font-size: var(--step-small); font-weight: 900; color: var(--teal); margin-bottom: 0.15rem; }
 .record__what { color: var(--white); }
+.about__care { font-size: var(--step-lead); font-weight: 900; letter-spacing: -0.02em; line-height: 1.15; }
 
+/* ---------- businesses like yours ---------- */
+.biz { padding: var(--section) var(--margin) 0; }
+.biz__title { font-size: var(--step-title); line-height: 0.95; letter-spacing: -0.04em; text-transform: uppercase; }
+.biz__line { margin-top: 1rem; font-size: var(--step-lead); font-weight: 700; line-height: 1.25; letter-spacing: -0.02em; max-width: 46ch; }
+.biz__photos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; margin: clamp(1.75rem, 4vw, 3rem) calc(-1 * var(--margin)) 0; }
+.biz__photos li { overflow: hidden; overflow: clip; background: var(--photo-ground); }
+.biz__photos img { width: 100%; height: 100%; aspect-ratio: 1; object-fit: cover; }
 
-@media (max-width: 1000px) {
-  .vmrow__words { grid-column: 1 / -1; position: static; }
-  .vmrow .vm__stage { grid-column: 1 / -1; grid-row: auto; }
-}
-@media (max-width: 640px) {
-  .vmrow [data-ui].vm-list { width: 100%; }
-}
-
-/* ---------- audit round 1, 2026-11-05: strict conversion, design and truth audits ---------- */
-/* Weight carries meaning again: running text at 400, headings and labels heavy. */
-.coupon__facts li, .vmrow__words p { font-weight: 400; }
-/* On a phone the section heads step down so the page title stays the largest type. */
-@media (max-width: 640px) {
-  :root { --step-head: 2rem; }
-}
-/* Questions: one ground for the whole section, space between the questions. */
-.band { padding-block: 2.25rem; }
-.faq .band:first-of-type { padding-top: 3rem; }
-.faq .band:last-child { padding-bottom: var(--section); }
-/* The form: full width on the page grid; on a phone the title, the email, the message and the button come
-   first, and the three reassurances follow the button. */
-.coupon { width: 100%; grid-template-columns: repeat(12, minmax(0, 1fr)); }
-.coupon__left { grid-column: 1 / span 6; }
-.coupon__right { grid-column: 7 / -1; }
-@media (max-width: 1000px) {
-  .coupon__left, .coupon__right { grid-column: 1 / -1; }
-}
-@media (max-width: 640px) {
-  .coupon { display: flex; flex-direction: column; gap: 10px; padding: 1.5rem 1.25rem; }
-  .coupon__left, .coupon__right { display: contents; }
-  .coupon__text { margin-bottom: 0.75rem; }
-  .coupon__facts { order: 10; margin-top: 1rem; }
-  .coupon__privacy { order: 11; }
-}
-/* Billing Day on a phone: no tab row, the street as two rows of three square lots, so the preview stays well
-   under a screen and a half. */
-@container bd (max-width: 559px) {
-  .bd-tabs { display: none; }
-  .bd .st-street { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.75rem 0; }
-  .bd .st-lot { aspect-ratio: 1; }
-  .bd .st-lot > .st-lot-bldg { left: -10%; width: 120%; }
-}
-/* Resting tilts: interface pieces sit square (their entrances still turn). */
-[data-ui].vm-list { transform: none; }
-/* ---------- round 2, 2026-11-05: strict audit round 2, Codex partner and adversary ---------- */
-/* No floating button: an ask sits at the end of each place a visitor might decide (the problems, how it works,
-   the two of us, our work), the button and the free first talk beside it. */
-.ask-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.5rem; margin-top: 0.75rem; }
-.ask-row .button { font-size: var(--step-body); min-height: 3.5rem; padding: 0 1.6rem; }
-.ask-row__free { font-weight: 900; }
-.how > .ask-row { margin-top: clamp(2.5rem, 5vw, 4rem); }
-@media (max-width: 640px) { .ask-row .button { width: 100%; } }
-
-/* Hero: the picture fills to the right margin on wide screens; on a phone it is shown whole, not cut by the next
-   section. */
-
-
-/* A missed call handled. Desktop: the voicemail on the right, the words and then the call-back list on the left,
-   so the details fly across the gutter and no corner is left empty. Phone: the card and the list stay folded until
-   the first Play (js/voicemail.js opens them), and only once that script is running. */
-@media (min-width: 1001px) {
-  .vmrow__words { position: static; }
-  .vmrow .vm__stage { display: contents; }
-  .vmrow .vm__stage [data-ui].vm-card { grid-column: 6 / -1; grid-row: 1 / span 2; }
-  .vmrow .vm__stage [data-ui].vm-list { grid-column: 1 / span 5; grid-row: 2; width: 100%; justify-self: stretch; }
-}
-
-/* About: with the record moved to Our work, Ben's words run full width on tablets and Zeke's card sets his photo
-   beside his words, so neither column leaves a hole. */
-@media (min-width: 641px) and (max-width: 1000px) {
-  .person--ben { grid-column: 1 / -1; grid-row: auto; }
-  .person--ben .person__text { max-width: 60ch; }
-  .person--zeke { grid-column: 1 / -1; grid-row: auto; grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .person--zeke .about__photo { grid-column: 1; grid-row: 1 / span 6; margin: 0; }
-  .person--zeke > :not(.about__photo) { grid-column: 2; }
-}
-
-/* Our work: the brand's deep ground, the preview framed as a product screen in a black bezel (its own faces kept
-   inside). On a phone the invoice detail and the repeated total stay out, so the preview stays compact. */
-.bd { border: clamp(6px, 0.8vw, 10px) solid var(--black); border-radius: clamp(14px, 1.6vw, 22px); }
-/* Questions: one deep field from the heading down; the photos carry no captions (their alt text describes them),
-   sit level, and stay off phones. */
-.faq__head h2 { color: var(--teal); }
-.storefronts li:nth-child(even) { margin-top: 0; }
-
-/* Let's talk: email offered as well, its link plainly a link. */
-.coupon__alt { font-size: var(--step-small); color: var(--soft-on-dark); }
-.coupon__alt .link { color: var(--white); text-decoration-color: currentColor; }
-/* On a phone a "Let's talk" tap lands on the form card with the email and the whole send button on screen: the
-   section's top padding goes, the title is one line, the message box is shorter, Name and Phone sit side by side. */
-@media (max-width: 640px) {
-  .contact { padding-top: 12px; }
-  .coupon { gap: 8px; }
-  .coupon__title br { display: none; }
-  .cell textarea { min-height: 4.5rem; }
-  .cell-pair { grid-template-columns: 1fr 1fr; gap: 8px; }
-}
-
-/* Phone type: section heads a step larger, the bold statements a step smaller, so the heads lead clearly. */
-@media (max-width: 640px) {
-  :root { --step-head: 2.25rem; }
-  .statement { font-size: 1.125rem; }
-}
-/* Billing Day on a phone, measured at 360x640 (the preview kept under one and a half screens in both states):
-   the lot labels drop the reserved "Approved" line (the status line and the glowing windows say it), the month
-   title takes one line, and the blocks sit closer. */
-@container bd (max-width: 559px) {
-  .bd-lot-ok, .bd.is-approved .bd-lot-ok { display: none; }
-  .bd-title { font-size: 1.5rem; }
-  .bd-mast, .bd-round, .bd-lower { margin-top: 0.75rem; }
-}
-/* The form on tablets too: the title, the email, the message and the button first, the three reassurances after
-   the button, so a "Let's talk" tap lands with the send button on screen. */
-@media (max-width: 1000px) {
-  .contact { padding-top: 12px; }
-  .coupon { display: flex; flex-direction: column; gap: 8px; padding: 1.5rem 1.25rem; }
-  .coupon__left, .coupon__right { display: contents; }
-  .coupon__text { margin-bottom: 0.5rem; }
-  .coupon__facts { order: 10; margin-top: 1rem; }
-  .coupon__privacy { order: 11; }
-}
-@media (max-width: 640px) { .coupon__text { font-size: var(--step-body); } }
-
-/* ---------- hero, round 5 (2026-11-06): the offer stays still, one example moves ----------
-   Codex partner and adversary, and blind 5-second tests: the offer is readable from the first frame, nothing
-   in it waits for an entrance, and only the example below it moves (once, then rests on the finished picture;
-   reduced motion and no script show the finished picture). Phone first. */
-.hero { min-height: 0; padding-bottom: 2rem; }
-.hero__title { --fit: 7.75; font-size: min(calc((100cqi - 2 * var(--margin)) / var(--fit)), 17svh, 8.75rem); line-height: 0.92; word-spacing: 0.1em; margin-top: 0.75rem; }
-.hero__l { display: block; white-space: nowrap; }
-.hero__box { display: inline-block; line-height: 0.8; background: var(--black); color: var(--teal); padding: 0.07em 0.07em 0.03em; margin-top: 0.06em; }
-.hero__body { display: flex; flex-direction: column; gap: 1rem; margin-top: 1.1rem; }
-.hero__copy { display: grid; gap: 0.5rem; }
-.hero__sub { font-size: 1.25rem; line-height: 1.25; font-weight: 800; letter-spacing: -0.02em; max-width: 26ch; }
-.hero__who { font-size: var(--step-body); font-weight: 700; line-height: 1.3; }
-.hero__act { display: grid; gap: 0.5rem; }
-.hero__act .button { width: 100%; min-height: 3.5rem; }
-.hero__free { font-weight: 900; font-size: var(--step-body); line-height: 1.3; }
-.hero__lead { font-size: 1.125rem; font-weight: 600; max-width: 32ch; }
-
-/* the example: four everyday jobs and what each becomes */
-.jobs { margin: 0; background: var(--black); color: var(--white); padding: 0.875rem 1rem 1rem; }
-.jobs__top { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: 0.6rem; }
-.jobs__top b { font-size: 1.0625rem; font-weight: 900; color: var(--teal); letter-spacing: -0.02em; }
-.jobs__tag { font-size: 0.8125rem; font-weight: 700; background: var(--white); color: var(--black); padding: 0.05rem 0.45rem; }
-.jobs__list { display: grid; gap: 0.3rem; }
-.job { display: grid; grid-template-columns: 6.6rem 1.4rem 1fr; align-items: center; gap: 0.4rem; }
-.job__from { font-weight: 800; font-size: 0.875rem; line-height: 1.15; }
-.job__arrow { width: 100%; fill: none; stroke: var(--teal); stroke-width: 3.5; stroke-linecap: square; }
-.job__to { background: var(--teal); color: var(--black); font-weight: 800; font-size: 0.875rem; line-height: 1.15; padding: 0.3rem 0.5rem; }
-.jobs__check { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.6rem; font-weight: 900; font-size: 1.0625rem; letter-spacing: -0.02em; }
-.jobs__check svg { width: 1.5rem; height: 1.5rem; flex: none; fill: none; stroke: var(--teal); stroke-width: 3.5; stroke-dasharray: 30; }
-
-/* With script and motion, the results start unlit (every word still readable) from the first paint, so nothing
-   flashes; js/hero.js lights them once, one after another, when the example is on screen, then marks it at
-   rest. Each result switches ink and ground in one step, so no frame is low contrast (Codex review). */
-@media (prefers-reduced-motion: no-preference) {
-  .js .jobs:not(.is-rest) .job__to { background: #262626; color: var(--white); }
-  .jobs.is-play .job__to { animation: jobs-chip 1ms steps(1, end) both; animation-delay: calc(200ms + var(--k) * 300ms); }
-  .jobs.is-play .jobs__check svg { animation: jobs-tick 380ms var(--ease-out) 1500ms both; }
-}
-@keyframes jobs-chip { from { background: #262626; color: var(--white); } to { background: var(--teal); color: var(--black); } }
-@keyframes jobs-tick { from { stroke-dashoffset: 30; } to { stroke-dashoffset: 0; } }
-
-/* tablet: one column, roomier */
-@media (min-width: 641px) {
-  .hero__sub, .hero__lead { font-size: var(--step-lead); }
-  .hero__act { grid-template-columns: auto 1fr; align-items: center; column-gap: 1.25rem; }
-  .hero__act .button { width: auto; min-height: 4rem; }
-  .jobs { padding: 1.25rem 1.5rem 1.5rem; max-width: 40rem; }
-  .job { grid-template-columns: 11rem 2.25rem 1fr; }
-  .job__from, .job__to { font-size: var(--step-body); }
-}
-/* desktop: the words on the left, the example on the right */
-@media (min-width: 1001px) {
-  .hero__title { margin-top: clamp(1rem, 3svh, 2.5rem); }
-  .hero__body { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 1.5rem; margin-top: clamp(1.25rem, 3svh, 2.5rem); align-items: start; }
-  .hero__copy, .hero__act, .hero__lead { grid-column: 1 / span 6; }
-  .hero__copy { grid-row: 1; } .hero__act { grid-row: 2; } .hero__lead { grid-row: 3; }
-  .jobs { grid-column: 7 / -1; grid-row: 1 / span 3; max-width: none; padding: clamp(1.25rem, 2.2vw, 2rem); }
-  .jobs__top b { font-size: var(--step-lead); }
-  .hero__sub { max-width: 30ch; }
-}
-
-/* ---------- round 6 (2026-11-06): the rest of the page, far less reading ----------
-   Five short sections under the hero: one example that plays itself, the two of us, three steps, the questions
-   as folds, the form with email first. Every fold is a native details/summary (works without script); nothing
-   that is read or typed into waits for an entrance. */
-.see { padding: var(--section) var(--margin); }
-.see__head { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 1.25rem; align-items: end; }
-.see__title { grid-column: 1 / span 6; color: var(--teal); }
-.see__lead { grid-column: 7 / span 6; max-width: 40ch; }
-.see .vmrow { margin-top: clamp(2rem, 4vw, 3.5rem); }
-.see .vmrow__words p:not(.sr-only) { font-size: var(--step-body); }
-.see > .ask-row { margin-top: clamp(2rem, 4vw, 3rem); }
-@media (max-width: 1000px) { .see__title, .see__lead { grid-column: 1 / -1; } }
-
-/* A fold: a plain, generous row with a plus that turns to a minus. */
-.fold > summary, .more > summary, .band > summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 0.7rem; min-height: 2.75rem; font-weight: 900; }
-.fold > summary::-webkit-details-marker, .more > summary::-webkit-details-marker, .band > summary::-webkit-details-marker { display: none; }
-.fold > summary::before, .more > summary::before { content: "+"; flex: none; display: grid; place-items: center; width: 1.6rem; height: 1.6rem; background: var(--teal); color: var(--black); font-weight: 900; line-height: 1; }
-.fold[open] > summary::before, .more[open] > summary::before { content: "\2212"; }
-.fold > summary:focus-visible, .more > summary:focus-visible, .band > summary:focus-visible { outline: 3px solid currentColor; outline-offset: 3px; }
-
-/* Ben & Zeke: the build evidence stays visible; the rest of Ben's words fold. */
-.person__proof { font-weight: 700; }
-.person__more { margin-top: 0.9rem; }
-.person__more > :not(summary) { margin-top: 0.75rem; }
-.person__more .record__list { margin-top: 0.75rem; }
-.about__ask { grid-column: 1 / -1; margin-top: clamp(2rem, 4vw, 3rem); }
-
-/* How it works: three still steps, then the product we built behind one fold. */
+/* ---------- how it works ---------- */
 .how { padding: var(--section) var(--margin); }
-.how__title { margin-bottom: clamp(1.75rem, 3.5vw, 3rem); }
-.steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); counter-reset: none; }
-.step { border-top: 6px solid var(--black); padding-top: 1rem; font-size: var(--step-body); line-height: 1.4; max-width: 34ch; }
+.how__title { color: var(--teal); margin-bottom: clamp(1.75rem, 3.5vw, 3rem); }
+.steps { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.25rem; }
+.step { border-top: 6px solid var(--teal); padding-top: 1rem; font-size: var(--step-body); line-height: 1.4; max-width: 46ch; }
 .step__head { display: block; font-size: var(--step-lead); line-height: 1.1; letter-spacing: -0.03em; margin-bottom: 0.4rem; }
-.built { margin-top: clamp(2rem, 4vw, 3rem); }
-.built > summary { font-size: var(--step-body); }
-.built .bd { margin-top: 1.25rem; }
-@media (max-width: 1000px) { .steps { grid-template-columns: minmax(0, 1fr); gap: 1.25rem; } .step { max-width: 46ch; } }
+.how > .ask-row { margin-top: clamp(2rem, 4vw, 3rem); }
 
-/* Questions: one deep field; each question a row that opens its answer, word for word. */
-.faq { background: var(--deep); color: var(--white); }
-.faq details.band { display: block; padding: 1.1rem var(--margin); border-top: 2px solid rgb(255 255 255 / 0.18); }
-.faq details.band:first-of-type { padding-top: 1.1rem; }
-.faq details.band:last-child { padding-bottom: var(--section); }
+/* ---------- Let's talk: the form ---------- */
+.contact { padding: 12px var(--margin) var(--section); }
+.coupon { display: flex; flex-direction: column; gap: 8px; padding: 1.5rem 1.25rem; background: var(--black); color: var(--white); }
+.coupon__left, .coupon__right { display: contents; }
+.coupon__title { font-size: var(--step-head); color: var(--teal); }
+.coupon__title br { display: none; }
+.coupon__text { font-size: var(--step-body); font-weight: 700; line-height: 1.25; max-width: 28ch; margin-bottom: 0.5rem; }
+.coupon__facts { order: 10; margin-top: 1rem; display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.9rem; max-width: 40ch; }
+.coupon__facts li { padding-left: 1.4rem; position: relative; font-weight: 400; line-height: 1.4; color: var(--soft-on-dark); }
+.coupon__facts li::before { content: ""; position: absolute; left: 0; top: 0.5em; width: 0.6rem; height: 0.6rem; background: var(--teal); }
+.coupon__privacy { order: 11; font-size: var(--step-small); color: var(--soft-on-dark); }
+.cell { display: grid; gap: 0.2rem; background: var(--white); color: var(--ink); padding: 0.6rem 0.9rem 0.5rem; cursor: text; transition: background-color var(--t-hover) ease; }
+.cell:focus-within { background: var(--surface); outline: 3px solid var(--teal); outline-offset: 0; }
+.cell__label { font-size: var(--step-body); font-weight: 700; line-height: 1.2; }
+.cell__label em { font-style: normal; color: var(--muted); }
+.cell input, .cell textarea { width: 100%; border: 0; background: transparent; padding: 0.15rem 0; font-size: 1.0625rem; resize: vertical; outline: none; }
+.cell textarea { min-height: 4.5rem; line-height: 1.4; }
+.cell input::placeholder, .cell textarea::placeholder { color: var(--muted); opacity: 1; }
+.cell__help { font-size: var(--step-small); color: var(--soft-on-dark); margin: 0 0 0.5rem; }
+.cell-pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr)); gap: 8px; }
+.coupon__submit { width: 100%; margin-top: 0.4rem; background: var(--teal); color: var(--black); }
+.coupon__status { font-size: var(--step-body); font-weight: 700; color: var(--white); }
+.coupon__status:empty { display: none; }
+.coupon__status a { color: var(--teal); }
+.coupon__status.is-ok { color: var(--teal); }
+.coupon__alt { font-size: var(--step-small); color: var(--soft-on-dark); overflow-wrap: anywhere; }
+.coupon__alt .link { color: var(--white); text-decoration-color: currentColor; }
+.more > summary { color: var(--white); font-size: var(--step-body); }
+.more > :not(summary) { margin-top: 10px; }
+
+/* ---------- questions ---------- */
+.faq { display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; align-items: start; padding: var(--section) var(--margin); }
+.faq__title { color: var(--teal); }
+.faq__alt { font-weight: 700; margin-bottom: clamp(1rem, 2vw, 1.75rem); overflow-wrap: anywhere; }
+.faq__alt .link { color: var(--white); text-decoration-color: currentColor; }
+.faq .band { display: block; padding: 1rem 1.1rem; background: var(--deep-2); }
 .band > summary.band__q { justify-content: space-between; font-size: var(--step-lead); line-height: 1.15; letter-spacing: -0.03em; }
 .band > summary.band__q::after { content: "+"; flex: none; display: grid; place-items: center; width: 1.8rem; height: 1.8rem; background: var(--teal); color: var(--black); font-size: 1.25rem; }
 .band[open] > summary.band__q::after { content: "\2212"; }
-.faq .band__a { margin-top: 0.9rem; }
-.faq .band__a p { max-width: 58ch; }
-.faq .storefronts { margin-top: 1.5rem; }
+.band__a { margin-top: 0.9rem; }
+.band__a p { max-width: 58ch; line-height: 1.5; }
 
-/* Let's talk: email and the button first; the optional details behind one fold, which opens itself when a button
-   has already written the note (js/ask.js). */
-.more > summary { color: var(--white); font-size: var(--step-body); }
-.more > :not(summary) { margin-top: 10px; }
-/* Phones and tablets: the example's words, then the voicemail and the list, then Replay under them. */
-@media (max-width: 1000px) {
-  .see .vmrow__words { display: contents; }
-  .see .vmrow__words > p:not(.sr-only) { grid-column: 1 / -1; order: 1; }
-  .see .vmrow .vm__stage { order: 2; }
-  .see .vm__controls { grid-column: 1 / -1; order: 3; }
-}
-/* Phone: a smaller portrait and a shorter mark, so the page stays short. */
-@media (max-width: 640px) {
-  .person--zeke .about__photo { width: 64%; }
-  .mark { height: 15svh; min-height: 6rem; }
+/* ---------- footer: the mark built large, still ---------- */
+.footer { padding: clamp(4rem, 8vw, 7rem) var(--margin) var(--margin); }
+.mark { display: flex; gap: 4px; align-items: flex-end; height: 15vh; height: 15svh; min-height: 6rem; overflow: hidden; overflow: clip; }
+/* Each block is a flat colour; the letter inside scales evenly and sits on the baseline, cut out in black. */
+.mark__block { flex: 1 1 0; min-width: 0; height: calc(var(--h) * 1%); background: var(--teal); }
+.mark__block--white { background: var(--white); }
+.mark__block svg { width: 100%; height: 100%; max-width: none; }
+.mark__block text { font-family: var(--font); font-weight: 900; font-size: 100px; fill: var(--mask-cut); }
+.footer__grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 2rem; margin-top: 3rem; }
+.footer__links { display: flex; flex-wrap: wrap; gap: 0.75rem 2rem; font-weight: 700; }
+.footer__links a { display: inline-flex; align-items: center; min-height: 2.75rem; }
+.footer__contact { display: grid; gap: 0.6rem; overflow-wrap: anywhere; }
+.footer__last { margin-top: 2.5rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; font-weight: 700; }
+
+/* ---------- single pages: thanks and not found ---------- */
+.solo { min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; padding: 0 var(--margin) var(--margin); }
+.solo .nav { padding-block: var(--margin); }
+.solo__title { margin-top: clamp(3rem, 14vh, 9rem); margin-top: clamp(3rem, 14svh, 9rem); }
+.solo__body { margin-top: clamp(1.5rem, 4vh, 2.5rem); margin-top: clamp(1.5rem, 4svh, 2.5rem); display: grid; gap: 2rem; justify-items: start; }
+.solo__foot { margin-top: auto; padding-top: 4rem; font-weight: 700; font-size: var(--step-small); }
+
+/* ---------- container-unit sizes (browsers with cqi; the ordinary sizes above are the fallback) ---------- */
+@supports (width: 1cqi) {
+  :root { --step-display: calc((100cqi - 2 * var(--margin)) / 7.74); }
+  .hero__title { font-size: min(calc((100cqi - 2 * var(--margin)) / var(--fit)), 17svh, 8.75rem); }
+  .sig { --in: min(6.5rem, 31cqi); --wirelen: min(1.35rem, 6cqi); --node: min(1.75rem, 8cqi); }
+  .out { grid-template-columns: min(1.5rem, 9cqi) minmax(0, 1fr); }
+  .out__deco .glyph { width: min(1.35rem, 8cqi); height: min(1.35rem, 8cqi); }
+  .out__type { width: min(1.3rem, 8cqi); }
+  .person__frame .ben-mark { font-size: 42cqi; padding: 0 0 7cqi 5cqi; }
 }
 
-/* ---------- more jobs (2026-11-10): three named rows under the example, each opening its own example on /examples/ ---------- */
-.more-jobs { margin-top: clamp(2.5rem, 5vw, 4rem); background: var(--black); color: var(--white); padding: 0.875rem 1rem 1rem; max-width: 46rem; }
-.more-jobs__top { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: 0.6rem; }
-.more-jobs__top b { font-size: 1.0625rem; font-weight: 900; color: var(--teal); letter-spacing: -0.02em; }
-.more-jobs__list { display: grid; gap: 6px; }
-.mj { display: grid; grid-template-columns: 6.6rem 1.4rem minmax(0, 1fr) auto; align-items: center; gap: 0.4rem; min-height: 2.75rem; padding: 0.35rem 0.5rem 0.35rem 0; text-decoration: none; color: inherit; }
-.mj__from { font-weight: 800; font-size: 0.875rem; line-height: 1.15; }
-.mj__to { justify-self: start; white-space: nowrap; background: var(--teal); color: var(--black); font-weight: 800; font-size: 0.875rem; line-height: 1.15; padding: 0.3rem 0.5rem; }
-.mj__go { font-weight: 900; font-size: 0.875rem; color: var(--teal); text-decoration: underline; text-underline-offset: 0.2em; text-decoration-thickness: 0.1em; white-space: nowrap; }
-.mj:focus-visible { outline: 3px solid var(--teal); outline-offset: 2px; }
-@media (hover: hover) and (pointer: fine) { .mj:hover .mj__go { color: var(--white); } }
+/* ---------- pointer hover ---------- */
+@media (hover: hover) and (pointer: fine) {
+  .button:hover, .field-black .button:hover, .field-night .button:hover, .field-deep .button:hover { background: var(--white); color: var(--black); }
+  .button--quiet:hover, .field-deep .button--quiet:hover { background: var(--white); color: var(--black); border-color: var(--white); }
+  .link:hover { text-decoration-color: currentColor; }
+  .bd-btn:hover { background: var(--bd-ledger-hover); }
+  .try:hover { transform: translateY(-2px); background: var(--tile); }
+  .try:hover .try__go { color: var(--white); }
+  .cue__link:hover { color: var(--white); }
+  .biz__photos img { transition: transform 600ms var(--ease-out); }
+  .biz__photos li:hover img { transform: scale(1.03); }
+}
+
+/* ---------- the narrowest phones (320 to 360) ---------- */
+@media (max-width: 360px) {
+  .sig { --in: 5.6rem; --wirelen: 0.85rem; --node: 1.4rem; padding-inline: 0.75rem; }
+  @supports (width: 1cqi) { .sig { --in: min(6rem, 34cqi); --wirelen: min(0.85rem, 5cqi); --node: min(1.4rem, 8cqi); } }
+  .lane__in { padding-inline: 0.3rem; }
+  .lane__from { font-size: 0.75rem; letter-spacing: -0.03em; }
+  .out { grid-template-columns: 1.1rem minmax(0, 1fr); gap: 0.35rem; padding-inline: 0.4rem; font-size: 0.8125rem; }
+  .out__deco .glyph { width: 1.1rem; height: 1.1rem; }
+  .out__type { width: 1.05rem; }
+  .bd .st-info { padding-inline: 0.1rem 0; }
+  .bd-lot-name { letter-spacing: -0.01em; }
+}
+
+/* ---------- tablet and up ---------- */
 @media (min-width: 641px) {
-  .more-jobs { padding: 1.25rem 1.5rem 1.5rem; }
-  .mj { grid-template-columns: 11rem 2.25rem minmax(0, 1fr) auto; }
-  .mj__from, .mj__to, .mj__go { font-size: var(--step-body); }
+  :root { --step-head: clamp(2.5rem, 1.2rem + 5vw, 5.5rem); }
+  .nav { gap: var(--gutter); }
+  .statement { font-size: var(--step-lead); }
+  .hero__sub, .hero__lead { font-size: var(--step-lead); }
+  .hero__act { grid-template-columns: auto 1fr; align-items: center; column-gap: 1.25rem; }
+  .hero__act .button { width: auto; min-height: 4rem; }
+  .sig { --in: 10rem; --wirelen: 2.25rem; --node: 2.75rem; --row: 4rem; padding: 1.25rem 1.5rem 1.5rem; max-width: 42rem; }
+  @supports (width: 1cqi) { .sig { --in: clamp(8.75rem, 27cqi, 11.5rem); --wirelen: clamp(1.25rem, 6.5cqi, 3rem); --node: clamp(2.25rem, 7.5cqi, 3.25rem); } }
+  .sig__top b { font-size: var(--step-lead); }
+  .lane__in { flex-direction: row; align-items: center; gap: 0.6rem; padding: 0.5rem 0.75rem; }
+  .lane__in .glyph { width: 1.6rem; height: 1.6rem; }
+  .lane__from { font-size: 1.0625rem; letter-spacing: -0.02em; }
+  .out { grid-template-columns: 1.75rem minmax(0, 1fr); gap: 0.6rem; padding: 0.5rem 0.75rem; font-size: var(--step-body); }
+  .out__deco .glyph { width: 1.6rem; height: 1.6rem; }
+  .out__type { width: 1.5rem; }
+  .cue { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: center; }
+  .cue__title, .cue__link { grid-column: 1 / -1; }
+  .cue__people { grid-column: 1 / -1; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gutter); }
+  .vm-card { padding: 1.4rem 1.6rem 1.6rem; }
+  .vm-card__transcript { font-size: var(--step-lead); }
+  .vm__controls .button { flex: none; }
+  .ask-row .button { width: auto; }
+  .person__frame { max-width: 17rem; }
+  .person__role, .person__text { font-size: var(--step-body); }
+  .tries__list, .steps { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); }
+  .try { grid-template-columns: minmax(0, 1fr); grid-template-areas: "glyph" "from" "to" "go"; align-content: start; gap: 0.4rem; padding: 1.25rem; min-height: 12rem; }
+  .try__go { margin-top: 0.75rem; }
+  .step { max-width: none; }
+  .biz__photos { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .biz__photos img { aspect-ratio: auto; height: clamp(15rem, 29vw, 28rem); }
+  .cell textarea { min-height: 6rem; }
+  .mark { height: 22vh; height: 22svh; min-height: 8rem; }
 }
-.more-jobs .jobs__tag { background: transparent; color: var(--soft-on-dark); border: 1.5px solid currentColor; padding: 0 0.4rem; }
-@media (max-width: 380px) { .mj__to { white-space: normal; } .mj { grid-template-columns: 5.6rem 1.2rem minmax(0, 1fr) auto; } }
-.mj__go { margin-left: 0.3rem; }
+
+/* ---------- desktop ---------- */
+@media (min-width: 1001px) {
+  /* The page grid has twelve columns. Words-and-thing rows split at column 7 (the hero, the voicemail, Billing
+     Day's heading); the example tiles, the steps and the promises run three across; Ben & Zeke, the businesses
+     and the questions run the full width. */
+  .nav__links { display: flex; }
+  .menu { display: none; }
+  .hero { min-height: min(100vh, 62rem); min-height: min(100svh, 62rem); }
+  .hero__title { margin-top: clamp(0.5rem, 2vh, 1.5rem); margin-top: clamp(0.5rem, 2svh, 1.5rem); }
+  .hero__body, .cue, .work__head, .see__head, .vm, .vm__stage, .about__intro, .footer__grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); }
+  .hero__body { row-gap: 1.5rem; margin-top: clamp(1.25rem, 3vh, 2.5rem); margin-top: clamp(1.25rem, 3svh, 2.5rem); align-items: start; grid-template-rows: auto auto 1fr; }
+  .hero__lead { align-self: end; }
+  .hero__copy, .hero__act, .hero__lead { grid-column: 1 / span 6; }
+  .hero__copy { grid-row: 1; } .hero__act { grid-row: 2; } .hero__lead { grid-row: 3; }
+  .hero__sub { max-width: 30ch; }
+  .sig { grid-column: 7 / -1; grid-row: 1 / span 3; max-width: none; padding: clamp(1.25rem, 2.2vw, 2rem); }
+  .cue { row-gap: 1rem; padding-block: 1.5rem; align-items: center; }
+  .cue__title { grid-column: 1 / span 6; font-size: var(--step-lead); }
+  .cue__link { grid-column: 7 / -1; grid-row: 1; justify-self: end; }
+  .cue__people { grid-column: 1 / -1; }
+  .work__head, .see__head { align-items: end; }
+  .work__title, .see__title { grid-column: 1 / span 6; }
+  .work__side, .see__lead { grid-column: 7 / -1; max-width: 40ch; }
+  .vm > * { grid-column: 1 / -1; }
+  .vm__stage { row-gap: 0; align-items: stretch; }
+  .vm-card { grid-column: 1 / span 6; }
+  .vm-list { grid-column: 7 / -1; }
+  /* the arrow sits on the seam between the voicemail and the list, pointing the way the details travel */
+  .vm__arrow { display: block; position: absolute; z-index: 2; left: 50%; top: 50%; width: 3rem; height: 3rem; margin: -1.5rem 0 0 -1.5rem; padding: 0.55rem; background: var(--teal); stroke: var(--black); }
+  .vm__line { grid-row: 1; } .vm__stage { grid-row: 2; }
+  .vm__controls { grid-column: 1 / span 6; grid-row: 3; } /* Replay right under the voicemail it replays */
+  .vm__note { grid-column: 7 / -1; grid-row: 3; align-self: center; }
+  .vm > .ask-row { grid-column: 1 / span 6; grid-row: 4; margin-top: 0; }
+  .about__intro { align-items: center; margin-top: 1.5rem; }
+  .about__care { grid-column: 1 / span 6; }
+  .about__intro .ask-row { grid-column: 7 / -1; }
+  .person { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: var(--gutter); }
+  .person__frame { max-width: none; }
+  .contact { padding-top: var(--section); }
+  /* the form card: the title and its words beside the form, both ending together; the three promises run across */
+  .coupon { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 1rem; padding: clamp(1.75rem, 3.4vw, 3rem); align-items: start; }
+  .coupon__left { display: contents; }
+  .coupon__title { grid-column: 1 / span 6; grid-row: 1; }
+  .coupon__title br { display: inline; }
+  .coupon__text { grid-column: 1 / span 6; grid-row: 2; align-self: end; font-size: var(--step-lead); max-width: 26ch; margin-bottom: 0; }
+  .coupon__right { display: flex; flex-direction: column; grid-column: 7 / -1; grid-row: 1 / span 2; align-self: stretch; gap: 10px; }
+  .coupon__privacy { margin-top: auto; }
+  .coupon__facts { grid-column: 1 / -1; grid-row: 3; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--gutter); max-width: none; margin-top: 1.5rem; }
+  /* desktop tiles: the drawing, the job, and Try it on one row each, three across */
+  .try { grid-template-columns: 2.25rem minmax(0, 1fr) auto; grid-template-areas: "glyph from go" "glyph to go"; align-content: center; gap: 0.15rem 1rem; padding: 1.1rem 1.25rem; min-height: 5.5rem; }
+  .try__go { margin-top: 0; }
+  .faq { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 6px; align-items: stretch; }
+  .faq__title { grid-column: 1 / span 1; grid-row: 1; margin-bottom: clamp(1rem, 2vw, 1.75rem); }
+  .faq__alt { grid-column: 2; grid-row: 1; align-self: end; justify-self: end; font-size: var(--step-lead); }
+  .footer__links { grid-column: 1 / span 6; display: grid; grid-template-columns: repeat(3, max-content); column-gap: 2.5rem; row-gap: 0; }
+  .footer__contact { grid-column: 7 / -1; }
+}
+/* Short laptop screens (1440x700): a tighter nav row, so the offer and its button fit on the first screen. */
+@media (min-width: 1001px) and (max-height: 820px) {
+  .hero .nav { padding-block: 0.875rem; }
+}
+
+/* A narrow signature (half of a 1001 to 1280 laptop) stacks each input's drawing over its name. After the
+   breakpoint blocks, because it narrows their row layout. */
+@container (min-width: 24rem) and (max-width: 38.5rem) {
+  .lane__in { flex-direction: column; align-items: flex-start; gap: 0.25rem; padding-inline: 0.6rem; }
+}
+
+/* Phone tiles, narrowest first: by default (also the fallback where container queries are missing) everything
+   stacks in one column; a tile wide enough at the current text size puts the drawing beside the words, and a
+   wider one puts "Try it" beside the job too. */
+@media (max-width: 640px) {
+  .try { grid-template-columns: minmax(0, 1fr); grid-template-areas: "glyph" "from" "to" "go"; }
+  @container (min-width: 10.01em) {
+    .try { grid-template-columns: 2.25rem minmax(0, 1fr); grid-template-areas: "glyph from" "glyph to" "glyph go"; }
+  }
+  @container (min-width: 17.01em) {
+    .try { grid-template-columns: 2.25rem minmax(0, 1fr) auto; grid-template-areas: "glyph from go" "glyph to go"; }
+  }
+}
+
+/* A narrow desktop tile (three across on a 1001 to 1280 laptop): "Try it" takes its own row under the job. */
+@media (min-width: 1001px) {
+  @container (max-width: 22em) {
+    .try { grid-template-columns: 2.25rem minmax(0, 1fr); grid-template-areas: "glyph from" "glyph to" "glyph go"; align-items: start; }
+    .try__go { margin-top: 0.4rem; }
+  }
+}
+
+/* Enlarged text (about 150% and up on a phone): each input sits over its outcome, so no word is broken. */
+@container (max-width: 15em) {
+  .lane { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+  .wire, .sig__node { display: none; }
+  .lane__in { flex-direction: row; align-items: center; gap: 0.5rem; }
+}
+@container (max-width: 8em) {
+  .lane__in { flex-direction: column; align-items: flex-start; gap: 0.25rem; }
+}
+
+/* Enlarged text on a phone (the page under 16em wide, about 150% text and up at 390): the two people stack,
+   each person's words sit under the picture, a call-back row reads as one column, the phone number may break at
+   its hyphens and the billing total scales to its card. Never at ordinary text sizes (320 is 20em). */
+@container (max-width: 16em) {
+  .people, .cue__people { grid-template-columns: minmax(0, 1fr); }
+  .cue__person { grid-template-columns: minmax(0, 1fr); align-items: start; }
+  .vm-card mark[data-field="phone"] { white-space: normal; }
+  .coupon { padding-inline: 0.75rem; }
+  .coupon__facts li { padding-left: 1rem; overflow-wrap: break-word; }
+}
+@container bd (max-width: 14em) { .bd-fig__big { font-size: min(1.6rem, 17cqi); } }
+/* The narrowest phones (320) and enlarged text: a call-back row reads as one column, so the job is not squeezed
+   beside the phone number. */
+@container (max-width: 20.5em) {
+  .cb { grid-template-columns: minmax(0, 1fr); grid-template-areas: "urgency" "name" "need" "phone" "town"; }
+  .cb__urgency, .cb__phone { justify-self: start; }
+}
+
+/* ---------- motion states ----------
+   Only with script and motion allowed: the hero's outcomes start as outlines (every label still readable, white
+   on black) from the first paint, and js/hero.js fills them once. Reduced motion or no script: the finished
+   picture is all there is. */
+@media (prefers-reduced-motion: no-preference) {
+  .js .sig:not(.is-done) .out:not(.out__fill) { color: var(--white); }
+  .js .sig:not(.is-done) .out:not(.out__fill)::before { background: transparent; box-shadow: inset 0 0 0 2px var(--wire); } /* taste-skill-ignore */
+  .js .sig:not(.is-done) .out:not(.out__fill) .out__deco { color: var(--wire); }
+  .js .sig:not(.is-done) .out:not(.out__fill) .out__tag { visibility: hidden; }
+  .js .sig:not(.is-done) .wire::before { background: var(--wire); }
+  .js .sig:not(.is-done) .lane.is-lit .wire::before { background: var(--teal); }
+  .js .sig:not(.is-done) .sig__check svg { stroke-dashoffset: 30; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bd .st-ill .st-win, .bd .st-halo, .bd .st-halo-line, .bd-btn, .try, .biz__photos img { transition: none; }
+}

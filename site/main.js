@@ -1,4 +1,4 @@
-// The one module entry. GSAP, ScrollTrigger and SplitText are imported and registered in js/env.js.
+// The one module entry. GSAP is imported and set up in js/env.js.
 // Each part upgrades HTML that already works on its own; a failure in one never hides another's content.
 import { fontsReady } from "./js/env.js";
 import { initMenu } from "./js/menu.js";
@@ -19,5 +19,5 @@ safely("voicemail", initVoicemail);
 safely("ask", initAsk);
 safely("form", initForm);
 safely("work", initWork);
-// Motion measures type, so it waits for the face (bounded), after the controls above are in place.
+// Press feedback and fragment landing wait for the face (bounded), after the controls above are in place.
 fontsReady().then(() => safely("motion", initMotion));

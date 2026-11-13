@@ -1,12 +1,10 @@
 // Shared by every module: the registered GSAP, and the reduced-motion question asked fresh each time.
+// (Round 8: no scroll-linked motion is left on the page, so ScrollTrigger and SplitText are no longer loaded.)
 import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { SplitText } from "gsap/SplitText";
 
-gsap.registerPlugin(ScrollTrigger, SplitText);
 gsap.defaults({ overwrite: "auto" });
 
-export { gsap, ScrollTrigger, SplitText };
+export { gsap };
 
 const reduce = matchMedia("(prefers-reduced-motion: reduce)");
 export const calm = () => reduce.matches;

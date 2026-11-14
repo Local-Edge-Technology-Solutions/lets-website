@@ -57,6 +57,7 @@
 <div class="page">
 
 <header class="hero pz-hero field-teal" id="top">
+  <div class="pz-top">
   <nav class="nav" aria-label="Main">
     <a class="wordmark" href="#top" aria-label="LETS, back to the top">LETS</a>
     <ul class="nav__links">
@@ -105,29 +106,38 @@
     <p class="pz__who">Custom AI for customer replies, invoices and missed calls. By Ben and Zeke in Nashville.</p>
     <a class="button pz__go" href="#contact">Let’s talk</a>
   </div>
+  </div>
+
+  <!-- Several everyday chores, each an owner's note then what we'd build. All four are visible at once,
+       nothing cycles. Desktop: beside the poster. Under 1001px: after the button, where the invoice-only Example sat. -->
+  <figure class="eg" aria-labelledby="eg-say">
+    <div class="eg__head">
+      <span class="tag eg__tag">Example</span>
+      <h2 class="eg__say" id="eg-say">Tell us what you’d rather not be doing.</h2>
+    </div>
+    <ul class="eg__rows" role="list">
+      <li class="eg__row">
+        <blockquote class="eg__note"><p>I <span class="eg__u">miss calls</span> when I’m with a customer.</p></blockquote>
+        <p class="eg__built"><b class="eg__chip">We’d build</b> Missed calls land on your <span class="eg__nb">call-back</span> list.</p>
+      </li>
+      <li class="eg__row">
+        <blockquote class="eg__note"><p>I answer the <span class="eg__u">same questions</span> all day.</p></blockquote>
+        <p class="eg__built"><b class="eg__chip">We’d build</b> Replies are drafted for you. You check them first.</p>
+      </li>
+      <li class="eg__row">
+        <blockquote class="eg__note"><p><span class="eg__o">Quotes<svg class="eg__ring" viewBox="0 0 200 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M64 7 C 118 1, 192 6, 195 28 C 198 50, 130 58, 70 56 C 22 54, 3 44, 5 28 C 7 12, 48 5, 104 4"></path></svg></span> eat my evenings.</p></blockquote>
+        <p class="eg__built"><b class="eg__chip">We’d build</b> Quotes are drafted from the order email.</p>
+      </li>
+      <li class="eg__row">
+        <blockquote class="eg__note"><p>I spend Sunday nights on <span class="eg__o">invoices.<svg class="eg__ring" viewBox="0 0 200 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M64 7 C 118 1, 192 6, 195 28 C 198 50, 130 58, 70 56 C 22 54, 3 44, 5 28 C 7 12, 48 5, 104 4"></path></svg></span></p></blockquote>
+        <p class="eg__built"><b class="eg__chip">We’d build</b> Invoices are drafted for you. You approve. Then they go out.</p>
+      </li>
+    </ul>
+    <p class="eg__end">We’ll <span class="eg__b">build<svg class="eg__line" viewBox="0 0 100 12" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path pathLength="1" d="M2 8 C 22 3, 52 3, 98 6"></path></svg></span> the thing that does it for you.</p>
+  </figure>
 </header>
 
 <main id="main">
-
-<!-- One job, said the owner's way: the note, then what we'd build. The finished picture is the base CSS; with motion
-     allowed, js/invoice.js holds it at its first frame and plays it once when the panel is in view (about 2.5 s). -->
-<section class="jx field-teal" aria-labelledby="jx-say">
-  <figure class="jx-ex" data-jx>
-    <span class="tag jx-ex__tag">Example</span>
-    <h2 class="jx-ex__say" id="jx-say">Tell us what you’d rather not be doing.</h2>
-    <blockquote class="jx-note">
-      <p><span class="jx-note__l">I spend <span class="jx-note__mark">Sunday nights<svg class="jx-ring" viewBox="0 0 200 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path pathLength="1" d="M64 7 C 118 1, 192 6, 195 28 C 198 50, 130 58, 70 56 C 22 54, 3 44, 5 28 C 7 12, 48 5, 104 4"></path></svg></span></span> <span class="jx-note__l">on invoices.</span></p>
-    </blockquote>
-    <div class="jx-ex__turn">
-      <svg class="jx-arrow" viewBox="0 0 40 64" aria-hidden="true" focusable="false"><path class="jx-arrow__shaft" pathLength="1" d="M20 2 C 8 18, 32 34, 20 58"></path><path class="jx-arrow__head" pathLength="1" d="M9 47 L20 60 L31 47"></path></svg>
-      <p class="jx-ex__build">We’ll build the thing that does it for you.</p>
-    </div>
-    <div class="jx-built">
-      <p class="jx-built__words"><b class="jx-built__chip">Built</b> Invoices are drafted for you. You approve. Then they go out.</p>
-      <p class="jx-built__fill" aria-hidden="true"><b class="jx-built__chip">Built</b> Invoices are drafted for you. You approve. Then they go out.</p>
-    </div>
-  </figure>
-</section>
 
 <section class="cue field-black" aria-labelledby="cue-title">
   <h2 class="cue__title" id="cue-title">The two people you’ll be talking to</h2>

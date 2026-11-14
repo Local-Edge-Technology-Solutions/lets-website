@@ -239,82 +239,6 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
   100% { opacity: 0; inset: 0; }
 }
 
-/* ---------- the Example: what you'd rather not be doing, and the thing we'd build ----------
-   The finished picture is the base: ring drawn, arrow drawn, card filled teal. js/invoice.js adds .jx-armed (motion
-   allowed only), which attaches the animations paused at their first frame, and .jx-play once the panel is well in
-   view, which runs them once (about 2.5 s); then both come off. Every word is in the page and readable in every
-   frame: the Built words sit on the outline card under the teal copy, which is aria-hidden. */
-.jx { padding: 1.75rem var(--margin) 2.25rem; }
-.jx-ex { position: relative; background: var(--black); color: var(--white); padding: 1.1rem min(1rem, 5vw) 1.25rem; } /* the side padding halves only under enlarged text */
-/* phone: the tag floats top right and the title wraps round it, so under enlarged text the title's words drop below it
-   rather than being squeezed beside it (with or without container queries) */
-.jx-ex__tag { float: right; margin: -0.05rem 0 0.5rem 0.75rem; }
-.jx-ex__say { font-size: 1.625rem; line-height: 1.05; letter-spacing: -0.035em; color: var(--teal); text-wrap: balance; overflow-wrap: normal; }
-.jx-ex__build { font-size: 1.25rem; font-weight: 900; line-height: 1.15; letter-spacing: -0.025em; color: var(--teal); }
-/* the note: a slip of paper in the owner's own words, set apart from the poster type by case, slant and tilt */
-.jx-note { margin: 0.9rem 0.2rem 0 0.1rem; padding: 0.9rem min(1rem, 5vw) 1rem; background: var(--white); color: var(--black); transform: rotate(-1.6deg); border-top: 0.6rem solid var(--surface-2); }
-.jx-note p { font-size: 1.6rem; font-weight: 600; line-height: 1.3; letter-spacing: -0.015em; overflow-wrap: break-word; }
-/* each line slants on its own, so a line that wraps under enlarged text never pushes the ones above it sideways; the
-   ringed words are one inline block, so they move to the next line together and break only when wider than a line;
-   a single word wider than the paper (enlarged text on the narrowest phones) breaks rather than leaving it */
-.jx-note__l { display: block; transform: skewX(-7deg); transform-origin: 0 100%; }
-.jx-note__mark { position: relative; display: inline-block; max-width: 100%; margin-left: 0.3em; }
-.jx-ring { position: absolute; left: -0.5em; top: -0.24em; width: calc(100% + 1.1em); height: calc(100% + 0.5em); max-width: none; overflow: visible; pointer-events: none; }
-.jx-ring path { fill: none; stroke: var(--teal-on-white); stroke-width: 3.4; stroke-linecap: round; vector-effect: non-scaling-stroke; }
-.jx-ex__turn { display: grid; grid-template-columns: 2.5rem minmax(0, 1fr); align-items: center; gap: 0.6rem; margin-top: 0.7rem; }
-.jx-arrow { width: 2.5rem; height: 3.75rem; fill: none; stroke: var(--teal); stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; }
-/* the built thing: an outline with its words, and a teal copy over it that is the finished card */
-.jx-built { position: relative; margin-top: 0.55rem; }
-/* the two layers share one box, font and wrap rule, so they always break on the same words */
-.jx-built__words, .jx-built__fill { padding: 0.85rem 1rem; font-size: 1.25rem; font-weight: 800; line-height: 1.25; letter-spacing: -0.02em; overflow-wrap: break-word; }
-.jx-built__words { box-shadow: inset 0 0 0 3px var(--teal); color: var(--white); } /* taste-skill-ignore */
-.jx-built__fill { position: absolute; inset: 0; background: var(--teal); color: var(--black); clip-path: inset(0 0 0 0); }
-.jx-built__chip { display: inline-block; margin-right: 0.25rem; padding: 0.05rem 0.4rem; font-weight: 900; background: var(--teal); color: var(--black); }
-.jx-built__fill .jx-built__chip { background: var(--black); color: var(--teal); }
-@media (max-width: 380px) {
-  .jx-ex__say { font-size: 1.4rem; }
-  .jx-note p { font-size: 1.45rem; }
-  .jx-ex__build, .jx-built__words, .jx-built__fill { font-size: 1.125rem; }
-}
-@media (max-width: 340px) { .jx-note p { font-size: 1.25rem; } }
-/* tablet: the same column, roomier */
-@media (min-width: 641px) {
-  .jx { padding-block: 2.5rem 3.5rem; }
-  .jx-ex { padding: 1.75rem 1.75rem 2rem; }
-  .jx-ex__tag { position: absolute; top: 1.75rem; right: 1.75rem; float: none; margin: 0; }
-  .jx-ex__say { font-size: var(--step-title); padding-right: 7rem; }
-  .jx-note p { font-size: clamp(2rem, 1rem + 2.6vw, 3rem); }
-  .jx-ex__build, .jx-built__words, .jx-built__fill { font-size: var(--step-lead); }
-  .jx-built__words, .jx-built__fill { padding: 1.1rem 1.3rem; }
-  .jx-ex__turn { grid-template-columns: 3rem minmax(0, 1fr); }
-  .jx-arrow { width: 3rem; height: 4.5rem; }
-}
-/* desktop: one screen-filling panel that reads left to right: the owner's note, an arrow, the thing we built. Only
-   when the panel is wide enough for its text (46em: every desktop width at ordinary text; enlarged text, or a browser
-   without container queries, keeps the stacked tablet panel above, which wraps safely). */
-@media (min-width: 1001px) {
-  .jx { container: jx / inline-size; padding-block: clamp(1rem, 3vh, 2rem) clamp(2rem, 6vh, 4rem); }
-}
-@container jx (min-width: 46em) {
-  .jx-ex {
-    display: grid; grid-template-columns: minmax(0, 13fr) clamp(5rem, 8vw, 8.5rem) minmax(0, 9fr);
-    grid-template-areas: "say say say" ". . ." "note arrow build" "note arrow built";
-    grid-template-rows: auto clamp(2rem, 7vh, 4.5rem) auto auto; column-gap: clamp(1rem, 2vw, 2rem);
-    padding: clamp(2rem, 4.5vh, 3.5rem) clamp(2rem, 3.5vw, 3.5rem) clamp(2.5rem, 6vh, 4.5rem);
-  }
-  .jx-ex__tag { top: clamp(2rem, 4.5vh, 3.5rem); right: clamp(2rem, 3.5vw, 3.5rem); font-size: 1.125rem; padding: 0.15rem 0.7rem; }
-  .jx-ex__say { grid-area: say; font-size: clamp(3.25rem, 1rem + 4.9vw, 7rem); line-height: 0.92; letter-spacing: -0.045em; padding-right: 9rem; }
-  .jx-note { grid-area: note; align-self: center; margin: 0; padding: clamp(1.4rem, 3vh, 2.2rem) clamp(1.5rem, 2.2vw, 2.4rem) clamp(1.6rem, 3.4vh, 2.5rem); border-top-width: 0.9rem; }
-  .jx-note p { font-size: clamp(2.25rem, 3.33vw, 4.25rem); line-height: 1.22; }
-  .jx-ring path { stroke-width: 5; }
-  .jx-ex__turn { display: contents; }
-  .jx-arrow { grid-area: arrow; align-self: center; justify-self: center; width: 100%; height: auto; max-height: 7rem; transform: rotate(-90deg); stroke-width: 3; }
-  .jx-ex__build { grid-area: build; align-self: end; font-size: clamp(1.5rem, 0.8rem + 1.2vw, 2.25rem); margin-bottom: 1rem; }
-  .jx-built { grid-area: built; align-self: start; margin-top: 0; }
-  .jx-built__words, .jx-built__fill { font-size: clamp(1.6rem, 0.8rem + 1.5vw, 2.6rem); line-height: 1.2; padding: clamp(1.1rem, 2.4vh, 1.75rem) clamp(1.2rem, 1.8vw, 1.9rem); }
-  .jx-built__words { box-shadow: inset 0 0 0 4px var(--teal); } /* taste-skill-ignore */
-}
-
 /* ---------- the two people, at a glance ---------- */
 .cue { padding: 1.5rem var(--margin); display: grid; gap: 1rem; }
 .cue__title { font-size: var(--step-body); font-weight: 900; color: var(--teal); letter-spacing: -0.02em; }
@@ -792,15 +716,6 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
   }
 }
 
-/* Enlarged text (about 125% and up at 390): the Example's tag takes its own line above the title instead of
-   holding a gap beside it, and the note, now several lines, drops its slant and keeps its tilt. (Without container
-   queries the note still wraps and its slant stays small; see .jx-note__l.) */
-@container (max-width: 18em) {
-  .jx-ex__tag { position: static; float: none; display: inline-block; margin: 0 0 0.6rem; }
-  .jx-ex__say { padding-right: 0; }
-  .jx-note__l { transform: none; }
-}
-
 /* Enlarged text on a phone (the page under 16em wide, about 150% text and up at 390): the two people stack,
    each person's words sit under the picture, a call-back row reads as one column, the phone number may break at
    its hyphens and the billing total scales to its card. Never at ordinary text sizes (320 is 20em). */
@@ -822,23 +737,191 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
   .cb__urgency, .cb__phone { justify-self: start; }
 }
 
-/* ---------- motion states ----------
-   Only with script and motion allowed: js/invoice.js arms the Example (.jx-armed: every step held at its first
-   frame) and plays it once (.jx-play), then takes both off. Reduced motion, no script or any failure: the finished
-   picture is all there is. */
-@media (prefers-reduced-motion: no-preference) {
-  .jx-armed .jx-ring path { stroke-dasharray: 3 3; animation: jx-ring 0.7s 0.2s cubic-bezier(0.65, 0, 0.35, 1) both paused; }
-  .jx-armed .jx-arrow__shaft { stroke-dasharray: 1; animation: jx-draw 0.45s 0.9s cubic-bezier(0.65, 0, 0.35, 1) both paused; }
-  .jx-armed .jx-arrow__head { stroke-dasharray: 1; animation: jx-draw 0.2s 1.3s ease-out both paused; }
-  .jx-armed .jx-built__fill { animation: jx-wipe 0.6s 1.45s cubic-bezier(0.76, 0, 0.24, 1) both paused; }
-  .jx-armed .jx-built { animation: jx-land 0.5s 1.95s cubic-bezier(0.22, 1, 0.36, 1) both paused; }
-  .jx-play .jx-ring path, .jx-play .jx-arrow__shaft, .jx-play .jx-arrow__head, .jx-play .jx-built__fill, .jx-play .jx-built { animation-play-state: running; }
-}
-@keyframes jx-draw { from { stroke-dashoffset: 1; opacity: 0; } 4% { opacity: 1; } to { stroke-dashoffset: 0; opacity: 1; } }
-/* the ring's dash is well past the path's length, so it closes at every size */
-@keyframes jx-ring { from { stroke-dashoffset: 3; opacity: 0; } 4% { opacity: 1; } to { stroke-dashoffset: 0; opacity: 1; } }
-@keyframes jx-wipe { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
-@keyframes jx-land { 0% { transform: scale(1); } 40% { transform: scale(1.035); } 100% { transform: scale(1); } }
 @media (prefers-reduced-motion: reduce) {
   .bd .st-ill .st-win, .bd .st-halo, .bd .st-halo-line, .bd-btn, .try, .biz__photos img { transition: none; }
 }
+
+/* ---------- the hero on desktop and the Example panel: "poster left, several examples right" ----------
+   One panel (.eg) in the hero markup, no JS moves it.
+   Desktop (1001px and up): the hero is a grid inside the nav's own edges; the four-promise poster on the left (~60%),
+   the Example panel on the right (~36%), its top on the poster's top and its bottom on the Let's talk button's bottom.
+   Under 1001px: the poster and everything above it render exactly as before (.pz-top carries the hero's old flex
+   column and height), and the panel follows the button where the invoice-only Example section used to sit.
+   The panel: a heading with the Example tag, four rows (an owner's note, then what we'd build), Ben's closing line. */
+
+/* ---------- the panel, every width ---------- */
+@property --eg-pw { syntax: "<length>"; inherits: true; initial-value: 0px; }
+.pz-top { display: flex; flex-direction: column; }
+.eg {
+  container: eg / inline-size;
+  margin: 2.75rem 0 1.25rem;
+  padding: 1.1rem min(1rem, 5vw) 1.25rem;
+  background: var(--black);
+  color: var(--white);
+}
+.eg__head { display: flow-root; }
+.eg__say {
+  font-size: 1.625rem; line-height: 1.05; letter-spacing: -0.035em; color: var(--teal);
+  text-wrap: pretty; overflow-wrap: normal;
+}
+.eg__tag { float: right; margin: 0.1rem 0 0.4rem 0.75rem; font-size: 1rem; }
+.eg__rows { list-style: none; margin: 1rem 0 0; padding: 0; display: grid; gap: 0.625rem; }
+.eg__row { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; }
+
+/* the owner's note: white paper, a grey top edge, slanted lettering */
+.eg__note {
+  margin: 0; padding: 0.7em 0.8em 0.75em; align-content: center;
+  background: var(--white); color: var(--black);
+  border-top: 0.45rem solid var(--surface-2);
+}
+.eg__note p {
+  font-size: 1.25rem; font-weight: 600; font-style: italic; line-height: 1.2; letter-spacing: -0.015em;
+  overflow-wrap: break-word; text-wrap: balance;
+}
+/* the chore words: a static hand-drawn underline (it follows the words if they wrap) or ring */
+.eg__u {
+  padding-bottom: 0.1em;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 10' preserveAspectRatio='none'%3E%3Cpath d='M1.5 7.5 C 22 3.5, 58 2.5, 98.5 5' fill='none' stroke='%230a7a6e' stroke-width='3.2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") left bottom / 100% 0.34em no-repeat;
+  -webkit-box-decoration-break: clone; box-decoration-break: clone;
+}
+.eg__o { position: relative; display: inline-block; margin-inline: 0.28em 0.14em; }
+.eg__ring {
+  position: absolute; left: -0.24em; top: -0.08em; width: calc(100% + 0.44em); height: calc(100% + 0.22em);
+  max-width: none; overflow: visible; pointer-events: none;
+}
+.eg__ring path { fill: none; stroke: var(--teal-on-white); stroke-width: 3.2; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+
+/* the underlined chore phrase stays on one line wherever the note has room for it; at narrow or enlarged-text sizes it
+   may wrap, and the underline follows each piece */
+@container eg (min-width: 15rem) { .eg__u { white-space: nowrap; } }
+/* enlarged text on a phone: the tag sits above the heading instead of squeezing it */
+@container eg (max-width: 15rem) { .eg__tag { float: none; display: inline-block; margin: 0 0 0.5rem; } }
+/* what we'd build: teal, smaller and plainer type than the note */
+.eg__nb { white-space: nowrap; }
+.eg__built {
+  margin: 0; padding: 0.7rem 0.8rem 0.75rem; align-content: center;
+  background: var(--teal); color: var(--black);
+  font-size: 1.0625rem; font-weight: 700; line-height: 1.25; letter-spacing: -0.015em; overflow-wrap: break-word; text-wrap: pretty;
+}
+.eg__chip {
+  display: inline-block; margin-right: 0.3em; padding: 0 0.35em;
+  background: var(--black); color: var(--teal); font-weight: 900; white-space: nowrap;
+}
+
+/* Ben's closing line; the underline under "build" rests drawn */
+.eg__end {
+  margin-top: 1rem; font-size: 1.25rem; font-weight: 900; line-height: 1.2; letter-spacing: -0.025em; color: var(--teal);
+}
+.eg__b { position: relative; display: inline-block; }
+.eg__line {
+  position: absolute; left: -0.05em; bottom: -0.2em; width: calc(100% + 0.1em); height: 0.3em;
+  max-width: none; overflow: visible; pointer-events: none;
+}
+.eg__line path { fill: none; stroke: var(--teal); stroke-width: 3; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+
+/* ---------- phones, tablets and short desktop windows (under 700px tall): the poster stays exactly as it was and the
+   panel follows the button ---------- */
+@media (max-width: 1000px), (max-height: 699px) {
+  @container eg (min-width: 30rem) {
+    .eg__row { grid-template-columns: minmax(0, 44fr) minmax(0, 56fr); }
+  }
+}
+@media (min-width: 641px) and (max-width: 1000px), (min-width: 1001px) and (max-height: 699px) {
+  .eg { margin: 3.5rem 0 2.5rem; padding: 1.75rem; }
+  .eg__say { font-size: var(--step-title); }
+  .eg__tag { font-size: 1.125rem; padding: 0.15rem 0.7rem; }
+  .eg__rows { margin-top: 1.5rem; gap: 0.75rem; }
+  .eg__note p { font-size: 1.375rem; }
+  .eg__built { font-size: 1.125rem; padding: 0.8rem 1rem; }
+  .eg__end { margin-top: 1.25rem; font-size: var(--step-lead); }
+}
+@media (min-width: 700px) and (max-width: 1000px), (min-width: 1001px) and (max-height: 699px) {
+  /* the hero's own height now lives on .pz-top, so the panel below can't change the poster */
+  .pz-hero { min-height: 0; }
+  .pz-top { min-height: calc(min(100vh, 62rem) - 1rem); min-height: calc(min(100svh, 62rem) - 1rem); }
+}
+
+/* ---------- desktop, 700px tall and up: poster left, panel right ----------
+   (Shorter windows keep the poster-only hero with the panel after the button: beside the poster the panel would be
+   taller than the poster there, and the button would move when the web font arrives.) */
+@media (min-width: 1001px) and (min-height: 700px) {
+  .pz-hero {
+    --margin: clamp(2rem, 4.6vw, 7rem);
+    --sp: clamp(0.9rem, 1.25vw, 1.75rem);
+    --gap: clamp(1.75rem, 3.2vw, 4.5rem);
+    --pz-reserve: 16.5rem;
+    --pz-ratio: 1.95;
+    --cw: calc(100vw - 2 * var(--margin));
+    --pz-floor: 24rem; /* binds only under enlarged text: the poster never shrinks because the text grew */
+    --w: min(calc(var(--cw) * 0.6 - 2 * var(--sp)), max(var(--pz-floor), calc((100vh - var(--pz-reserve)) * var(--pz-ratio))));
+    display: grid;
+    grid-template-columns: calc(var(--w) + 2 * var(--sp)) minmax(0, 1fr);
+    grid-template-rows: auto clamp(0.75rem, 6vh, 5.5rem) minmax(0, 1fr) auto clamp(0.25rem, 4.5vh, 4rem);
+    grid-template-areas: "nav nav" ". ." "pz ex" "act ex" ". .";
+    --eg-pw: calc(var(--w) + 2 * var(--sp)); /* the poster column's width, fixed here as a length */
+    column-gap: var(--gap);
+    min-height: 100vh; min-height: 100svh;
+    padding-bottom: clamp(1.25rem, 3.6vh, 3rem);
+  }
+  @supports (width: 1cqi) {
+    .pz-hero {
+      --cw: calc(100cqi - 2 * var(--margin));
+      --w: min(calc(var(--cw) * 0.6 - 2 * var(--sp)), max(var(--pz-floor), calc((100svh - var(--pz-reserve)) * var(--pz-ratio))));
+    }
+  }
+  .pz-top { display: contents; }
+  .pz-hero .nav { grid-area: nav; padding-block: clamp(0.875rem, 2.6vh, 1.75rem); }
+
+  /* the poster column: bands inside the margins, text inset by --sp, every line fitted to --w. The first line has
+     no band, so it runs the band's full width: it starts on the bands' left edge and ends on their right edge. */
+  .pz-hero .pz { --w: inherit; grid-area: pz; margin-top: 0; }
+  .pz-hero .pz__s { margin-inline: 0; padding-inline: var(--sp); }
+  .pz-hero .pz__s--fit { padding-inline: 0; font-size: calc((var(--w) + 2 * var(--sp)) / var(--fd)); }
+  .pz-hero .pz__fix { font-size: calc(var(--w) / var(--f) * 1.005); }
+  .pz-hero .pz__price { font-size: clamp(1rem, calc(var(--w) / 38), 2rem); }
+  /* the one motion on the first screen is the underline under "build"; the fitting line round "business." rests */
+  .pz-hero .pz__box::after { animation: none; opacity: 0; }
+
+  .pz-hero .pz__act { grid-area: act; flex-wrap: wrap; align-items: flex-end; gap: 1rem 1.5rem; margin-top: clamp(0.9rem, 2.4vh, 1.75rem); }
+  .pz-hero .pz__who { flex: 1 1 12rem; max-width: 38ch; font-size: clamp(1.0625rem, 0.55rem + 0.85vw, 1.875rem); }
+  .pz-hero .pz__go { flex: 0 1 auto; max-width: 100%; text-align: center; font-size: clamp(1.25rem, 0.45rem + 1.1vw, 2.375rem); min-height: clamp(3.75rem, calc(var(--w) / 12), 6rem); padding-inline: 1.6em; }
+
+  /* the panel: from the poster's top to the button's bottom. Type is sized to the panel's width and the window's
+     height, never under 16px; the rows take any spare height into their white and teal cells, not into black. */
+  .pz-hero > .eg {
+    grid-area: ex; align-self: stretch; margin: 0;
+    display: flex; flex-direction: column;
+    padding: clamp(1rem, 2.2vh, 2rem) clamp(1rem, 1.5vw, 2rem);
+  }
+  .pz-hero .eg__say { font-size: clamp(1.5rem, calc(var(--eg-pw) / 25.2), 2.5rem); line-height: 1.02; letter-spacing: -0.04em; }
+  .pz-hero .eg__tag { font-size: clamp(1rem, 0.6rem + 0.45vw, 1.375rem); padding: 0.1rem 0.6rem; }
+  .pz-hero .eg__rows { flex: 1 1 auto; display: flex; flex-direction: column; margin-top: clamp(0.75rem, 2vh, 1.5rem); gap: clamp(0.5rem, 1.1vh, 0.75rem); }
+  .pz-hero .eg__row { flex: 1 1 auto; }
+  .pz-hero .eg__note { display: block; align-content: center; border-top-width: clamp(0.35rem, 0.8vh, 0.6rem); padding: 0.45em 0.6em 0.5em; }
+  .pz-hero .eg__note p { font-size: clamp(1.125rem, min(5.2cqi, 2.45vh), 1.75rem); line-height: 1.18; }
+  .pz-hero .eg__built { display: block; align-content: center; padding: 0.5em 0.75em; font-size: clamp(1rem, min(4cqi, 1.95vh), 1.5rem); line-height: 1.2; }
+  .pz-hero .eg__end { margin-top: clamp(0.75rem, 2vh, 1.5rem); font-size: clamp(1.125rem, min(4.4cqi, 2.4vh), 1.75rem); }
+  /* narrow desktop panels (1001-1100px wide windows) and enlarged text: the underlined phrase may wrap */
+  @container eg (max-width: 22rem) { .pz-hero .eg__u { white-space: normal; } }
+  /* the narrowest desktop windows (1001-1119px): the panel's type steps down a size, so the panel fits beside the
+     poster in the web font and in the fallback alike, and the button doesn't move when the font arrives */
+  @media (max-width: 1119px) {
+    .pz-hero .eg__say { font-size: 1.25rem; }
+    .pz-hero .eg__note p { font-size: 1rem; }
+    .pz-hero .eg__end { font-size: 1rem; }
+  }
+  @media (max-width: 1119px) and (max-height: 740px) {
+    .pz-hero .eg__say { font-size: 1.125rem; }
+    .pz-hero .eg__rows { margin-top: 0.5rem; gap: 0.375rem; }
+    .pz-hero .eg__end { margin-top: 0.5rem; }
+  }
+  /* each note sits beside its result only where the panel is wide enough in text terms; enlarged text, or a browser
+     without container queries, keeps the note above its result */
+  @container eg (min-width: 18.01rem) {
+    .pz-hero .eg__row { grid-template-columns: minmax(0, 44fr) minmax(0, 56fr); column-gap: 0.375rem; }
+  }
+}
+@media (min-width: 1001px) and (min-height: 700px) and (prefers-reduced-motion: no-preference) {
+  html.js .eg__line path { stroke-dasharray: 1; animation: eg-draw 0.45s 0.6s cubic-bezier(0.65, 0, 0.35, 1) both; }
+}
+@keyframes eg-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }

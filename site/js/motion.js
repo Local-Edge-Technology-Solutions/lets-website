@@ -1,5 +1,5 @@
-// The motion layer outside the three moments (the Example in js/invoice.js, the voicemail in
-// js/voicemail.js, the Billing Day approval in js/work.js): press feedback under the hand, and landing a visit
+// The motion layer outside the two moments (the voicemail in js/voicemail.js, the Billing Day approval in
+// js/work.js; the Example's one underline is CSS): press feedback under the hand, and landing a visit
 // that opens on a fragment. Nothing on the page moves because it scrolled. The press recipe is adapted from
 // Animaxxing (pressFeedback) with the taste skill's rules winning: no overshoot, reduced motion gets none of it.
 import { gsap } from "./env.js";

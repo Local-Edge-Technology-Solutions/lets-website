@@ -124,7 +124,7 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
 /* A drawn object: 24-unit line glyphs that take the text colour. */
 .glyph { width: 1.5rem; height: 1.5rem; flex: none; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
-/* An ask: one button. (The free first talk is said in the hero, the form and the cost answer only.) */
+/* An ask: one button. */
 .ask-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.5rem; }
 .ask-row .button { width: 100%; font-size: var(--step-body); min-height: 3.5rem; padding: 0 1.6rem; }
 
@@ -160,8 +160,8 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
    where supported; both carry the height cap. One thing moves: the dashed fitting line round "business." pulls in
    once and rests on the box's own edge, where it disappears (reduced motion: never drawn).
    Phones (2026-11-14, Ben on a real iPhone, 430x745 with the browser bars): the poster must run edge to edge, so
-   "Nothing to learn." sets as one line, the strips and lines sit tighter and the free-talk line shares the button's
-   row; that height goes to the poster, which fills at least 90% of the width on phones 360 to 430 wide. */
+   "Nothing to learn." sets as one line, the strips and lines sit tighter and the button stands alone under the line of
+   jobs; that height goes to the poster, which fills at least 90% of the width on phones 360 to 430 wide. */
 .hero { position: relative; padding: 0 var(--margin) 1rem; overflow: hidden; overflow: clip; display: flex; flex-direction: column; }
 .pz {
   --pz-reserve: 19.5rem; --pz-floor: 10rem; --pz-ratio: 0.98;
@@ -194,12 +194,10 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
 /* the price, the proof under "Won't cost a fortune.": plain sentence case, white on the black strip, never below 15px */
 .pz__price { margin-top: 0.4rem; max-width: 34ch; font-size: 1rem; font-weight: 800; line-height: 1.2; letter-spacing: -0.015em; text-transform: none; color: var(--white); }
 .pz__pl { display: block; }
-/* phone: the line of jobs, then "Let's talk" with "The first talk is free." beside it on the same row; under enlarged
-   text there is no room for its 7.5rem, so it wraps under the button (no container query needed) */
+/* phone: the line of jobs, then "Let's talk" across the full width */
 .pz__act { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 0.9rem; margin-top: 0.75rem; }
 .pz__who { flex: 1 1 100%; font-weight: 800; font-size: 1.0625rem; line-height: 1.25; letter-spacing: -0.02em; }
-.pz__go { flex: 0 1 auto; min-height: 3.5rem; padding-inline: 1.5rem; }
-.pz__free { flex: 1 1 7.5rem; font-weight: 900; font-size: var(--step-body); line-height: 1.2; }
+.pz__go { flex: 1 1 100%; min-height: 3.5rem; padding-inline: 1.5rem; }
 /* short phones (the usual case with the browser's bars showing): a tighter nav row and line of jobs */
 @media (max-width: 699px) and (max-height: 760px) {
   .hero .nav { padding-block: 0.625rem; }
@@ -228,8 +226,7 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
   .pz__pl { display: inline; }
   .pz__act { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.5rem; margin-top: clamp(1rem, 2.5vh, 1.75rem); }
   .pz__who { flex: 1 1 18rem; font-size: var(--step-lead); max-width: 52ch; text-wrap: balance; }
-  .pz__go { width: auto; min-height: 4rem; margin-left: auto; padding-inline: 2rem; }
-  .pz__free { flex: 0 1 auto; line-height: 1.3; }
+  .pz__go { flex: 0 1 auto; width: auto; min-height: 4rem; margin-left: auto; padding-inline: 2rem; }
 }
 /* loose, like an off-the-peg fit, then taken in to the box's edge; it stays clear of the words beside it */
 @media (prefers-reduced-motion: no-preference) {

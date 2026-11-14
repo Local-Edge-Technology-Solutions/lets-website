@@ -31,7 +31,7 @@ const jobs = {
   zeke: ["zeke.jpg", [480, 800, 1024], { left: 0, top: 40, width: 1024, height: 1280 }],
   ben: ["ben.jpg", [480, 800, 1024]],
 };
-const unknown = (only ?? []).filter((n) => !(n in jobs));
+const unknown = (only ?? []).filter((n) => !Object.hasOwn(jobs, n));
 if (unknown.length) throw new Error(`No such image job: ${unknown.join(", ")}`);
 
 for (const [name, [file, widths, crop]] of Object.entries(jobs).filter(([n]) => !only || only.includes(n))) {

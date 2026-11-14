@@ -2,7 +2,8 @@
 // lands, once (about 2.5 s), when the panel is well in view. The finished picture is the base CSS; this only holds
 // it at its first frame (.jx-armed, motion allowed) and starts it (.jx-play). When the card's landing ends, both come
 // off and the panel is marked .jx-done. Reduced motion (also switched on mid-run), no IntersectionObserver, a
-// missing part, the panel already on screen at start, or any failure: the finished picture at once. Never replays.
+// missing part, the panel already on screen in a page that opens scrolled, or any failure: the finished picture at once.
+// Never replays.
 import { calm, $ } from "./env.js";
 
 export function initInvoice() {
@@ -36,8 +37,9 @@ export function initInvoice() {
   // Play once 40% of the panel is showing, or once it fills half the screen (screens shorter than the panel).
   const inView = (rect, seen) => seen > 0 && (seen / rect.height >= 0.4 || seen >= innerHeight * 0.5);
   const r = ex.getBoundingClientRect();
-  // Already well on screen before anything moved (a restored scroll): never blank it, it simply stays finished.
-  if (inView(r, Math.min(r.bottom, innerHeight) - Math.max(r.top, 0))) { finish(); return; }
+  // A page that opens already scrolled (a restored position or a link to a section) with the panel well on screen:
+  // never blank it, it simply stays finished. At the top of the page a panel showing under the poster plays as usual.
+  if (scrollY > 0 && inView(r, Math.min(r.bottom, innerHeight) - Math.max(r.top, 0))) { finish(); return; }
 
   try {
     io = new IntersectionObserver((entries) => {

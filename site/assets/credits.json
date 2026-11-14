@@ -68,5 +68,11 @@
   "used_as": "zeke",
   "source": "Supplied by Zeke for the site by email to Ben, 2026-11-04 (his own headshot; metadata stripped)",
   "creditRequired": false
+ },
+ {
+  "file": "src-images/ben.jpg",
+  "used_as": "ben",
+  "source": "Ben's own headshot, approved by Ben for the site, 2026-11-14 (from prototypes/headshot/ben-dozier-headshot-final.png; metadata stripped)",
+  "creditRequired": false
  }
 ]

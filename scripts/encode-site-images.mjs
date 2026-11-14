@@ -1,17 +1,21 @@
 // One-off: re-encodes the site's photographs, in colour, into AVIF and WebP at the sizes the page shows
 // them, into site/assets/img/. Run by hand when a picture changes; Netlify never runs it.
 //
-//   node scripts/encode-site-images.mjs [source dir]
+//   node scripts/encode-site-images.mjs [source dir] [--only=name,name]
 //
-// The source dir defaults to site/src-images/, the originals kept in the repo (not published). Every
-// stock photo is from Unsplash (Unsplash License) or Pexels (Pexels License), both free for commercial use with
-// no credit required; zeke.jpg is the headshot Zeke sent us. Sources are listed in site/assets/credits.json.
+// The source dir defaults to site/src-images/, the originals kept in the repo (not published). --only encodes just
+// the named jobs (e.g. --only=ben), so adding one picture never re-encodes the others. Every stock photo is from
+// Unsplash (Unsplash License) or Pexels (Pexels License), both free for commercial use with no credit required;
+// zeke.jpg and ben.jpg are the headshots Zeke and Ben supplied. Sources are listed in site/assets/credits.json.
 import sharp from "sharp";
 import fs from "node:fs";
 import path from "node:path";
 
 const root = path.resolve(import.meta.dirname, "..");
-const src = path.resolve(process.argv[2] ?? path.join(root, "site/src-images"));
+const args = process.argv.slice(2);
+const only = args.find((a) => a.startsWith("--only="))?.slice(7).split(",").filter(Boolean);
+const dir = args.find((a) => !a.startsWith("--"));
+const src = path.resolve(dir ?? path.join(root, "site/src-images"));
 const out = path.join(root, "site/assets/img");
 fs.mkdirSync(out, { recursive: true });
 
@@ -25,9 +29,12 @@ const jobs = {
   bakery: ["bakery.jpg", [400, 640]],
   online: ["owner-desk.jpg", [400, 640], { left: 0, top: 200, width: 2200, height: 2750 }],
   zeke: ["zeke.jpg", [480, 800, 1024], { left: 0, top: 40, width: 1024, height: 1280 }],
+  ben: ["ben.jpg", [480, 800, 1024]],
 };
+const unknown = (only ?? []).filter((n) => !(n in jobs));
+if (unknown.length) throw new Error(`No such image job: ${unknown.join(", ")}`);
 
-for (const [name, [file, widths, crop]] of Object.entries(jobs)) {
+for (const [name, [file, widths, crop]] of Object.entries(jobs).filter(([n]) => !only || only.includes(n))) {
   for (const w of widths) {
     let base = sharp(path.join(src, file));
     if (crop) base = base.extract(crop);

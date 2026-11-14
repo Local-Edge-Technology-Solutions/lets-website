@@ -225,9 +225,10 @@
   <h2 class="head trust__title" id="trust-title">By Ben and Zeke in Nashville</h2>
   <div class="trust__people">
     <figure class="trust__photo">
-      <!-- Ben's headshot does not exist yet. When it does, swap this panel for a <picture> like Zeke's below
-           (ben-480/ben-800 in avif and webp, 4:5, the same sizes, an alt describing Ben) and keep the caption. -->
-      <div class="trust__ben" aria-hidden="true"><span>BEN</span></div>
+      <picture>
+        <source type="image/avif" sizes="(max-width: 640px) 46vw, (max-width: 1000px) 17rem, 24vw" srcset="../assets/img/ben-480.avif 480w, ../assets/img/ben-800.avif 800w">
+        <img src="../assets/img/ben-480.webp" sizes="(max-width: 640px) 46vw, (max-width: 1000px) 17rem, 24vw" srcset="../assets/img/ben-480.webp 480w, ../assets/img/ben-800.webp 800w" width="1024" height="1280" loading="lazy" decoding="async" alt="Ben Dozier, smiling, in a dark button-up shirt">
+      </picture>
       <figcaption>Ben Dozier</figcaption>
     </figure>
     <figure class="trust__photo">
@@ -240,7 +241,7 @@
   </div>
   <ul class="trust__list">
     <li>The first talk is free.</li>
-    <li>We look after what we build, for a monthly cost.</li>
+    <li>We look after what we build, from $150 a month.</li>
     <li>Your data stays yours; we don’t look through it or use it for anything else.</li>
   </ul>
   <div class="trust__act">

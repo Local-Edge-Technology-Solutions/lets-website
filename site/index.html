@@ -56,7 +56,7 @@
 <a class="skip" href="#main">Skip to the page</a>
 <div class="page">
 
-<header class="hero field-teal" id="top">
+<header class="hero pz-hero field-teal" id="top">
   <nav class="nav" aria-label="Main">
     <a class="wordmark" href="#top" aria-label="LETS, back to the top">LETS</a>
     <ul class="nav__links">
@@ -82,51 +82,53 @@
     <a class="button button--small nav__cta" href="#contact">Let’s talk</a>
   </nav>
 
-  <h1 class="display hero__title"><span class="hero__l">Custom AI for</span> <span class="hero__l">your <span class="hero__box">business</span></span></h1>
+  <!-- The four promises as one poster of full-bleed strips. Each line is fitted to the width: --f (phone, one line)
+       and --fd (wide, the whole strip on one line) are its measured width in em in Chivo 900 at -0.05em, plus about
+       1% slack. Only the first promise is the page heading; the price is a sentence of its own under the second. -->
+  <div class="pz">
+    <div class="pz__s pz__s--fit" style="--fd: 12.58">
+      <h1 class="pz__say"><span class="pz__l" style="--f: 7.37">Built for your</span> <span class="pz__l pz__l--box" style="--f: 5.07"><span class="pz__box">business.</span></span></h1>
+    </div>
+    <div class="pz__s pz__s--cost" style="--fd: 11.08">
+      <p class="pz__say"><span class="pz__l" style="--f: 5.67">Won’t cost</span> <span class="pz__l" style="--f: 5.26">a fortune.</span></p>
+      <p class="pz__price"><span class="pz__pl">Projects start around $1,000.</span> <span class="pz__pl">Looking after it, from $150 a month.</span></p>
+    </div>
+    <div class="pz__s pz__s--learn" style="--fd: 8.99">
+      <p class="pz__say"><span class="pz__l" style="--f: 4.23">Nothing</span> <span class="pz__l" style="--f: 4.61">to learn.</span></p>
+    </div>
+    <div class="pz__s pz__s--tell" style="--fd: 16.46">
+      <p class="pz__say"><span class="pz__l" style="--f: 9.74">Just tell us what’s</span> <span class="pz__l" style="--f: 6.58">bugging you.</span> <span class="pz__l pz__fix" style="--f: 8.32">We build the fix.</span></p>
+    </div>
+  </div>
 
-  <div class="hero__body">
-    <div class="hero__copy">
-      <p class="hero__sub">Built around the software you already use. You don’t need to learn AI.</p>
-      <p class="hero__who">LETS (Local Edge Technology Solutions): for small businesses, by Ben and Zeke in Nashville.</p>
-    </div>
-    <figure class="sig" data-sig aria-labelledby="sig-title">
-      <p class="sig__top"><b id="sig-title">What we’d build</b><span class="tag">Example</span></p>
-      <div class="sig__board">
-        <ul class="sig__lanes" role="list">
-          <li class="lane">
-            <span class="lane__in"><svg class="glyph" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M3 11v2M6.5 8v8M10 5v14M13.5 9v6M17 6v12M20.5 10v4"></path></svg><span class="lane__from">Missed call</span></span>
-            <span class="wire" aria-hidden="true"><i class="wire__run"><b></b></i></span>
-            <span class="out out--call"><span class="out__deco" aria-hidden="true"><svg class="glyph" viewBox="0 0 24 24" focusable="false"><path d="M7 3.5h2.6l1.6 4.4-2.1 1.5a10.5 10.5 0 0 0 5.5 5.5l1.5-2.1 4.4 1.6V17a2.5 2.5 0 0 1-2.5 2.5A15 15 0 0 1 4.5 6 2.5 2.5 0 0 1 7 3.5z"></path></svg></span><span class="out__label"><span class="sr-only">becomes: </span>On your <span class="nowrap">call-back</span> list</span><span class="out__tag" aria-hidden="true">Today</span></span>
-          </li>
-          <li class="lane">
-            <span class="lane__in"><svg class="glyph" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="5.5" width="18" height="13"></rect><path d="M3 6.5l9 6.5 9-6.5"></path></svg><span class="lane__from">Customer question</span></span>
-            <span class="wire" aria-hidden="true"><i class="wire__run"><b></b></i></span>
-            <span class="out out--reply"><span class="out__deco" aria-hidden="true"><i class="out__type"><i></i><i></i><i class="out__caret"></i></i></span><span class="out__label"><span class="sr-only">becomes: </span>Reply drafted</span></span>
-          </li>
-          <li class="lane">
-            <span class="lane__in"><svg class="glyph" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><rect x="3" y="4" width="18" height="16"></rect><path d="M3 9.3h18M3 14.6h18M9 4v16M15 4v16"></path></svg><span class="lane__from">Spreadsheets</span></span>
-            <span class="wire" aria-hidden="true"><i class="wire__run"><b></b></i></span>
-            <span class="out out--report"><span class="out__deco" aria-hidden="true"><svg class="glyph glyph--bars" viewBox="0 0 24 24" focusable="false"><rect x="4" y="12" width="4" height="8"></rect><rect x="10" y="7" width="4" height="13"></rect><rect x="16" y="3" width="4" height="17"></rect></svg></span><span class="out__label"><span class="sr-only">becomes: </span>Report prepared</span></span>
-          </li>
-          <li class="lane">
-            <span class="lane__in"><svg class="glyph" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 2.5h10l4 4V21.5H5z"></path><path d="M8.5 8h6M8.5 11h7"></path><rect class="glyph__stamp" x="7" y="14" width="11" height="5" transform="rotate(-8 12.5 16.5)"></rect></svg><span class="lane__from">Late invoice</span></span>
-            <span class="wire" aria-hidden="true"><i class="wire__run"><b></b></i></span>
-            <span class="out out--remind"><span class="out__deco" aria-hidden="true"><svg class="glyph glyph--bell" viewBox="0 0 24 24" focusable="false"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.8 2H4.2z"></path><path d="M10 20.5a2 2 0 0 0 4 0"></path></svg></span><span class="out__label"><span class="sr-only">becomes: </span>Reminder drafted</span><span class="out__tag" aria-hidden="true">Due Friday</span></span>
-          </li>
-        </ul>
-        <div class="sig__node" aria-hidden="true"><span>LETS</span></div>
-      </div>
-      <p class="sig__check"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 12.5 L10 18 L20 6"></path></svg>You check it before it goes.</p>
-    </figure>
-    <div class="hero__act">
-      <a class="button" href="#contact">Let’s talk</a>
-      <p class="hero__free">The first talk is free. Only your email is needed.</p>
-    </div>
-    <p class="lead hero__lead">Tell us what you’d rather not be doing. We’ll build the thing that does it for you.</p>
+  <div class="pz__act">
+    <p class="pz__who">Custom AI for jobs like customer replies, invoices and missed calls, built around the software you already use. By Ben and Zeke in Nashville.</p>
+    <a class="button pz__go" href="#contact">Let’s talk</a>
+    <p class="pz__free">The first talk is free.</p>
   </div>
 </header>
 
 <main id="main">
+
+<!-- One job, said the owner's way: the note, then what we'd build. The finished picture is the base CSS; with motion
+     allowed, js/invoice.js holds it at its first frame and plays it once when the panel is in view (about 2.5 s). -->
+<section class="jx field-teal" aria-labelledby="jx-say">
+  <figure class="jx-ex" data-jx>
+    <span class="tag jx-ex__tag">Example</span>
+    <h2 class="jx-ex__say" id="jx-say">Tell us what you’d rather not be doing.</h2>
+    <blockquote class="jx-note">
+      <p><span class="jx-note__l">I spend <span class="jx-note__mark">Sunday nights<svg class="jx-ring" viewBox="0 0 200 60" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path pathLength="1" d="M64 7 C 118 1, 192 6, 195 28 C 198 50, 130 58, 70 56 C 22 54, 3 44, 5 28 C 7 12, 48 5, 104 4"></path></svg></span></span> <span class="jx-note__l">on invoices.</span></p>
+    </blockquote>
+    <div class="jx-ex__turn">
+      <svg class="jx-arrow" viewBox="0 0 40 64" aria-hidden="true" focusable="false"><path class="jx-arrow__shaft" pathLength="1" d="M20 2 C 8 18, 32 34, 20 58"></path><path class="jx-arrow__head" pathLength="1" d="M9 47 L20 60 L31 47"></path></svg>
+      <p class="jx-ex__build">We’ll build the thing that does it for you.</p>
+    </div>
+    <div class="jx-built">
+      <p class="jx-built__words"><b class="jx-built__chip">Built</b> Invoices are drafted for you. You approve. Then they go out.</p>
+      <p class="jx-built__fill" aria-hidden="true"><b class="jx-built__chip">Built</b> Invoices are drafted for you. You approve. Then they go out.</p>
+    </div>
+  </figure>
+</section>
 
 <section class="cue field-black" aria-labelledby="cue-title">
   <h2 class="cue__title" id="cue-title">The two people you’ll be talking to</h2>
@@ -139,8 +141,10 @@
       <p class="cue__who"><b>Zeke Broady</b> <span>Runs The Broady Agency, an insurance agency. Degree in computer engineering.</span></p>
     </li>
     <li class="cue__person">
-      <!-- Ben's thumbnail: swap this panel for his headshot (72x90, 4:5) when it arrives. -->
-      <span class="ben-mark cue__img" aria-hidden="true">BEN</span>
+      <picture>
+        <source type="image/avif" srcset="./assets/img/ben-480.avif">
+        <img class="cue__img" src="./assets/img/ben-480.webp" width="72" height="90" decoding="async" alt="Ben Dozier, smiling, in a dark button-up shirt">
+      </picture>
       <p class="cue__who"><b>Ben Dozier</b> <span>Head of AI at a Nashville advertising agency. Has built or led 29 AI and automation projects there, live or delivered.</span></p>
     </li>
   </ul>
@@ -256,9 +260,12 @@
   </div>
   <div class="people">
     <div class="person person--ben">
-      <!-- Ben's portrait slot: replace this panel with his headshot (a <picture> with an img.person__photo, 4:5,
-           like Zeke's below) when it arrives. The frame keeps the same size. -->
-      <div class="person__frame" aria-hidden="true"><span class="ben-mark">BEN</span></div>
+      <figure class="person__frame">
+        <picture>
+          <source type="image/avif" sizes="(max-width: 1000px) 46vw, 18vw" srcset="./assets/img/ben-480.avif 480w, ./assets/img/ben-800.avif 800w, ./assets/img/ben-1024.avif 1024w">
+          <img class="person__photo" src="./assets/img/ben-800.webp" sizes="(max-width: 1000px) 46vw, 18vw" srcset="./assets/img/ben-480.webp 480w, ./assets/img/ben-800.webp 800w, ./assets/img/ben-1024.webp 1024w" width="1024" height="1280" loading="lazy" decoding="async" alt="Ben Dozier, smiling, in a dark button-up shirt">
+        </picture>
+      </figure>
       <div class="person__words">
         <h3 class="person__name">Ben Dozier</h3>
         <p class="person__role">Head of AI at a Nashville advertising agency</p>
@@ -366,7 +373,7 @@
   <h2 class="head faq__title" id="faq-title">Questions</h2>
   <details class="band" open>
     <summary class="band__q">What does it cost?</summary>
-    <div class="band__a"><p>It depends on what we build, so there’s no price list here. The first conversation is free. First we learn how the work happens. Then we tell you what we’d build, what it costs and the monthly cost of looking after it before you commit, and work with you to find a version that fits your budget.</p></div>
+    <div class="band__a"><p>Projects start around $1,000, and looking after it starts at $150 a month. Bigger jobs cost more. The first conversation is free. First we learn how the work happens. Then we tell you what we’d build and what it costs before you commit, and work with you to find a version that fits your budget.</p></div>
   </details>
   <details class="band" open>
     <summary class="band__q">What happens to my data?</summary>

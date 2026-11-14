@@ -27,7 +27,6 @@
   --mid-on-dark: #c9c9c9;
   --photo-ground: #1b1b1b;
   --tile: #1c1c1c;
-  --wire: #4a4a4a;
   --deep-2: #0b4d47;
   --scrim: rgb(0 0 0 / 0.64);
   --mask-cut: #000;
@@ -136,9 +135,6 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
 .fold[open] > summary::before, .more[open] > summary::before { content: "\2212"; }
 .fold > summary:focus-visible, .more > summary:focus-visible, .band > summary:focus-visible { outline: 3px solid currentColor; outline-offset: 3px; }
 
-/* Ben's typographic portrait: a teal field with his name set in the display face. A headshot replaces it later. */
-.ben-mark { display: flex; align-items: flex-end; background: var(--teal); color: var(--black); font-weight: 900; text-transform: uppercase; line-height: 0.74; letter-spacing: -0.06em; overflow: hidden; overflow: clip; user-select: none; }
-
 /* ---------- nav and menu ---------- */
 .nav { position: relative; z-index: 10; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem; padding-block: var(--margin); font-weight: 700; }
 .wordmark { font-weight: 900; font-size: var(--step-lead); letter-spacing: -0.06em; text-decoration: none; line-height: 1; }
@@ -155,66 +151,166 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
 .menu__links a { display: block; padding: 0.55rem 0; font-size: var(--step-lead); font-weight: 900; letter-spacing: -0.03em; text-decoration: none; }
 .menu__links a:focus-visible { outline-offset: 0; }
 
-/* ---------- hero ---------- */
-.hero { position: relative; padding: 0 var(--margin) 2rem; overflow: hidden; overflow: clip; display: flex; flex-direction: column; }
-.hero__title { --fit: 7.75; font-size: min(calc((100vw - 2 * var(--margin)) / var(--fit)), 17vh, 8.75rem); line-height: 0.92; word-spacing: 0.1em; margin-top: 0.25rem; }
-.hero__l { display: block; white-space: nowrap; }
-.hero__box { display: inline-block; line-height: 0.8; background: var(--black); color: var(--teal); padding: 0.07em 0.07em 0.03em; margin-top: 0.06em; }
-.hero__body { display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem; }
-.hero__copy { display: grid; gap: 0.5rem; }
-.hero__sub { font-size: 1.25rem; line-height: 1.25; font-weight: 800; letter-spacing: -0.02em; max-width: 26ch; }
-.hero__who { font-size: var(--step-body); font-weight: 700; line-height: 1.3; }
-.hero__act { display: grid; gap: 0.5rem; }
-.hero__act .button { width: 100%; min-height: 3.5rem; }
-.hero__free { font-weight: 900; font-size: var(--step-body); line-height: 1.3; }
-.hero__lead { font-size: 1.125rem; font-weight: 600; max-width: 32ch; }
+/* ---------- hero: the four promises as one poster ----------
+   Full-bleed colour strips, every line in the display face and fitted to the width (--f and --fd in the HTML).
+   --w is the width the lines fill: the content width, capped by the screen height so "Let's talk" and the free-talk
+   line stay on the first screen. The cap keeps --pz-reserve for everything that is not the poster and turns the
+   height left into a width by --pz-ratio; --pz-floor stops it shrinking past legibility. The breakpoint blocks below
+   change only those three numbers. A custom property has no fallback of its own, so the vh form comes first and
+   the cqi/svh form replaces it where supported; both carry the height cap. One thing moves: the dashed fitting line
+   round "business." pulls in once and rests on the box's own edge, where it disappears (reduced motion: never drawn).
+   The reserves are 1.5rem (phone) and 2.5rem (wide) more than option D's prototype, for the line of everyday jobs
+   under the poster, which runs a line longer; only screens where the height cap binds see a smaller poster. */
+.hero { position: relative; padding: 0 var(--margin) 1rem; overflow: hidden; overflow: clip; display: flex; flex-direction: column; }
+.pz {
+  --pz-reserve: 26.25rem; --pz-floor: 10rem; --pz-ratio: 0.72;
+  --w: min(calc(100vw - 2 * var(--margin)), max(var(--pz-floor), calc((100vh - var(--pz-reserve)) * var(--pz-ratio))));
+  margin-top: 0.25rem; font-weight: 900; text-transform: uppercase; line-height: 0.84;
+}
+@supports (width: 1cqi) {
+  .pz { --w: min(calc(100cqi - 2 * var(--margin)), max(var(--pz-floor), calc((100svh - var(--pz-reserve)) * var(--pz-ratio)))); }
+}
+/* a strip: one promise on its own colour field, edge to edge; its words are a heading (the first) or a paragraph,
+   set in the strip's own type (font: inherit undoes the heading's browser size) */
+.pz__s { display: block; margin-inline: calc(-1 * var(--margin)); padding: 0.7rem var(--margin) 0.75rem; letter-spacing: -0.05em; }
+.pz__s--fit { padding-top: 0.35rem; padding-bottom: 0.9rem; }
+.pz__s--cost { background: var(--black); color: var(--teal); }
+.pz__s--learn { background: var(--white); color: var(--black); }
+.pz__s--tell { background: var(--black); color: var(--white); }
+.pz__say { font: inherit; letter-spacing: inherit; white-space: nowrap; text-wrap: nowrap; overflow-wrap: normal; }
+.pz__fix { color: var(--teal); }
+/* phone: each line fitted on its own */
+.pz__l { display: block; white-space: nowrap; font-size: calc(var(--w) / var(--f)); letter-spacing: -0.05em; }
+.pz__l + .pz__l { margin-top: 0.06em; }
+.pz__l + .pz__l--box { margin-top: 0.17em; }
+/* the box round "business.", and the tailor's line that fits it */
+.pz__box { --lx: 0.2em; --ly: 0.16em; position: relative; display: inline-block; background: var(--black); color: var(--teal); padding: 0.07em 0.07em 0.03em; line-height: 0.8; }
+.pz__box::after { content: ""; position: absolute; inset: 0; border: 0.05em dashed var(--black); pointer-events: none; opacity: 0; }
+/* the price, the proof under "Won't cost a fortune.": plain sentence case, white on the black strip, never below 15px */
+.pz__price { margin-top: 0.55rem; max-width: 34ch; font-size: 1rem; font-weight: 800; line-height: 1.25; letter-spacing: -0.015em; text-transform: none; color: var(--white); }
+.pz__pl { display: block; }
+.pz__act { display: grid; gap: 0.6rem; margin-top: 0.9rem; }
+.pz__who { font-weight: 800; font-size: 1.0625rem; line-height: 1.25; letter-spacing: -0.02em; max-width: 30ch; }
+.pz__go { width: 100%; min-height: 3.5rem; }
+.pz__free { font-weight: 900; font-size: var(--step-body); line-height: 1.3; }
+/* short phones: the space round the line under the poster tightens, so the free-talk line stays on the first screen */
+@media (max-width: 699px) and (max-height: 700px) {
+  .pz { --pz-reserve: 25.25rem; }
+  .pz__act { gap: 0.45rem; margin-top: 0.6rem; }
+  .pz__who { font-size: 1rem; line-height: 1.2; }
+}
+/* very short phones (320x568): the poster type steps down and its strips tighten; the price stays at 15px */
+@media (max-width: 699px) and (max-height: 600px) {
+  .pz { --pz-floor: 9.25rem; }
+  .pz__s { padding-block: 0.45rem 0.5rem; }
+  .pz__s--fit { padding-top: 0.2rem; padding-bottom: 0.6rem; }
+  .pz__price { font-size: 0.9375rem; margin-top: 0.4rem; }
+}
+/* tablet and laptop: one line per promise, an enormous poster whose strips share out any spare height, so it fills
+   the first screen down to the button */
+@media (min-width: 700px) {
+  .hero { min-height: min(100vh, 62rem); min-height: min(100svh, 62rem); }
+  .pz { --pz-reserve: 21.5rem; --pz-floor: 36rem; --pz-ratio: 2.8; flex: 1 0 auto; display: flex; flex-direction: column; margin-top: clamp(0.25rem, 1.5vh, 1rem); }
+  .pz__s { flex: 1 0 auto; display: flex; flex-direction: column; justify-content: center; font-size: calc(var(--w) / var(--fd)); padding-block: 0.12em 0.16em; }
+  .pz__s--fit { padding-top: 0.05em; padding-bottom: 0.2em; }
+  .pz__say { display: flex; flex-wrap: nowrap; align-items: center; column-gap: 0.2em; row-gap: 0.06em; }
+  .pz__s--tell .pz__say { flex-wrap: wrap; }
+  .pz__l { font-size: inherit; }
+  .pz__l + .pz__l, .pz__l + .pz__l--box { margin-top: 0; }
+  .pz__fix { flex-basis: 100%; }
+  .pz__box { --lx: 0.11em; --ly: 0.14em; }
+  .pz__price { margin-top: 0.35rem; max-width: none; font-size: clamp(1.125rem, 0.5rem + 1.25vw, 1.875rem); }
+  .pz__pl { display: inline; }
+  .pz__act { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.5rem; margin-top: clamp(1rem, 2.5vh, 1.75rem); }
+  .pz__who { flex: 1 1 18rem; font-size: var(--step-lead); max-width: 52ch; text-wrap: balance; }
+  .pz__go { width: auto; min-height: 4rem; margin-left: auto; }
+}
+/* loose, like an off-the-peg fit, then taken in to the box's edge; it stays clear of the words beside it */
+@media (prefers-reduced-motion: no-preference) {
+  .pz__box::after { animation: pz-fit 1.5s cubic-bezier(0.2, 0.85, 0.25, 1) 0.35s both; }
+}
+@keyframes pz-fit {
+  0% { opacity: 1; inset: calc(-1 * var(--ly)) calc(-1 * var(--lx)); }
+  62% { opacity: 1; inset: calc(-0.08 * var(--ly)) calc(-0.08 * var(--lx)); }
+  86% { opacity: 1; inset: 0; }
+  100% { opacity: 0; inset: 0; }
+}
 
-/* The signature: four everyday inputs run into one LETS node and come out as four finished pieces of work.
-   Every word is text and readable in every frame; only the drawing moves (js/hero.js). */
-.sig { --in: 6.5rem; --wirelen: 1.35rem; --node: 1.75rem; --row: 3.6rem; container-type: inline-size; background: var(--black); color: var(--white); padding: 0.875rem 0.875rem 1rem; }
-.sig__top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 0.5rem 1rem; }
-.sig__top b { font-size: 1.0625rem; font-weight: 900; color: var(--teal); letter-spacing: -0.02em; }
-.sig__board { position: relative; margin-top: 0.75rem; }
-.sig__lanes { display: grid; gap: 0.5rem; }
-.lane { position: relative; display: grid; grid-template-columns: var(--in) calc(2 * var(--wirelen) + var(--node)) minmax(0, 1fr); min-height: var(--row); }
-.lane__in { display: flex; flex-direction: column; justify-content: center; gap: 0.25rem; padding: 0.4rem 0.35rem; background: var(--tile); transition: background-color 200ms ease, box-shadow 200ms ease; }
-/* an input that has just sent its work lights up (js/hero.js; gone once the figure rests) */
-.lane__in.is-sent { background: #12302d; box-shadow: inset 0 0 0 2px var(--teal); } /* taste-skill-ignore */
-.lane__in .glyph { width: 1.25rem; height: 1.25rem; color: var(--teal); }
-.lane__from { font-size: 0.8125rem; font-weight: 800; line-height: 1.1; letter-spacing: -0.03em; overflow-wrap: break-word; }
-.glyph__stamp { stroke-width: 1.6; }
-/* The wire runs under the node; its packet travels the whole wire, so it passes into the node and out again. */
-.wire { position: relative; overflow: hidden; overflow: clip; }
-/* the packet rides above the node, so it is seen passing through it */
-.wire__run { z-index: 3; }
-.wire::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 3px; margin-top: -1.5px; background: var(--teal); }
-.wire__run { position: absolute; inset: 0; display: flex; align-items: center; visibility: hidden; }
-/* the packet: a white core with a teal glow, so it reads on the black wire and on the teal node alike */
-.wire__run b { flex: none; width: 0.625rem; height: 0.625rem; margin-left: -0.625rem; background: var(--white); box-shadow: 0 0 0 2px rgb(46 230 207 / 0.55), 0 0 14px 4px rgb(46 230 207 / 0.9); } /* taste-skill-ignore */
-.wire__run::before { content: ""; position: absolute; top: 50%; right: 100%; width: 100%; height: 3px; margin-top: -1.5px; background: var(--teal); }
-.sig__node { position: absolute; top: 0; bottom: 0; left: calc(var(--in) + var(--wirelen)); width: var(--node); z-index: 2; display: grid; place-items: center; background: var(--teal); color: var(--black); }
-.sig__node span { writing-mode: vertical-rl; transform: rotate(180deg); font-weight: 900; font-size: calc(var(--node) * 0.78); line-height: 1; letter-spacing: -0.04em; }
-/* An outcome, finished: a small piece of real work, on teal. */
-.out { position: relative; isolation: isolate; display: grid; grid-template-columns: 1.5rem minmax(0, 1fr); align-items: center; gap: 0.45rem; padding: 0.4rem 0.55rem; color: var(--black); font-weight: 800; font-size: 0.875rem; line-height: 1.15; }
-/* the outcome's ground is its own layer, so a shaped card (a reply bubble, a folded reminder) never clips its tag */
-.out::before { content: ""; position: absolute; inset: 0; z-index: -1; background: var(--teal); box-shadow: inset 0 0 0 2px var(--teal); } /* taste-skill-ignore */
-.out__deco { display: grid; place-items: center; }
-.out__deco .glyph { width: 1.35rem; height: 1.35rem; }
-.out__label { min-width: 0; overflow-wrap: break-word; }
-.out__tag { position: absolute; top: -0.6rem; right: 0.4rem; z-index: 1; font-size: 0.75rem; font-weight: 800; line-height: 1; padding: 0.2rem 0.35rem; background: var(--black); color: var(--teal); box-shadow: inset 0 0 0 1.5px var(--teal); white-space: nowrap; } /* taste-skill-ignore */
-.out--reply { padding-bottom: 0.85rem; }
-.out--reply::before { clip-path: polygon(0 0, 100% 0, 100% calc(100% - 0.45rem), 1.6rem calc(100% - 0.45rem), 0.9rem 100%, 0.9rem calc(100% - 0.45rem), 0 calc(100% - 0.45rem)); }
-.out--remind::before { clip-path: polygon(0 0, 100% 0, 100% calc(100% - 0.7rem), calc(100% - 0.7rem) 100%, 0 100%); }
-.out__type { display: grid; gap: 3px; width: 1.3rem; }
-.out__type i { display: block; height: 3px; background: currentColor; }
-.out__type i:nth-child(2) { width: 70%; }
-.out__type .out__caret { width: 2px; height: 0.8rem; margin-top: -0.55rem; margin-left: 75%; }
-.glyph--bars rect { fill: currentColor; stroke: none; transform-box: fill-box; transform-origin: 50% 100%; }
-.glyph--bell { transform-origin: 50% 10%; }
-/* the fill layer js/hero.js lays over an outcome while it builds (decorative; the label underneath is the text) */
-.out__fill { position: absolute; inset: 0; z-index: 1; margin: 0; }
-.sig__check { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.75rem; font-weight: 900; font-size: 1.0625rem; letter-spacing: -0.02em; }
-.sig__check svg { width: 1.5rem; height: 1.5rem; flex: none; fill: none; stroke: var(--teal); stroke-width: 3.5; stroke-dasharray: 30; }
+/* ---------- the Example: what you'd rather not be doing, and the thing we'd build ----------
+   The finished picture is the base: ring drawn, arrow drawn, card filled teal. js/invoice.js adds .jx-armed (motion
+   allowed only), which attaches the animations paused at their first frame, and .jx-play once the panel is well in
+   view, which runs them once (about 2.5 s); then both come off. Every word is in the page and readable in every
+   frame: the Built words sit on the outline card under the teal copy, which is aria-hidden. */
+.jx { padding: 1.75rem var(--margin) 2.25rem; }
+.jx-ex { position: relative; background: var(--black); color: var(--white); padding: 1.1rem min(1rem, 5vw) 1.25rem; } /* the side padding halves only under enlarged text */
+/* phone: the tag floats top right and the title wraps round it, so under enlarged text the title's words drop below it
+   rather than being squeezed beside it (with or without container queries) */
+.jx-ex__tag { float: right; margin: -0.05rem 0 0.5rem 0.75rem; }
+.jx-ex__say { font-size: 1.625rem; line-height: 1.05; letter-spacing: -0.035em; color: var(--teal); text-wrap: balance; overflow-wrap: normal; }
+.jx-ex__build { font-size: 1.25rem; font-weight: 900; line-height: 1.15; letter-spacing: -0.025em; color: var(--teal); }
+/* the note: a slip of paper in the owner's own words, set apart from the poster type by case, slant and tilt */
+.jx-note { margin: 0.9rem 0.2rem 0 0.1rem; padding: 0.9rem min(1rem, 5vw) 1rem; background: var(--white); color: var(--black); transform: rotate(-1.6deg); border-top: 0.6rem solid var(--surface-2); }
+.jx-note p { font-size: 1.6rem; font-weight: 600; line-height: 1.3; letter-spacing: -0.015em; overflow-wrap: break-word; }
+/* each line slants on its own, so a line that wraps under enlarged text never pushes the ones above it sideways; the
+   ringed words are one inline block, so they move to the next line together and break only when wider than a line;
+   a single word wider than the paper (enlarged text on the narrowest phones) breaks rather than leaving it */
+.jx-note__l { display: block; transform: skewX(-7deg); transform-origin: 0 100%; }
+.jx-note__mark { position: relative; display: inline-block; max-width: 100%; margin-left: 0.3em; }
+.jx-ring { position: absolute; left: -0.5em; top: -0.24em; width: calc(100% + 1.1em); height: calc(100% + 0.5em); max-width: none; overflow: visible; pointer-events: none; }
+.jx-ring path { fill: none; stroke: var(--teal-on-white); stroke-width: 3.4; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+.jx-ex__turn { display: grid; grid-template-columns: 2.5rem minmax(0, 1fr); align-items: center; gap: 0.6rem; margin-top: 0.7rem; }
+.jx-arrow { width: 2.5rem; height: 3.75rem; fill: none; stroke: var(--teal); stroke-width: 3.5; stroke-linecap: round; stroke-linejoin: round; }
+/* the built thing: an outline with its words, and a teal copy over it that is the finished card */
+.jx-built { position: relative; margin-top: 0.55rem; }
+/* the two layers share one box, font and wrap rule, so they always break on the same words */
+.jx-built__words, .jx-built__fill { padding: 0.85rem 1rem; font-size: 1.25rem; font-weight: 800; line-height: 1.25; letter-spacing: -0.02em; overflow-wrap: break-word; }
+.jx-built__words { box-shadow: inset 0 0 0 3px var(--teal); color: var(--white); } /* taste-skill-ignore */
+.jx-built__fill { position: absolute; inset: 0; background: var(--teal); color: var(--black); clip-path: inset(0 0 0 0); }
+.jx-built__chip { display: inline-block; margin-right: 0.25rem; padding: 0.05rem 0.4rem; font-weight: 900; background: var(--teal); color: var(--black); }
+.jx-built__fill .jx-built__chip { background: var(--black); color: var(--teal); }
+@media (max-width: 380px) {
+  .jx-ex__say { font-size: 1.4rem; }
+  .jx-note p { font-size: 1.45rem; }
+  .jx-ex__build, .jx-built__words, .jx-built__fill { font-size: 1.125rem; }
+}
+@media (max-width: 340px) { .jx-note p { font-size: 1.25rem; } }
+/* tablet: the same column, roomier */
+@media (min-width: 641px) {
+  .jx { padding-block: 2.5rem 3.5rem; }
+  .jx-ex { padding: 1.75rem 1.75rem 2rem; }
+  .jx-ex__tag { position: absolute; top: 1.75rem; right: 1.75rem; float: none; margin: 0; }
+  .jx-ex__say { font-size: var(--step-title); padding-right: 7rem; }
+  .jx-note p { font-size: clamp(2rem, 1rem + 2.6vw, 3rem); }
+  .jx-ex__build, .jx-built__words, .jx-built__fill { font-size: var(--step-lead); }
+  .jx-built__words, .jx-built__fill { padding: 1.1rem 1.3rem; }
+  .jx-ex__turn { grid-template-columns: 3rem minmax(0, 1fr); }
+  .jx-arrow { width: 3rem; height: 4.5rem; }
+}
+/* desktop: one screen-filling panel that reads left to right: the owner's note, an arrow, the thing we built. Only
+   when the panel is wide enough for its text (46em: every desktop width at ordinary text; enlarged text, or a browser
+   without container queries, keeps the stacked tablet panel above, which wraps safely). */
+@media (min-width: 1001px) {
+  .jx { container: jx / inline-size; padding-block: clamp(1rem, 3vh, 2rem) clamp(2rem, 6vh, 4rem); }
+}
+@container jx (min-width: 46em) {
+  .jx-ex {
+    display: grid; grid-template-columns: minmax(0, 13fr) clamp(5rem, 8vw, 8.5rem) minmax(0, 9fr);
+    grid-template-areas: "say say say" ". . ." "note arrow build" "note arrow built";
+    grid-template-rows: auto clamp(2rem, 7vh, 4.5rem) auto auto; column-gap: clamp(1rem, 2vw, 2rem);
+    padding: clamp(2rem, 4.5vh, 3.5rem) clamp(2rem, 3.5vw, 3.5rem) clamp(2.5rem, 6vh, 4.5rem);
+  }
+  .jx-ex__tag { top: clamp(2rem, 4.5vh, 3.5rem); right: clamp(2rem, 3.5vw, 3.5rem); font-size: 1.125rem; padding: 0.15rem 0.7rem; }
+  .jx-ex__say { grid-area: say; font-size: clamp(3.25rem, 1rem + 4.9vw, 7rem); line-height: 0.92; letter-spacing: -0.045em; padding-right: 9rem; }
+  .jx-note { grid-area: note; align-self: center; margin: 0; padding: clamp(1.4rem, 3vh, 2.2rem) clamp(1.5rem, 2.2vw, 2.4rem) clamp(1.6rem, 3.4vh, 2.5rem); border-top-width: 0.9rem; }
+  .jx-note p { font-size: clamp(2.25rem, 3.33vw, 4.25rem); line-height: 1.22; }
+  .jx-ring path { stroke-width: 5; }
+  .jx-ex__turn { display: contents; }
+  .jx-arrow { grid-area: arrow; align-self: center; justify-self: center; width: 100%; height: auto; max-height: 7rem; transform: rotate(-90deg); stroke-width: 3; }
+  .jx-ex__build { grid-area: build; align-self: end; font-size: clamp(1.5rem, 0.8rem + 1.2vw, 2.25rem); margin-bottom: 1rem; }
+  .jx-built { grid-area: built; align-self: start; margin-top: 0; }
+  .jx-built__words, .jx-built__fill { font-size: clamp(1.6rem, 0.8rem + 1.5vw, 2.6rem); line-height: 1.2; padding: clamp(1.1rem, 2.4vh, 1.75rem) clamp(1.2rem, 1.8vw, 1.9rem); }
+  .jx-built__words { box-shadow: inset 0 0 0 4px var(--teal); } /* taste-skill-ignore */
+}
 
 /* ---------- the two people, at a glance ---------- */
 .cue { padding: 1.5rem var(--margin); display: grid; gap: 1rem; }
@@ -222,7 +318,6 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
 .cue__people { display: grid; gap: 0.75rem; }
 .cue__person { display: grid; grid-template-columns: 4.5rem minmax(0, 1fr); align-items: center; gap: 0.9rem; }
 .cue__img { width: 4.5rem; height: 5.625rem; object-fit: cover; object-position: 50% 20%; background: var(--photo-ground); }
-.ben-mark.cue__img { background: var(--teal); font-size: 2.05rem; padding: 0 0 0.3rem 0.2rem; }
 .cue__who { display: grid; gap: 0.1rem; line-height: 1.25; }
 .cue__who b { font-size: var(--step-lead); letter-spacing: -0.03em; }
 .cue__who span { font-size: var(--step-small); font-weight: 700; color: var(--soft-on-dark); }
@@ -449,9 +544,8 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
 /* The two people side by side at every width: the same 4:5 frame each, names and lines under each. */
 .people { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2.5rem var(--gutter); margin-top: clamp(2rem, 5vw, 4rem); }
 .person { display: grid; gap: 1rem; align-content: start; }
-/* Both portraits sit in the same 4:5 frame, so Ben's headshot drops into his later. */
+/* Both portraits sit in the same 4:5 frame. */
 .person__frame { container-type: inline-size; width: 100%; aspect-ratio: 4 / 5; margin: 0; overflow: hidden; overflow: clip; background: var(--photo-ground); }
-.person__frame .ben-mark { width: 100%; height: 100%; font-size: 4.25rem; line-height: 0.8; padding: 0 0 0.6rem 0.5rem; }
 .person__photo { width: 100%; height: 100%; object-fit: cover; object-position: 50% 20%; }
 .person__words { display: grid; gap: 0.75rem; align-content: start; }
 .person__name { font-size: var(--step-lead); font-weight: 900; letter-spacing: -0.03em; line-height: 1.1; }
@@ -545,12 +639,6 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
 /* ---------- container-unit sizes (browsers with cqi; the ordinary sizes above are the fallback) ---------- */
 @supports (width: 1cqi) {
   :root { --step-display: calc((100cqi - 2 * var(--margin)) / 7.74); }
-  .hero__title { font-size: min(calc((100cqi - 2 * var(--margin)) / var(--fit)), 17svh, 8.75rem); }
-  .sig { --in: min(6.5rem, 31cqi); --wirelen: min(1.35rem, 6cqi); --node: min(1.75rem, 8cqi); }
-  .out { grid-template-columns: min(1.5rem, 9cqi) minmax(0, 1fr); }
-  .out__deco .glyph { width: min(1.35rem, 8cqi); height: min(1.35rem, 8cqi); }
-  .out__type { width: min(1.3rem, 8cqi); }
-  .person__frame .ben-mark { font-size: 42cqi; padding: 0 0 7cqi 5cqi; }
 }
 
 /* ---------- pointer hover ---------- */
@@ -568,13 +656,6 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
 
 /* ---------- the narrowest phones (320 to 360) ---------- */
 @media (max-width: 360px) {
-  .sig { --in: 5.6rem; --wirelen: 0.85rem; --node: 1.4rem; padding-inline: 0.75rem; }
-  @supports (width: 1cqi) { .sig { --in: min(6rem, 34cqi); --wirelen: min(0.85rem, 5cqi); --node: min(1.4rem, 8cqi); } }
-  .lane__in { padding-inline: 0.3rem; }
-  .lane__from { font-size: 0.75rem; letter-spacing: -0.03em; }
-  .out { grid-template-columns: 1.1rem minmax(0, 1fr); gap: 0.35rem; padding-inline: 0.4rem; font-size: 0.8125rem; }
-  .out__deco .glyph { width: 1.1rem; height: 1.1rem; }
-  .out__type { width: 1.05rem; }
   .bd .st-info { padding-inline: 0.1rem 0; }
   .bd-lot-name { letter-spacing: -0.01em; }
 }
@@ -584,18 +665,6 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
   :root { --step-head: clamp(2.5rem, 1.2rem + 5vw, 5.5rem); }
   .nav { gap: var(--gutter); }
   .statement { font-size: var(--step-lead); }
-  .hero__sub, .hero__lead { font-size: var(--step-lead); }
-  .hero__act { grid-template-columns: auto 1fr; align-items: center; column-gap: 1.25rem; }
-  .hero__act .button { width: auto; min-height: 4rem; }
-  .sig { --in: 10rem; --wirelen: 2.25rem; --node: 2.75rem; --row: 4rem; padding: 1.25rem 1.5rem 1.5rem; max-width: 42rem; }
-  @supports (width: 1cqi) { .sig { --in: clamp(8.75rem, 27cqi, 11.5rem); --wirelen: clamp(1.25rem, 6.5cqi, 3rem); --node: clamp(2.25rem, 7.5cqi, 3.25rem); } }
-  .sig__top b { font-size: var(--step-lead); }
-  .lane__in { flex-direction: row; align-items: center; gap: 0.6rem; padding: 0.5rem 0.75rem; }
-  .lane__in .glyph { width: 1.6rem; height: 1.6rem; }
-  .lane__from { font-size: 1.0625rem; letter-spacing: -0.02em; }
-  .out { grid-template-columns: 1.75rem minmax(0, 1fr); gap: 0.6rem; padding: 0.5rem 0.75rem; font-size: var(--step-body); }
-  .out__deco .glyph { width: 1.6rem; height: 1.6rem; }
-  .out__type { width: 1.5rem; }
   .cue { grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: center; }
   .cue__title, .cue__link { grid-column: 1 / -1; }
   .cue__people { grid-column: 1 / -1; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gutter); }
@@ -617,20 +686,12 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
 
 /* ---------- desktop ---------- */
 @media (min-width: 1001px) {
-  /* The page grid has twelve columns. Words-and-thing rows split at column 7 (the hero, the voicemail, Billing
-     Day's heading); the example tiles, the steps and the promises run three across; Ben & Zeke, the businesses
-     and the questions run the full width. */
+  /* The page grid has twelve columns. Words-and-thing rows split at column 7 (the voicemail, Billing Day's
+     heading); the example tiles, the steps and the promises run three across; Ben & Zeke, the businesses and the
+     questions run the full width. */
   .nav__links { display: flex; }
   .menu { display: none; }
-  .hero { min-height: min(100vh, 62rem); min-height: min(100svh, 62rem); }
-  .hero__title { margin-top: clamp(0.5rem, 2vh, 1.5rem); margin-top: clamp(0.5rem, 2svh, 1.5rem); }
-  .hero__body, .cue, .work__head, .see__head, .vm, .vm__stage, .about__intro, .footer__grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); }
-  .hero__body { row-gap: 1.5rem; margin-top: clamp(1.25rem, 3vh, 2.5rem); margin-top: clamp(1.25rem, 3svh, 2.5rem); align-items: start; grid-template-rows: auto auto 1fr; }
-  .hero__lead { align-self: end; }
-  .hero__copy, .hero__act, .hero__lead { grid-column: 1 / span 6; }
-  .hero__copy { grid-row: 1; } .hero__act { grid-row: 2; } .hero__lead { grid-row: 3; }
-  .hero__sub { max-width: 30ch; }
-  .sig { grid-column: 7 / -1; grid-row: 1 / span 3; max-width: none; padding: clamp(1.25rem, 2.2vw, 2rem); }
+  .cue, .work__head, .see__head, .vm, .vm__stage, .about__intro, .footer__grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); }
   .cue { row-gap: 1rem; padding-block: 1.5rem; align-items: center; }
   .cue__title { grid-column: 1 / span 6; font-size: var(--step-lead); }
   .cue__link { grid-column: 7 / -1; grid-row: 1; justify-self: end; }
@@ -692,12 +753,6 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
   .hero .nav { padding-block: 0.875rem; }
 }
 
-/* A narrow signature (half of a 1001 to 1280 laptop) stacks each input's drawing over its name. After the
-   breakpoint blocks, because it narrows their row layout. */
-@container (min-width: 24rem) and (max-width: 38.5rem) {
-  .lane__in { flex-direction: column; align-items: flex-start; gap: 0.25rem; padding-inline: 0.6rem; }
-}
-
 /* Phone Ben & Zeke: the two portraits side by side, each with its name under it; then Ben's lines and Zeke's lines
    run the full width below the pair (each person box and its words box step aside, so their parts share one grid). */
 @media (max-width: 640px) {
@@ -734,14 +789,13 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
   }
 }
 
-/* Enlarged text (about 150% and up on a phone): each input sits over its outcome, so no word is broken. */
-@container (max-width: 15em) {
-  .lane { grid-template-columns: minmax(0, 1fr); gap: 4px; }
-  .wire, .sig__node { display: none; }
-  .lane__in { flex-direction: row; align-items: center; gap: 0.5rem; }
-}
-@container (max-width: 8em) {
-  .lane__in { flex-direction: column; align-items: flex-start; gap: 0.25rem; }
+/* Enlarged text (about 125% and up at 390): the Example's tag takes its own line above the title instead of
+   holding a gap beside it, and the note, now several lines, drops its slant and keeps its tilt. (Without container
+   queries the note still wraps and its slant stays small; see .jx-note__l.) */
+@container (max-width: 18em) {
+  .jx-ex__tag { position: static; float: none; display: inline-block; margin: 0 0 0.6rem; }
+  .jx-ex__say { padding-right: 0; }
+  .jx-note__l { transform: none; }
 }
 
 /* Enlarged text on a phone (the page under 16em wide, about 150% text and up at 390): the two people stack,
@@ -766,18 +820,22 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
 }
 
 /* ---------- motion states ----------
-   Only with script and motion allowed: the hero's outcomes start as outlines (every label still readable, white
-   on black) from the first paint, and js/hero.js fills them once. Reduced motion or no script: the finished
+   Only with script and motion allowed: js/invoice.js arms the Example (.jx-armed: every step held at its first
+   frame) and plays it once (.jx-play), then takes both off. Reduced motion, no script or any failure: the finished
    picture is all there is. */
 @media (prefers-reduced-motion: no-preference) {
-  .js .sig:not(.is-done) .out:not(.out__fill) { color: var(--white); }
-  .js .sig:not(.is-done) .out:not(.out__fill)::before { background: transparent; box-shadow: inset 0 0 0 2px var(--wire); } /* taste-skill-ignore */
-  .js .sig:not(.is-done) .out:not(.out__fill) .out__deco { color: var(--wire); }
-  .js .sig:not(.is-done) .out:not(.out__fill) .out__tag { visibility: hidden; }
-  .js .sig:not(.is-done) .wire::before { background: var(--wire); }
-  .js .sig:not(.is-done) .lane.is-lit .wire::before { background: var(--teal); }
-  .js .sig:not(.is-done) .sig__check svg { stroke-dashoffset: 30; }
+  .jx-armed .jx-ring path { stroke-dasharray: 3 3; animation: jx-ring 0.7s 0.2s cubic-bezier(0.65, 0, 0.35, 1) both paused; }
+  .jx-armed .jx-arrow__shaft { stroke-dasharray: 1; animation: jx-draw 0.45s 0.9s cubic-bezier(0.65, 0, 0.35, 1) both paused; }
+  .jx-armed .jx-arrow__head { stroke-dasharray: 1; animation: jx-draw 0.2s 1.3s ease-out both paused; }
+  .jx-armed .jx-built__fill { animation: jx-wipe 0.6s 1.45s cubic-bezier(0.76, 0, 0.24, 1) both paused; }
+  .jx-armed .jx-built { animation: jx-land 0.5s 1.95s cubic-bezier(0.22, 1, 0.36, 1) both paused; }
+  .jx-play .jx-ring path, .jx-play .jx-arrow__shaft, .jx-play .jx-arrow__head, .jx-play .jx-built__fill, .jx-play .jx-built { animation-play-state: running; }
 }
+@keyframes jx-draw { from { stroke-dashoffset: 1; opacity: 0; } 4% { opacity: 1; } to { stroke-dashoffset: 0; opacity: 1; } }
+/* the ring's dash is well past the path's length, so it closes at every size */
+@keyframes jx-ring { from { stroke-dashoffset: 3; opacity: 0; } 4% { opacity: 1; } to { stroke-dashoffset: 0; opacity: 1; } }
+@keyframes jx-wipe { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes jx-land { 0% { transform: scale(1); } 40% { transform: scale(1.035); } 100% { transform: scale(1); } }
 @media (prefers-reduced-motion: reduce) {
   .bd .st-ill .st-win, .bd .st-halo, .bd .st-halo-line, .bd-btn, .try, .biz__photos img { transition: none; }
 }

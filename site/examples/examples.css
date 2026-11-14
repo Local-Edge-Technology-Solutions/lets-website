@@ -355,14 +355,11 @@ mark { background: var(--teal); color: var(--black); padding: 0 0.1em; -webkit-b
   .prices__list { margin-top: 0.4rem; display: grid; }
   .prices__list li { display: flex; justify-content: space-between; gap: 1rem; padding: 0.35rem 0; border-top: 1px solid #333; font-size: var(--step-small); font-weight: 600; font-variant-numeric: tabular-nums; }
 }
-/* The two people, the same size side by side: Zeke's photo and, until Ben's headshot exists, Ben's panel (teal 4:5,
-   his name in the display face, sized to the panel so it scales with it). */
+/* The two people, the same size side by side: Ben's and Zeke's photos, each 4:5. */
 .trust__people { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--gutter); max-width: 34rem; }
 .trust__photo { margin: 0; min-width: 0; }
-.trust__photo img, .trust__ben { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; }
+.trust__photo img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 5; }
 .trust__photo img { object-fit: cover; object-position: 50% 20%; background: var(--photo-ground); }
-.trust__ben { container-type: inline-size; display: flex; align-items: flex-end; padding: 0 0 6% 7%; background: var(--teal); color: var(--black); overflow: clip; }
-.trust__ben span { font-size: min(11vw, 7rem); font-size: 50cqi; font-weight: 900; line-height: 0.8; letter-spacing: -0.045em; text-transform: uppercase; }
 .trust__photo figcaption { margin-top: 0.4rem; font-size: var(--step-small); font-weight: 700; color: var(--soft-on-dark); }
 
 /* ---------- round 5 (critic, round 4): the first action on the first phone screen; the price list on phones too;

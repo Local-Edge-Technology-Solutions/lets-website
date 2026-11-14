@@ -1,4 +1,4 @@
-// The motion layer outside the three moments (the hero's signature in js/hero.js, the voicemail in
+// The motion layer outside the three moments (the Example in js/invoice.js, the voicemail in
 // js/voicemail.js, the Billing Day approval in js/work.js): press feedback under the hand, and landing a visit
 // that opens on a fragment. Nothing on the page moves because it scrolled. The press recipe is adapted from
 // Animaxxing (pressFeedback) with the taste skill's rules winning: no overshoot, reduced motion gets none of it.

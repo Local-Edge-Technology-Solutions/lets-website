@@ -6,12 +6,14 @@ import { initVoicemail } from "./js/voicemail.js";
 import { initAsk } from "./js/ask.js";
 import { initForm } from "./js/form.js";
 import { initWork } from "./js/work.js";
-import { initMotion } from "./js/motion.js";
+import { initMotion, initReveal } from "./js/motion.js";
 
 const safely = (name, fn) => {
   try { fn(); } catch (error) { console.error(`LETS: ${name} did not start`, error); }
 };
 
+// What waits below the first screen is decided before anything else, from the layout as first painted.
+safely("reveal", initReveal);
 safely("menu", initMenu);
 safely("voicemail", initVoicemail);
 safely("ask", initAsk);

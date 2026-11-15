@@ -74,7 +74,7 @@ function fly(fromEl, toEl, { delay = 0, text, kind = "chip", onLand } = {}) {
   const dy = to.top - from.top;
   const a = track(copy.animate([
     { transform: "translate(0, 0) scale(0.9)", opacity: 0 },
-    { transform: "translate(0, -8px) scale(1.04)", opacity: 1, offset: 0.2 },
+    { transform: "translate(0, -8px) scale(1)", opacity: 1, offset: 0.2 },
     { transform: `translate(${dx}px, ${dy}px) scale(1)`, opacity: 1, offset: 0.88 },
     { transform: `translate(${dx}px, ${dy}px) scale(1)`, opacity: 0 },
   ], { duration: kind === "bubble" ? 820 : 760, delay, easing: "cubic-bezier(0.65, 0, 0.35, 1)", fill: "both" }));
@@ -82,8 +82,9 @@ function fly(fromEl, toEl, { delay = 0, text, kind = "chip", onLand } = {}) {
   const done = () => { copy.remove(); copies.delete(copy); };
   a.finished.then(() => { done(); if (g === gen) onLand?.(); }, done);
 }
-const flash = (el) => anim(el, [{ backgroundColor: "rgb(46 230 207 / 0.6)" }, { backgroundColor: "rgb(46 230 207 / 0)" }], { duration: 800, easing: "ease-out", fill: "none" });
-const pop = (el, delay = 0) => anim(el, [{ transform: "scale(0.86)", opacity: 0 }, { transform: "scale(1.03)", opacity: 1, offset: 0.7 }, { transform: "none", opacity: 1 }], { duration: 380, delay });
+const flash = (el, { duration = 800, delay = 0 } = {}) => anim(el, [{ backgroundColor: "rgb(46 230 207 / 0.6)" }, { backgroundColor: "rgb(46 230 207 / 0)" }], { duration, delay, easing: "ease-out", fill: "none" });
+// no overshoot: a part grows into place and stops
+const pop = (el, delay = 0) => anim(el, [{ transform: "scale(0.9)", opacity: 0 }, { transform: "none", opacity: 1 }], { duration: 320, delay });
 const pulse = (el) => anim(el, [{ transform: "scale(1)" }, { transform: "scale(1.06)" }, { transform: "scale(1)" }], { duration: 320, fill: "none" });
 const arrive = (el) => anim(el, [{ opacity: 0, transform: "translateY(10px)" }, { opacity: 1, transform: "none" }], { duration: 340 });
 
@@ -248,20 +249,17 @@ function initQuote() {
     on(approve, "Approve and send");
     return total;
   };
-  // The opening: the quote's lines start empty; each marked detail lifts out of the email and, as it lands, fills
-  // its numbered line. The total arrives last.
+  // The opening: each marked detail lifts out of the email to its numbered line, 80ms apart, and the line lights as
+  // it lands; the total lights last. The quote's lines and total stay on show and readable the whole time.
   const carry = () => {
     const total = $(".sheet__total", sheet);
     const marks = $$("mark[data-n]", q("body"));
-    const targets = marks.map((m) => $(`[data-t="${m.dataset.n}"]`, sheet)).filter(Boolean);
-    targets.forEach(veil);
-    veil(total);
     marks.forEach((m, k) => {
       const target = $(`[data-t="${m.dataset.n}"]`, sheet);
       if (!target) return;
-      fly(m, target, { delay: k * 420, text: `${m.dataset.n}  ${short(m.textContent)}`, onLand: () => { unveil(target); arrive(target); flash(target); } });
+      fly(m, target, { delay: k * 80, text: `${m.dataset.n}  ${short(m.textContent)}`, onLand: () => flash(target, { duration: 280 }) });
     });
-    later(() => { unveil(total); pop(total); }, marks.length * 420 + 820);
+    flash(total, { duration: 320, delay: (marks.length - 1) * 80 + 760 });
   };
   const open = () => {
     if (opened) return;
@@ -276,7 +274,7 @@ function initQuote() {
     stamp.textContent = "Sent";
     check.textContent = `Approved by you, sent to ${ORDERS[i].from.split(" ")[0]} in this example.`;
     off(approve, "is-done", "Sent in this example");
-    anim(stamp, [{ transform: "scale(1.9) rotate(-8deg)", opacity: 0 }, { transform: "scale(0.94) rotate(0)", opacity: 1, offset: 0.75 }, { transform: "none", opacity: 1 }], { duration: 420 });
+    anim(stamp, [{ transform: "scale(1.4)", opacity: 0 }, { transform: "none", opacity: 1 }], { duration: 300 });
     status.textContent = `Example quote approved and sent to ${ORDERS[i].from}.`;
   });
 
@@ -289,7 +287,7 @@ function initQuote() {
     const needs = !inView(mail);
     if (needs) mail.scrollIntoView({ block: "start", behavior: motionOK() ? "smooth" : "auto" });
     if (motionOK()) {
-      if (needs) { $$(".line, .sheet__total", sheet).forEach(veil); later(carry, 480); } else carry();
+      if (needs) later(carry, 480); else carry();
     }
   });
 

@@ -51,6 +51,8 @@
   --margin: clamp(1rem, 1.7vw, 1.5rem);
   --gutter: clamp(0.75rem, 1.4vw, 1.25rem);
   --section: clamp(4rem, 9vw, 8rem);
+  /* heading to content, the same in every section */
+  --stack: clamp(2rem, 4vw, 3rem);
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --t-press: 140ms;
@@ -78,7 +80,7 @@ p { text-wrap: pretty; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .nowrap { white-space: nowrap; }
 .hp { display: none; }
-.skip { position: absolute; z-index: 50; left: var(--margin); top: var(--margin); padding: 0.75rem 1rem; background: var(--black); color: var(--teal); font-weight: 900; text-decoration: none; transform: translateY(-200%); }
+.skip { position: absolute; z-index: 50; left: var(--margin); top: 0.5rem; padding: 0.75rem 1rem; background: var(--black); color: var(--teal); font-weight: 900; text-decoration: none; transform: translateY(-300%); }
 .skip:focus { transform: none; }
 .page { container-type: inline-size; overflow-x: hidden; overflow-x: clip; }
 
@@ -98,7 +100,7 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
 /* ---------- controls ---------- */
 .button {
   display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem;
-  min-height: 4rem; padding: 0 2rem;
+  min-height: 3.5rem; padding: 0.75rem 2rem;
   background: var(--accent); color: var(--accent-ink);
   font-weight: 900; font-size: var(--step-lead); letter-spacing: -0.02em; line-height: 1.1;
   text-decoration: none; text-align: center; border: 0; border-radius: 0; cursor: pointer;
@@ -109,9 +111,12 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
 /* A two-tone ring, so keyboard focus shows on teal, black and white grounds alike. A state, not a resting shadow. */
 .button:focus-visible { outline: 3px solid var(--black); outline-offset: 3px; box-shadow: 0 0 0 3px var(--white); } /* taste-skill-ignore */
 .button[aria-disabled="true"] { cursor: progress; }
+.button[aria-disabled="true"]:active { transform: none; }
 .field-black .button, .field-night .button, .field-deep .button { background: var(--teal); color: var(--black); }
 .button--quiet, .field-deep .button--quiet { background: transparent; color: inherit; border: 3px solid currentColor; }
 .link { text-decoration: underline; text-decoration-color: transparent; text-underline-offset: 0.2em; text-decoration-thickness: 0.1em; transition: text-decoration-color var(--t-hover) ease; }
+/* links in running words keep a visible underline at rest */
+.footer__contact a, .solo__body a:not(.button) { text-decoration-line: underline; text-decoration-color: currentColor; text-decoration-thickness: 0.08em; text-underline-offset: 0.2em; }
 /* GSAP owns the press transform when the motion layer runs; CSS keeps colour only, so nothing lags the squash. */
 .gsap-press .button { transition-property: background-color, color; }
 .gsap-press .button:active { transform: none; }
@@ -126,14 +131,18 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
 
 /* An ask: one button. */
 .ask-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.5rem; }
-.ask-row .button { width: 100%; font-size: var(--step-body); min-height: 3.5rem; padding: 0 1.6rem; }
+.ask-row .button { width: 100%; font-size: var(--step-body); padding-inline: 1.6rem; }
 
 /* A fold: a plain, generous row with a plus that turns to a minus. */
 .fold > summary, .more > summary, .band > summary { list-style: none; cursor: pointer; display: flex; align-items: center; gap: 0.7rem; min-height: 2.75rem; font-weight: 900; }
+.band > summary { align-items: flex-start; }
 .fold > summary::-webkit-details-marker, .more > summary::-webkit-details-marker, .band > summary::-webkit-details-marker { display: none; }
 .fold > summary::before, .more > summary::before { content: "+"; flex: none; display: grid; place-items: center; width: 1.6rem; height: 1.6rem; background: var(--teal); color: var(--black); font-weight: 900; line-height: 1; }
 .fold[open] > summary::before, .more[open] > summary::before { content: "\2212"; }
 .fold > summary:focus-visible, .more > summary:focus-visible, .band > summary:focus-visible { outline: 3px solid currentColor; outline-offset: 3px; }
+/* a fold's words and the menu's links take an underline under the pointer or keyboard focus */
+.fold > summary > span, .more > summary > span, .band > summary > span, .menu__links a { text-decoration-line: underline; text-decoration-color: transparent; text-decoration-thickness: 0.08em; text-underline-offset: 0.2em; transition: text-decoration-color var(--t-hover) ease; }
+.fold > summary:focus-visible > span, .more > summary:focus-visible > span, .band > summary:focus-visible > span, .menu__links a:focus-visible { text-decoration-color: currentColor; }
 
 /* ---------- nav and menu ---------- */
 .nav { position: relative; z-index: 10; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.5rem; padding-block: var(--margin); font-weight: 700; }
@@ -146,9 +155,9 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
 .menu__toggle:focus-visible { outline: 3px solid var(--black); outline-offset: 3px; box-shadow: 0 0 0 3px var(--white); } /* taste-skill-ignore */
 .menu[open] .menu__toggle { background: var(--black); color: var(--teal); border-color: var(--black); }
 .menu:not([open]) .menu__panel { display: none; }
-.menu__panel { position: absolute; top: 100%; left: calc(-1 * var(--margin)); right: calc(-1 * var(--margin)); padding: 1.25rem var(--margin) 1.75rem; }
+.menu__panel { position: absolute; top: 100%; left: calc(-1 * var(--margin)); right: calc(-1 * var(--margin)); padding: 1.25rem var(--margin) 1.75rem; max-height: calc(100vh - 5rem); max-height: var(--menu-room, calc(100svh - 5rem)); overflow-y: auto; overscroll-behavior: contain; border-block-end: 4px solid var(--teal); }
 .menu__links { display: grid; gap: 0.25rem; }
-.menu__links a { display: block; padding: 0.55rem 0; font-size: var(--step-lead); font-weight: 900; letter-spacing: -0.03em; text-decoration: none; }
+.menu__links a { display: block; min-block-size: 2.75rem; padding: 0.55rem 0; font-size: var(--step-lead); font-weight: 900; letter-spacing: -0.03em; }
 .menu__links a:focus-visible { outline-offset: 0; }
 
 /* ---------- hero: the four promises as one poster ----------
@@ -179,6 +188,8 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
 .pz__s--learn { background: var(--white); color: var(--black); }
 .pz__s--tell { background: var(--black); color: var(--white); }
 .pz__say { font: inherit; letter-spacing: inherit; white-space: nowrap; text-wrap: nowrap; overflow-wrap: normal; }
+/* a little air between the words of each line (the measured --f and --fd include it) */
+.pz__say, .pz__l { word-spacing: 0.06em; }
 .pz__fix { color: var(--teal); }
 /* phone: each line fitted on its own, except "Nothing to learn.", which runs as one line fitted to the strip (--fd) */
 .pz__l { display: block; white-space: nowrap; font-size: calc(var(--w) / var(--f)); letter-spacing: -0.05em; }
@@ -189,15 +200,15 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
 .pz__s--learn .pz__l { font-size: inherit; }
 .pz__s--learn .pz__l + .pz__l { margin-top: 0; }
 /* the box round "business.", and the tailor's line that fits it */
-.pz__box { --lx: 0.2em; --ly: 0.16em; position: relative; display: inline-block; background: var(--black); color: var(--teal); padding: 0.07em 0.07em 0.03em; line-height: 0.8; }
-.pz__box::after { content: ""; position: absolute; inset: 0; border: 0.05em dashed var(--black); pointer-events: none; opacity: 0; }
+.pz__box { --lo: 0.18em; position: relative; display: inline-block; background: var(--black); color: var(--teal); padding: 0.07em 0.07em 0.03em; line-height: 0.8; }
+.pz__box::after { content: ""; position: absolute; inset: 0; outline: 0.05em dashed var(--black); outline-offset: 0; pointer-events: none; opacity: 0; }
 /* the price, the proof under "Won't cost a fortune.": plain sentence case, white on the black strip, never below 15px */
 .pz__price { margin-top: 0.4rem; max-width: 34ch; font-size: 1rem; font-weight: 800; line-height: 1.2; letter-spacing: -0.015em; text-transform: none; color: var(--white); }
 .pz__pl { display: block; }
 /* phone: the line of jobs, then "Let's talk" across the full width */
 .pz__act { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 0.9rem; margin-top: 0.75rem; }
 .pz__who { flex: 1 1 100%; font-weight: 800; font-size: 1.0625rem; line-height: 1.25; letter-spacing: -0.02em; }
-.pz__go { flex: 1 1 100%; min-height: 3.5rem; padding-inline: 1.5rem; }
+.pz__go { flex: 1 1 100%; padding-inline: 1.5rem; }
 /* short phones (the usual case with the browser's bars showing): a tighter nav row and line of jobs */
 @media (max-width: 699px) and (max-height: 760px) {
   .hero .nav { padding-block: 0.625rem; }
@@ -220,23 +231,19 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
   .pz__s--tell .pz__say { flex-wrap: wrap; }
   .pz__l { font-size: inherit; }
   .pz__l + .pz__l, .pz__l + .pz__l--box { margin-top: 0; }
-  .pz__fix { flex-basis: 100%; }
-  .pz__box { --lx: 0.11em; --ly: 0.14em; }
+  .pz__fix { flex-basis: 100%; font-size: calc(var(--w) / var(--f) * 1.005); }
+  .pz__box { --lo: 0.12em; }
   .pz__price { margin-top: 0.35rem; max-width: none; font-size: clamp(1.125rem, 0.5rem + 1.25vw, 1.875rem); line-height: 1.25; }
   .pz__pl { display: inline; }
   .pz__act { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1.5rem; margin-top: clamp(1rem, 2.5vh, 1.75rem); }
   .pz__who { flex: 1 1 18rem; font-size: var(--step-lead); max-width: 52ch; text-wrap: balance; }
-  .pz__go { flex: 0 1 auto; width: auto; min-height: 4rem; margin-left: auto; padding-inline: 2rem; }
+  .pz__go { flex: 0 1 auto; width: auto; margin-left: auto; padding-inline: 2rem; }
 }
-/* loose, like an off-the-peg fit, then taken in to the box's edge; it stays clear of the words beside it */
-@media (prefers-reduced-motion: no-preference) {
-  .pz__box::after { animation: pz-fit 1.5s cubic-bezier(0.2, 0.85, 0.25, 1) 0.35s both; }
-}
-@keyframes pz-fit {
-  0% { opacity: 1; inset: calc(-1 * var(--ly)) calc(-1 * var(--lx)); }
-  62% { opacity: 1; inset: calc(-0.08 * var(--ly)) calc(-0.08 * var(--lx)); }
-  86% { opacity: 1; inset: 0; }
-  100% { opacity: 0; inset: 0; }
+/* tablets (700 to 1000px): the strips keep their own height (no tall empty bands round 48-88px type) and the
+   Example panel follows straight after the button */
+@media (min-width: 700px) and (max-width: 1000px) {
+  .pz { flex: 0 0 auto; }
+  .pz__s { flex-grow: 0; }
 }
 
 /* ---------- the two people, at a glance ---------- */
@@ -269,7 +276,7 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
   --st-glow: rgb(231 176 75 / 0.75); --st-glass: #bcd3e4; --st-hill1: #9fc0da; --st-hill2: #b2cde3;
   --st-cloud: #e6eff7; --st-sw: 1.5px;
   container: bd / inline-size;
-  margin-top: clamp(1.75rem, 4vw, 3rem);
+  margin-top: var(--stack);
   padding: clamp(1rem, 2.2vw, 2rem);
   background: var(--bd-paper); color: var(--bd-ink);
   border: clamp(6px, 0.8vw, 10px) solid var(--black); border-radius: clamp(14px, 1.6vw, 22px);
@@ -419,7 +426,7 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
 .see { padding: var(--section) var(--margin); }
 .see__head { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.25rem; }
 .see__title { color: var(--teal); }
-.vm { margin-top: clamp(1.75rem, 4vw, 3rem); display: grid; gap: 1rem; }
+.vm { margin-top: var(--stack); display: grid; gap: 1rem; }
 .vm__line { font-weight: 700; font-size: var(--step-body); }
 .vm__stage { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.75rem; align-items: center; }
 .vm-card { background: var(--black); color: var(--white); padding: 1rem 1.1rem 1.2rem; }
@@ -447,7 +454,7 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
 .vm-flight { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
 .vm-fly { position: absolute; overflow: hidden; background: var(--teal); color: var(--black); }
 .vm__controls { display: flex; flex-wrap: wrap; gap: 10px; }
-.vm__controls .button { font-size: var(--step-body); min-height: 3.5rem; padding: 0 1.4rem; flex: 1 1 auto; }
+.vm__controls .button { font-size: var(--step-body); padding-inline: 1.4rem; flex: 1 1 auto; }
 .vm__note { font-size: var(--step-small); color: var(--soft-on-dark); max-width: 60ch; }
 .vm > .ask-row { margin-top: 0.75rem; }
 
@@ -469,7 +476,7 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
 .about__title { color: var(--white); white-space: nowrap; }
 .about__intro { display: grid; gap: 1rem; margin-top: 1.25rem; }
 /* The two people side by side at every width: the same 4:5 frame each, names and lines under each. */
-.people { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2.5rem var(--gutter); margin-top: clamp(2rem, 5vw, 4rem); }
+.people { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2.5rem var(--gutter); margin-top: var(--stack); }
 .person { display: grid; gap: 1rem; align-content: start; }
 /* Both portraits sit in the same 4:5 frame. */
 .person__frame { container-type: inline-size; width: 100%; aspect-ratio: 4 / 5; margin: 0; overflow: hidden; overflow: clip; background: var(--photo-ground); }
@@ -485,7 +492,7 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
 .biz { padding: var(--section) var(--margin) 0; }
 .biz__title { font-size: var(--step-title); line-height: 0.95; letter-spacing: -0.04em; text-transform: uppercase; }
 .biz__line { margin-top: 1rem; font-size: var(--step-lead); font-weight: 700; line-height: 1.25; letter-spacing: -0.02em; max-width: 46ch; }
-.biz__photos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; margin: clamp(1.75rem, 4vw, 3rem) calc(-1 * var(--margin)) 0; }
+.biz__photos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; margin: var(--stack) calc(-1 * var(--margin)) 0; }
 .biz__photos li { overflow: hidden; overflow: clip; background: var(--photo-ground); }
 .biz__photos img { width: 100%; height: 100%; aspect-ratio: 1; object-fit: cover; }
 
@@ -498,7 +505,7 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
 .how > .ask-row { margin-top: clamp(2rem, 4vw, 3rem); }
 
 /* ---------- Let's talk: the form ---------- */
-.contact { padding: 12px var(--margin) var(--section); }
+.contact { padding: var(--margin); }
 .coupon { display: flex; flex-direction: column; gap: 8px; padding: 1.5rem 1.25rem; background: var(--black); color: var(--white); }
 .coupon__left, .coupon__right { display: contents; }
 .coupon__title { font-size: var(--step-head); color: var(--teal); }
@@ -516,10 +523,13 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
 .cell textarea { min-height: 4.5rem; line-height: 1.4; }
 .cell input::placeholder, .cell textarea::placeholder { color: var(--muted); opacity: 1; }
 .cell__help { font-size: var(--step-small); color: var(--soft-on-dark); margin: 0 0 0.5rem; }
+.cell__help, .coupon__privacy { letter-spacing: 0; line-height: 1.45; }
 .cell-pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr)); gap: 8px; }
-.coupon__submit { width: 100%; margin-top: 0.4rem; background: var(--teal); color: var(--black); }
-.coupon__status { font-size: var(--step-body); font-weight: 700; color: var(--white); }
-.coupon__status:empty { display: none; }
+.coupon__submit { width: 100%; margin-top: 0.4rem; padding-block: 0.65rem; background: var(--teal); color: var(--black); }
+.coupon__status { font-size: var(--step-body); font-weight: 700; line-height: 1.35; color: var(--white); overflow-wrap: anywhere; }
+/* last in the card; with script, js/form.js holds its room from the start, so no message moves anything */
+.coupon__status { order: 12; }
+html:not(.js) .coupon__status:empty { display: none; }
 .coupon__status a { color: var(--teal); }
 .coupon__status.is-ok { color: var(--teal); }
 .coupon__alt { font-size: var(--step-small); color: var(--soft-on-dark); overflow-wrap: anywhere; }
@@ -554,8 +564,9 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
 /* ---------- single pages: thanks and not found ---------- */
 .solo { min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; padding: 0 var(--margin) var(--margin); }
 .solo .nav { padding-block: var(--margin); }
-.solo__title { margin-top: clamp(3rem, 14vh, 9rem); margin-top: clamp(3rem, 14svh, 9rem); }
-.solo__body { margin-top: clamp(1.5rem, 4vh, 2.5rem); margin-top: clamp(1.5rem, 4svh, 2.5rem); display: grid; gap: 2rem; justify-items: start; }
+.solo__title { margin-block-start: var(--section); }
+.solo__body { margin-top: clamp(1.5rem, 4vh, 2.5rem); margin-top: clamp(1.5rem, 4svh, 2.5rem); display: grid; gap: 1.5rem; justify-items: start; }
+.solo .wordmark { display: inline-flex; align-items: center; min-block-size: 2.75rem; }
 .solo__foot { margin-top: auto; padding-top: 4rem; font-weight: 700; font-size: var(--step-small); }
 
 /* ---------- container-unit sizes (browsers with cqi; the ordinary sizes above are the fallback) ---------- */
@@ -568,6 +579,7 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
   .button:hover, .field-black .button:hover, .field-night .button:hover, .field-deep .button:hover { background: var(--white); color: var(--black); }
   .button--quiet:hover, .field-deep .button--quiet:hover { background: var(--white); color: var(--black); border-color: var(--white); }
   .link:hover { text-decoration-color: currentColor; }
+  .fold > summary:hover > span, .more > summary:hover > span, .band > summary:hover > span, .menu__links a:hover { text-decoration-color: currentColor; }
   .bd-btn:hover { background: var(--bd-ledger-hover); }
   .try:hover { transform: translateY(-2px); background: var(--tile); }
   .try:hover .try__go { color: var(--white); }
@@ -608,6 +620,9 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
 
 /* ---------- desktop ---------- */
 @media (min-width: 1001px) {
+  /* one page edge: the hero, every section and the footer share this margin */
+  :root { --margin: clamp(2rem, 4.6vw, 7rem); }
+  .solo .nav { padding-block: 1.5rem; }
   /* The page grid has twelve columns. Words-and-thing rows split at column 7 (the voicemail, Billing Day's
      heading); the example tiles, the steps and the promises run three across; Ben & Zeke, the businesses and the
      questions run the full width. */
@@ -641,7 +656,19 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
   .about__intro .ask-row { grid-column: 7 / -1; }
   .person { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: var(--gutter); }
   .person__frame { max-width: none; }
-  .contact { padding-block: clamp(1rem, 3vw, 3rem); }
+  /* Ben's and Zeke's names, roles and bios share rows, so both bios start level however their roles wrap */
+  .person__role { min-height: 2.6em; }
+  @supports (grid-template-rows: subgrid) {
+    .person__role { min-height: 0; }
+    /* four shared rows (name, role, bio, fold) and a last one that takes whatever height the portrait has left;
+       the space between rows is each part's own top margin, so nothing trails under the fold */
+    .people { grid-template-rows: repeat(4, auto) minmax(0, 1fr); row-gap: 0; }
+    .person, .person__words { grid-row: 1 / -1; grid-template-rows: subgrid; row-gap: 0; }
+    .person__words > * + * { margin-top: 0.75rem; }
+    .person__words > .person__role { margin-top: 0.25rem; }
+    .person__frame { grid-column: 1; grid-row: 1 / -1; }
+    .person__words { grid-column: 2; }
+  }
   /* the form card: the title, its words and the one promise beside the form, both columns ending together */
   .coupon { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: 1rem; padding: clamp(1.75rem, 3.4vw, 3rem); align-items: start; }
   .coupon__left { display: contents; }
@@ -835,13 +862,13 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
   .pz-hero { min-height: 0; }
   .pz-top { min-height: calc(min(100vh, 62rem) - 1rem); min-height: calc(min(100svh, 62rem) - 1rem); }
 }
+@media (min-width: 700px) and (max-width: 1000px) { .pz-top { min-height: 0; } }
 
 /* ---------- desktop, 700px tall and up: poster left, panel right ----------
    (Shorter windows keep the poster-only hero with the panel after the button: beside the poster the panel would be
    taller than the poster there, and the button would move when the web font arrives.) */
 @media (min-width: 1001px) and (min-height: 700px) {
   .pz-hero {
-    --margin: clamp(2rem, 4.6vw, 7rem);
     --sp: clamp(0.9rem, 1.25vw, 1.75rem);
     --gap: clamp(1.75rem, 3.2vw, 4.5rem);
     --pz-reserve: 16.5rem;
@@ -872,14 +899,13 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
   .pz-hero .pz { --w: inherit; grid-area: pz; margin-top: 0; }
   .pz-hero .pz__s { margin-inline: 0; padding-inline: var(--sp); }
   .pz-hero .pz__s--fit { padding-inline: 0; font-size: calc((var(--w) + 2 * var(--sp)) / var(--fd)); }
-  .pz-hero .pz__fix { font-size: calc(var(--w) / var(--f) * 1.005); }
   .pz-hero .pz__price { font-size: clamp(1rem, calc(var(--w) / 38), 2rem); }
-  /* the one motion on the first screen is the underline under "build"; the fitting line round "business." rests */
-  .pz-hero .pz__box::after { animation: none; opacity: 0; }
+  /* the "BUSINESS." box's top on the Example panel's top: the first strip takes no spare height and no top inset */
+  .pz-hero .pz__s--fit { flex-grow: 0; padding-top: 0; }
 
   .pz-hero .pz__act { grid-area: act; flex-wrap: wrap; align-items: flex-end; gap: 1rem 1.5rem; margin-top: clamp(0.9rem, 2.4vh, 1.75rem); }
   .pz-hero .pz__who { flex: 1 1 12rem; max-width: 38ch; font-size: clamp(1.0625rem, 0.55rem + 0.85vw, 1.875rem); }
-  .pz-hero .pz__go { flex: 0 1 auto; max-width: 100%; text-align: center; font-size: clamp(1.25rem, 0.45rem + 1.1vw, 2.375rem); min-height: clamp(3.75rem, calc(var(--w) / 12), 6rem); padding-inline: 1.6em; }
+  .pz-hero .pz__go { flex: 0 1 auto; max-width: 100%; text-align: center; font-size: clamp(1.25rem, 0.45rem + 1.1vw, 2.375rem); padding-inline: 1.6em; }
 
   /* the panel: from the poster's top to the button's bottom. Type is sized to the panel's width and the window's
      height, never under 16px; the rows take any spare height into their white and teal cells, not into black. */
@@ -916,7 +942,84 @@ h1, h2, h3 { font-weight: 900; text-wrap: balance; hyphens: none; overflow-wrap:
     .pz-hero .eg__row { grid-template-columns: minmax(0, 44fr) minmax(0, 56fr); column-gap: 0.375rem; }
   }
 }
-@media (min-width: 1001px) and (min-height: 700px) and (prefers-reduced-motion: no-preference) {
-  html.js .eg__line path { stroke-dasharray: 1; animation: eg-draw 0.45s 0.6s cubic-bezier(0.65, 0, 0.35, 1) both; }
+
+/* ---------- motion, round 11: a pen marking up the poster ----------
+   Every animation below runs only with script on (html.js) and motion allowed. The finished look is each element's
+   own style, so reduced motion, no script, print and a settled page show the finished page. html.is-settled (set by
+   js/motion.js on a fragment visit, focus entering the hero, a back-forward cache restore, print, or reduced motion
+   coming on) stops the first-screen marks at once. Front-page classes only: /examples/, /thanks/ and /404 import
+   this sheet. Copy on the first screen never moves and every word is painted in the first frame; only the pen's marks
+   draw: the fitting line round "BUSINESS.", then each chore's underline or ring in the Example, then "build". */
+:root { --ease-pen: cubic-bezier(0.65, 0, 0.35, 1); }
+.eg__row:nth-child(2) { --eg-i: 1; }
+.eg__row:nth-child(3) { --eg-i: 2; }
+.eg__row:nth-child(4) { --eg-i: 3; }
+.eg__u, .eg__ring path, .eg__line path { --pen: none; }
+@media (prefers-reduced-motion: no-preference) {
+  /* the fitting line: loose, like an off-the-peg fit, then taken in to the box's edge, where it disappears */
+  html.js:not(.is-settled) .pz__box::after { animation: pz-fit 0.6s cubic-bezier(0.2, 0.85, 0.25, 1) 0.2s backwards; }
+  html.js .eg__u, html.js .eg__ring path, html.js .eg__line path { animation: var(--pen); }
 }
-@keyframes eg-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes pz-fit {
+  0% { opacity: 1; outline-offset: var(--lo); }
+  78% { opacity: 1; outline-offset: 0; }
+  100% { opacity: 0; outline-offset: 0; }
+}
+/* desktop, where the Example is on the first screen: the marks draw on load, 120ms apart from 0.4s, "build" last */
+@media (min-width: 1001px) and (min-height: 700px) and (prefers-reduced-motion: no-preference) {
+  html.js:not(.is-settled) .eg__u { --pen: eg-u 0.3s var(--ease-pen) calc(0.4s + var(--eg-i, 0) * 120ms) backwards; }
+  html.js:not(.is-settled) .eg__ring path { --pen: eg-ring 0.35s var(--ease-pen) calc(0.4s + var(--eg-i, 0) * 120ms) backwards; }
+  html.js:not(.is-settled) .eg__line path { --pen: eg-draw 0.32s var(--ease-pen) 0.88s backwards; }
+}
+/* phones, tablets and short desktop windows: the marks wait while the panel is below the screen and draw once it
+   scrolls in (js/motion.js sets .is-waiting, then .is-drawing) */
+@media (max-width: 1000px) and (prefers-reduced-motion: no-preference), (max-height: 699px) and (prefers-reduced-motion: no-preference) {
+  html.js:not(.is-settled) .eg.is-waiting .eg__u { background-size: 0 0.34em; }
+  html.js:not(.is-settled) .eg.is-waiting .eg__ring path, html.js:not(.is-settled) .eg.is-waiting .eg__line path { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  html.js:not(.is-settled) .eg.is-drawing .eg__u { --pen: eg-u 0.3s var(--ease-pen) calc(0.1s + var(--eg-i, 0) * 120ms) backwards; }
+  html.js:not(.is-settled) .eg.is-drawing .eg__ring path { --pen: eg-ring 0.35s var(--ease-pen) calc(0.1s + var(--eg-i, 0) * 120ms) backwards; }
+  html.js:not(.is-settled) .eg.is-drawing .eg__line path { --pen: eg-draw 0.32s var(--ease-pen) 0.58s backwards; }
+}
+@keyframes eg-u { from { background-size: 0 0.34em; } }
+@keyframes eg-u-again { from { background-size: 0 0.34em; } }
+@keyframes eg-ring { from { stroke-dasharray: 1; stroke-dashoffset: 1; } to { stroke-dasharray: 1; stroke-dashoffset: 0; } }
+@keyframes eg-ring-again { from { stroke-dasharray: 1; stroke-dashoffset: 1; } to { stroke-dasharray: 1; stroke-dashoffset: 0; } }
+@keyframes eg-draw { from { stroke-dasharray: 1; stroke-dashoffset: 1; } to { stroke-dasharray: 1; stroke-dashoffset: 0; } }
+
+/* Below the first screen: one-shot arrivals (js/motion.js). Only elements below the screen at load wait; each rises
+   6px and fades in over 240ms as it comes into view, a group at most 60ms apart, so every word is readable within
+   300ms. The voicemail stage and the Billing Day preview are never touched. */
+@media (prefers-reduced-motion: no-preference) {
+  html.js .rv-wait { opacity: 0; transform: translateY(6px); }
+  html.js .rv-in { animation: rv-in 240ms var(--ease-out) var(--rv-d, 0ms) backwards; }
+  /* the steps' teal rules draw left to right: a cover in the band's own green slides off them */
+  html.js .step.rv-wait, html.js .step.rv-in { position: relative; }
+  html.js .step.rv-wait::before, html.js .step.rv-in::before { content: ""; position: absolute; left: 0; right: 0; top: -6px; height: 6px; background: var(--deep); transform-origin: right center; }
+  html.js .step.rv-in::before { animation: rv-rule 300ms var(--ease-out) var(--rv-d, 0ms) both; }
+}
+@keyframes rv-in { from { opacity: 0; transform: translateY(6px); } }
+@keyframes rv-rule { to { transform: scaleX(0); } }
+
+/* Hover (a mouse or trackpad, motion allowed): a row of the Example redraws its mark; a link's underline sweeps in
+   from the left (links that rest underlined keep theirs, and the sweep thickens it); the Try it arrow nudges 4px.
+   Press feedback and the photo zoom are unchanged; each of these moves a child, never a transform another rule owns. */
+@media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  html.js .eg__row:hover .eg__u { animation: var(--pen), eg-u-again 0.35s var(--ease-pen) backwards; }
+  html.js .eg__row:hover .eg__ring path { animation: var(--pen), eg-ring-again 0.4s var(--ease-pen) backwards; }
+  .link { background: linear-gradient(currentColor, currentColor) no-repeat 0 100% / 0 0.1em; transition: background-size var(--t-ui) var(--ease-out), text-decoration-color var(--t-hover) ease; }
+  .link:hover { background-size: 100% 0.1em; text-decoration-color: transparent; }
+  /* links set as a 44px row: the sweep sits under the words, not at the row's foot */
+  .cue__link, .footer__links a { background-position: 0 calc(50% + 0.62em); }
+  .footer__contact a.link:hover, .solo__body a.link:hover, .coupon__alt .link:hover, .cue__link:hover, .trust__link:hover, .ex-foot .link:hover { text-decoration-color: currentColor; }
+  .try__go > span { position: relative; left: 0; transition: left var(--t-hover) var(--ease-out); }
+  .try:hover .try__go > span { left: 4px; }
+}
+
+/* Print: the finished page, nothing waiting or in flight. */
+@media print {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  html.js .rv-wait { opacity: 1 !important; transform: none !important; }
+  html.js .step.rv-wait::before, html.js .step.rv-in::before { content: none !important; }
+  html.js .eg.is-waiting .eg__u { background-size: 100% 0.34em !important; }
+  html.js .eg.is-waiting .eg__ring path, html.js .eg.is-waiting .eg__line path { stroke-dasharray: none !important; stroke-dashoffset: 0 !important; }
+}

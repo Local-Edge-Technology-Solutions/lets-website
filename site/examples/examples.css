@@ -38,7 +38,7 @@
 .demo__lead { margin-top: 0.2rem; color: var(--soft-on-dark); font-weight: 600; max-width: 46ch; line-height: 1.4; }
 
 .player__act { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1rem; }
-.player__act .button { font-size: var(--step-body); min-height: 3.25rem; padding: 0 1.5rem; }
+.player__act .button { font-size: var(--step-body); padding-inline: 1.5rem; }
 .player__act .ex-btn--light { width: auto; flex: 0 0 auto; }
 
 /* ---------- shared interface pieces ---------- */
@@ -62,6 +62,7 @@ mark { background: var(--teal); color: var(--black); padding: 0 0.1em; -webkit-b
 .ex-btn--light { background: var(--white); color: var(--black); border-color: var(--white); }
 .ex-btn--light:focus-visible { outline-color: var(--teal); }
 .ex-btn[aria-disabled="true"] { cursor: default; }
+.ex-btn[aria-disabled="true"]:active { transform: none; }
 .ex-btn.is-done { background: var(--surface); border-color: var(--surface); color: var(--black); }
 .ex-btn.is-done::before { content: "\2713"; color: var(--teal-on-white); font-weight: 900; }
 .ex-btn.is-chosen { background: var(--teal); border-color: var(--black); color: var(--black); }
@@ -77,6 +78,8 @@ mark { background: var(--teal); color: var(--black); padding: 0 0.1em; -webkit-b
 /* ---------- replies: the owner's inbox ---------- */
 .inbox { margin-top: 0.75rem; display: grid; gap: 0.9rem; }
 .inbox__list { display: grid; gap: 5px; }
+/* each conversation fills its cell, so a name that wraps never leaves its neighbours short */
+.inbox__list > li { display: grid; }
 .ib-row {
   display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "name state" "snip snip";
   gap: 0.1rem 0.6rem; min-height: 2.75rem; padding: 0.5rem 0.7rem; background: var(--surface); color: var(--black);
@@ -175,7 +178,7 @@ mark { background: var(--teal); color: var(--black); padding: 0 0.1em; -webkit-b
 .trust__list li { position: relative; padding-left: 1.4rem; font-weight: 700; line-height: 1.4; }
 .trust__list li::before { content: ""; position: absolute; left: 0; top: 0.5em; width: 0.6rem; height: 0.6rem; background: var(--teal); }
 .trust__act { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.5rem; margin-top: 0.5rem; }
-.trust__act .button { font-size: var(--step-body); min-height: 3.25rem; padding: 0 1.5rem; }
+.trust__act .button { font-size: var(--step-body); padding-inline: 1.5rem; }
 .trust__link { font-weight: 900; color: var(--white); text-decoration-color: currentColor; }
 .ex-foot { padding: 1.5rem var(--margin); font-size: var(--step-small); font-weight: 700; color: var(--soft-on-dark); }
 .ex-foot .link { color: var(--white); text-decoration-color: currentColor; }
@@ -240,7 +243,7 @@ mark { background: var(--teal); color: var(--black); padding: 0 0.1em; -webkit-b
 /* Phones: Next and Let's talk side by side, the same height. */
 @media (max-width: 1000px) {
   .player__act { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-  .player__act .ex-btn--light, .player__act .button { width: 100%; min-height: 3.25rem; padding: 0 0.75rem; font-size: var(--step-body); }
+  .player__act .ex-btn--light, .player__act .button { width: 100%; min-height: 3.5rem; padding: 0.75rem; font-size: var(--step-body); }
 }
 
 /* ---------- round 2 look review (Codex) and blind testers: value sooner on phones, the booking's status beside
@@ -248,7 +251,7 @@ mark { background: var(--teal); color: var(--black); padding: 0 0.1em; -webkit-b
 /* Quieter labels: tags read as labels, not buttons. */
 .ex-tag { background: transparent; color: var(--muted); border: 1.5px solid currentColor; padding: 0 0.4rem; font-weight: 700; }
 .demo__lead { font-weight: 400; }
-.pick__sum { font-weight: 600; }
+.pick__sum { font-weight: 600; letter-spacing: 0; line-height: 1.45; }
 .draft__src b { color: var(--black); }
 /* Reminders: the earlier exchange in one line; the owner's list beside the reply buttons, outside the phone. */
 .sms__earlier { align-self: center; text-align: center; font-size: 0.8125rem; font-weight: 700; color: var(--muted); }
@@ -270,7 +273,7 @@ mark { background: var(--teal); color: var(--black); padding: 0 0.1em; -webkit-b
   .inbox__list { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 5px; }
   .ib-row { grid-template-areas: "name" "state"; grid-template-columns: minmax(0, 1fr); padding: 0.45rem 0.5rem; border-left: 0; border-top: 4px solid transparent; }
   .ib-row.is-on { border-top-color: var(--teal); }
-  .ib-row__name { font-size: 0.9375rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .ib-row__name { font-size: 0.9375rem; overflow-wrap: anywhere; }
   .ib-row__snip { display: none; }
   .ib-row__state { justify-self: start; font-size: 0.6875rem; }
   .mail { padding: 0.7rem 0.8rem 0.8rem; }
@@ -281,6 +284,10 @@ mark { background: var(--teal); color: var(--black); padding: 0 0.1em; -webkit-b
    conversation's name line, which the highlighted row above already shows, goes. */
 @media (max-width: 640px) and (max-height: 790px) {
   .ex-top .nav { padding-block: 0.5rem; }
+  /* round 11: a name in the compact inbox may now wrap (no ellipsis); the line it can take comes out of the gaps */
+  .ex-top { padding-bottom: 0.6rem; }
+  .player { padding-top: 0.5rem; row-gap: 0.5rem; }
+  .inbox { margin-top: 0.5rem; }
   .demo__head { margin-bottom: 0; }
   .demo__title { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
   .thread__from { display: none; }
@@ -327,7 +334,7 @@ mark { background: var(--teal); color: var(--black); padding: 0 0.1em; -webkit-b
 @media (max-width: 640px) { .ex-top__title { font-size: 2rem; max-width: none; } }
 @media (min-width: 1001px) {
   .ex-top { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); align-items: end; }
-  .ex-top .nav { grid-column: 1 / -1; }
+  .ex-top .nav { grid-column: 1 / -1; padding-block: 1.5rem; }
   .ex-top__title { grid-column: 1 / span 7; }
   .ex-top__side { grid-column: 8 / -1; padding-bottom: 0.4rem; }
   .ex-top__promise { margin-top: 0; }
@@ -384,12 +391,15 @@ mark { background: var(--teal); color: var(--black); padding: 0 0.1em; -webkit-b
 /* Jordan's phone: phone proportions, with the speaker slot at the top. */
 .phone__screen::before { content: ""; display: block; width: 3.25rem; height: 0.35rem; margin: 0 auto 0.6rem; border-radius: 1rem; background: var(--surface-2); }
 .sms { min-height: 24rem; }
+/* phones: no tall blank before the reminder is sent */
+@media (max-width: 640px) { .sms { min-height: 0; min-block-size: 16rem; } }
 @media (min-width: 641px) { .rem .phone { width: min(100%, 26rem); } }
 /* Desktop trust band: the two people on the left, the promises and the buttons beside them. */
 @media (min-width: 1001px) {
   .trust { grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-rows: auto auto 1fr; column-gap: var(--gutter); align-items: start; }
   .trust__title { grid-column: 1 / -1; grid-row: 1; }
-  .trust__people { grid-column: 1 / span 6; grid-row: 2 / span 2; max-width: none; }
-  .trust__list { grid-column: 7 / -1; grid-row: 2; }
-  .trust__act { grid-column: 7 / -1; grid-row: 3; }
+  /* the photos in columns 1 to 4, so they sit level with the words beside them, not hundreds of pixels below */
+  .trust__people { grid-column: 1 / span 4; grid-row: 2 / span 2; max-width: none; }
+  .trust__list { grid-column: 6 / -1; grid-row: 2; }
+  .trust__act { grid-column: 6 / -1; grid-row: 3; }
 }

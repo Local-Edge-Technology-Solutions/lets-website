@@ -37,6 +37,7 @@ export default defineConfig({
       input: {
         main: path.resolve(root, "index.html"),
         thanks: path.resolve(root, "thanks/index.html"),
+        examples: path.resolve(root, "examples/index.html"),
         notFound: path.resolve(root, "404.html"),
       },
     },

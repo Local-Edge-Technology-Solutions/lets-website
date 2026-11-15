@@ -1,5 +1,5 @@
 // The lead form. Without script it posts to Netlify Forms and lands on /thanks/. With script it sends in the
-// background, one send at a time, and says plainly what happened. A failed or unconfirmed send never clears what
+// background, one send at a time, says plainly what happened, and on a confirmed send goes to /thanks/ too. A failed or unconfirmed send never clears what
 // was typed, and a success clears only what was actually sent.
 import { $ } from "./env.js";
 
@@ -43,9 +43,11 @@ export function initForm() {
       // Only clear the form if nothing was typed while it was sending; newer edits are never thrown away.
       if (new URLSearchParams(new FormData(form)).toString() === sent) {
         form.reset();
-        tell("Thanks. Your message is on its way to Ben and Zeke.", { ok: true });
+        tell("Thanks. Your message is on its way to us.", { ok: true });
+        // The thank-you page confirms it in full, and gives an ad platform one address to count a lead by.
+        location.assign("/thanks/");
       } else {
-        tell("Thanks. Your message is on its way to Ben and Zeke. The changes you made while it was sending haven’t been sent; press Let’s talk again to send them.", { ok: true });
+        tell(`Thanks. Your message is on its way to us. The changes you made while it was sending haven’t been sent; press “${label}” again to send them.`, { ok: true });
       }
     } catch (err) {
       const status = err && err.status;
